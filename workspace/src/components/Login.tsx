@@ -1,6 +1,6 @@
-const Login = () => {
-  const signUpHandler = () => {};
+import { Link } from "react-router-dom";
 
+const Login = () => {
   return (
     <form>
       <main>
@@ -11,7 +11,7 @@ const Login = () => {
         <button>Login</button>
       </main>
       <label>New account?</label>
-      <button onClick={signUpHandler}>Sign up</button>
+      <Link to={"/signup"}>Sign up</Link>
     </form>
   );
 };
