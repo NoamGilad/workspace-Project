@@ -7,12 +7,11 @@ type AuthContextType = {
   auth: Auth | null; // Auth type or null
 };
 
-export const AuthCtx = createContext<AuthContextType>({
-  firebaseConfig: {},
-  auth: null,
-});
+export const AuthCtx = createContext<AuthContextType | undefined>(undefined);
 
-const authCtxProvider = (children: any) => {
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const firebaseConfig = {
     apiKey: "AIzaSyBe1wv4MJC_mdTvA2WVoJhDgkFOUDic8TE",
     authDomain: "workspace-f24ed.firebaseapp.com",
@@ -32,4 +31,4 @@ const authCtxProvider = (children: any) => {
   );
 };
 
-export default authCtxProvider;
+export default AuthProvider;

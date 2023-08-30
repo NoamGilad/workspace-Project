@@ -2,12 +2,15 @@ import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import Summary from "../components/Summary";
-import Login from "../components/Login";
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const content = isLoggedIn ? <Summary /> : <Login />;
+  const content = isLoggedIn ? (
+    <Summary />
+  ) : (
+    <h2>Welcome! please login or sign up</h2>
+  );
 
   return (
     <>
