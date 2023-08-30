@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 
 type AuthContextType = {
   firebaseConfig: any;
@@ -23,6 +24,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const storeDataBase = getFirestore(app);
 
   return (
     <AuthCtx.Provider value={{ firebaseConfig, auth }}>
