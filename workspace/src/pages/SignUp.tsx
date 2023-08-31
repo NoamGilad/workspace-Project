@@ -1,11 +1,11 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { AuthCtx } from "../contexts/AuthProvider";
+import AuthProvider, { AuthCtx } from "../contexts/AuthProvider";
 import { useContext, useState } from "react";
 import { Link, redirect } from "react-router-dom";
 
 const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
+  const [password, setPassword] = useState("");
 
   const context = useContext(AuthCtx);
 
@@ -22,11 +22,18 @@ const SignUpPage: React.FC = () => {
   const onSubmitSignupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await createUserWithEmailAndPassword(auth, email, password1)
-      .then((userApproval: { user: any }) => {
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userApproval: { user: any }) => {
         const user = userApproval.user;
         console.log(user);
+
+        const userRole = "employee";
+        // Store user role in the authentication context
+        context.setUserRole(userRole);
+        console.log(userRole);
+
         window.alert("Successfully registered");
+
         return redirect("/login");
       })
       .catch((error) => {
@@ -53,7 +60,7 @@ const SignUpPage: React.FC = () => {
         <label>password</label>
         <input
           type="password"
-          onChange={(e) => setPassword1(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
           required
         />

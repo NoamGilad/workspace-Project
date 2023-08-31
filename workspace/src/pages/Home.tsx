@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useContext, useState } from "react";
+import { AuthCtx } from "../contexts/AuthProvider";
 
 import Summary from "../components/Summary";
 
 const HomePage = () => {
+  const ctxUser = useContext(AuthCtx);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const content = isLoggedIn ? (

@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
+  const [password, setPassword] = useState("");
 
   const context = useContext(AuthCtx);
 
@@ -22,11 +22,17 @@ const SignInPage = () => {
   const onSubmitLoginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await signInWithEmailAndPassword(auth, email, password1)
-      .then((userApproval: { user: any }) => {
+    await signInWithEmailAndPassword(auth, email, password)
+      .then(async (userApproval: { user: any }) => {
         const user = userApproval.user;
         console.log(user);
+
+        const userRole = "employee";
+        // Store user role in the authentication context
+        context.setUserRole(userRole);
+
         window.alert("Successfully logged in!");
+
         return redirect("/loggedout");
       })
       .catch((error) => {
@@ -50,7 +56,7 @@ const SignInPage = () => {
           <label>Password</label>
           <input
             type="password"
-            onChange={(e) => setPassword1(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             required
           />
