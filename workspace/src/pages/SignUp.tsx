@@ -1,50 +1,78 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import AuthProvider, { AuthCtx } from "../contexts/AuthProvider";
+import {
+  createUserWithEmailAndPassword,
+  updateCurrentUser,
+} from "firebase/auth";
+import { AuthCtx } from "../contexts/AuthProvider";
 import { useContext, useState } from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+
+  const storeDataBase = getFirestore();
 
   const context = useContext(AuthCtx);
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+
+  const isSubmitting = navigation.state === "submitting";
 
   if (!context) {
-    return <div>Loading...</div>;
-  }
-
-  const { auth } = context;
-
-  if (!auth) {
-    return <div>No authentication avilable</div>;
+    return <div>No context</div>;
   }
 
   const onSubmitSignupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userApproval: { user: any }) => {
-        const user = userApproval.user;
-        console.log(user);
+    if (!context) {
+      console.error("No context available");
+      return;
+    }
 
-        const userRole = "employee";
-        // Store user role in the authentication context
-        context.setUserRole(userRole);
-        console.log(userRole);
+    if (!context.auth) {
+      console.error("No authentication available");
+      return;
+    }
 
-        window.alert("Successfully registered");
+    if (role !== "employee" && role !== "employer") {
+      window.alert('Role must be: "employee" or "employer"');
+      return;
+    }
 
-        return redirect("/login");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        window.alert(errorMessage);
+    try {
+      // Register the user
+      const userCredential = await createUserWithEmailAndPassword(
+        context.auth,
+        email,
+        password
+      );
+
+      // Set user role
+      context.setUserRole(role);
+
+      const user = userCredential.user;
+      const userDocRef = doc(storeDataBase, "roles", user.uid);
+      await setDoc(userDocRef, {
+        email: user.email,
+        role: role,
       });
+
+      window.alert("Successfully registered");
+      navigate("/");
+    } catch (error: any) {
+      const errorMessage = error.message;
+      window.alert(errorMessage);
+    }
+
+    context.onSubmitionSignupHandler(e);
   };
 
   return (
     <>
-      <h1>Sign up</h1>
+      <h5>Sign up</h5>
       <form onSubmit={onSubmitSignupHandler}>
         {/* <label>First name</label>
         <input type="text" placeholder="Enter your first name" />
@@ -57,14 +85,23 @@ const SignUpPage: React.FC = () => {
           placeholder="Enter your Email"
           required
         />
-        <label>password</label>
+        <label>Password</label>
         <input
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
           required
         />
-        <button type="submit">Sign up!</button>
+        <label>Role</label>
+        <input
+          type="text"
+          onChange={(e: any) => setRole(e.target.value)}
+          placeholder="Enter your role"
+          required
+        />
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Sign up!"}
+        </button>
       </form>
       <label>Already an account?</label>
       <Link to={"/signin"}>Sign in</Link>

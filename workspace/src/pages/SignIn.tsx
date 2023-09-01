@@ -1,4 +1,4 @@
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { useContext, useState } from "react";
@@ -8,6 +8,10 @@ const SignInPage = () => {
   const [password, setPassword] = useState("");
 
   const context = useContext(AuthCtx);
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+
+  const isSubmitting = navigation.state === "submitting";
 
   if (!context) {
     return <div>Loading...</div>;
@@ -27,13 +31,15 @@ const SignInPage = () => {
         const user = userApproval.user;
         console.log(user);
 
-        const userRole = "employee";
         // Store user role in the authentication context
-        context.setUserRole(userRole);
 
-        window.alert("Successfully logged in!");
+        let userRole;
 
-        return redirect("/loggedout");
+        if (userRole === "employee") {
+          context.setUserRole(userRole);
+        }
+
+        return navigate("/");
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -43,7 +49,7 @@ const SignInPage = () => {
 
   return (
     <>
-      <h1>Sign in</h1>
+      <h5>Sign in</h5>
       <form onSubmit={onSubmitLoginHandler}>
         <main>
           <label>Email</label>
@@ -60,7 +66,9 @@ const SignInPage = () => {
             placeholder="Enter your password"
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Login"}
+          </button>
         </main>
         <label>New account?</label>
         <Link to={"/signup"}>Sign up</Link>

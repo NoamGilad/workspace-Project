@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
+import SignInPage from "../pages/SignIn";
+import SignUpPage from "../pages/SignUp";
 
 const MainNavigation = () => {
   return (
@@ -47,6 +49,12 @@ const MainNavigation = () => {
               Logout
             </NavLink>
           </li>
+          {/* <li>
+            <SignInPage userRole={null} />
+          </li>
+          <li>
+            <SignUpPage />
+          </li> */}
         </ul>
       </nav>
     </header>
