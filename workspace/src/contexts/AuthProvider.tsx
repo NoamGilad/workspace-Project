@@ -12,13 +12,21 @@ import {
 type AuthContextType = {
   firebaseConfig: any;
   auth: Auth | null; // Auth type or null
+  // collectionRefs: Function;
+  approvedRoles: string[];
+  // onSubmitionSignupHandler: Function;
+  gettingExistingUser: Function;
+  // currentUser: any | null;
+  onSubmitionSignupHandler: Function;
+  role: string | null;
+  setRole: React.Dispatch<React.SetStateAction<string | null>>;
   userRole: string | null;
   setUserRole: React.Dispatch<React.SetStateAction<string | null>>;
-  collectionRefs: Function;
-  approvedRoles: string[];
-  onSubmitionSignupHandler: Function;
-  gettingExistingUser: Function;
-  currentUser: any | null;
+  email: string | null;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string | null;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  curUserRole: string | null;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -37,15 +45,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const storeDataBase = getFirestore();
 
-  // Initialize userRole state
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [role, setRole] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
-
   // Initialize currentUser state to store the user's information
-  const [currentUser, setCurrentUser] = useState<any | null>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  // const [currentUser, setCurrentUser] = useState<any | null>(null);
+  const [curUserRole, setCurUserRole] = useState<string>("");
 
   const onSubmitionSignupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,40 +65,74 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         password
       );
-      const user = userCredential.user;
 
+      // Set user role
       setUserRole(role);
 
-      setCurrentUser({
-        uid: user.uid,
+      const user = userCredential.user;
+      const userDocRef = doc(storeDataBase, "roles", user.uid);
+      await setDoc(userDocRef, {
         email: user.email,
         role: role,
       });
+
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const currentUserRole = userData.role;
+
+        setCurUserRole(currentUserRole);
+      }
     } catch (error: any) {
       const errorMessage = error.message;
       window.alert(errorMessage);
     }
   };
+  // const onSubmitionSignupHandler = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   // try {
+  //   //   // Register the user
+  //   //   const userCredential = await createUserWithEmailAndPassword(
+  //   //     auth,
+  //   //     email,
+  //   //     password
+  //   //   );
+  //   //   const user = userCredential.user;
+
+  //   //   setUserRole(role);
+
+  //   //   setCurrentUser({
+  //   //     uid: user.uid,
+  //   //     email: user.email,
+  //   //     role: role,
+  //   //   });
+  //   // } catch (error: any) {
+  //   //   const errorMessage = error.message;
+  //   //   window.alert(errorMessage);
+  //   // }
+  // };
 
   //////////////////////////////////////////////////////////////////
   // DEFINING ROLES AND PERMISSIONS
   const storeDatabase = getFirestore();
 
-  const rolesRef = collection(storeDatabase, "roles");
+  // const rolesRef = collection(storeDatabase, "roles");
 
-  // Add "admin" document
-  const collectionRefs = async () => {
-    await setDoc(doc(rolesRef, "employer"), {
-      role: "admin",
-      permissions: ["create", "edit", "delete"],
-    });
+  // // Add "admin" document
+  // const collectionRefs = async () => {
+  //   await setDoc(doc(rolesRef, "employer"), {
+  //     role: "admin",
+  //     permissions: ["create", "edit", "delete"],
+  //   });
 
-    // Add "user" document
-    await setDoc(doc(rolesRef, "employee"), {
-      role: "user",
-      permissions: ["create", "edit"],
-    });
-  };
+  //   // Add "user" document
+  //   await setDoc(doc(rolesRef, "employee"), {
+  //     role: "user",
+  //     permissions: ["create", "edit"],
+  //   });
+  // };
 
   const approvedRoles = ["employee", "employer"];
 
@@ -112,13 +154,22 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         firebaseConfig,
         auth,
+
+        approvedRoles,
+        // collectionRefs,
+        // onSubmitionSignupHandler,
+        gettingExistingUser,
+        // currentUser,
+        onSubmitionSignupHandler,
+        role,
+        setRole,
         userRole,
         setUserRole,
-        approvedRoles,
-        collectionRefs,
-        onSubmitionSignupHandler,
-        gettingExistingUser,
-        currentUser,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        curUserRole,
       }}
     >
       {children}

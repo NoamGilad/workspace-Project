@@ -1,22 +1,12 @@
-import {
-  createUserWithEmailAndPassword,
-  updateCurrentUser,
-} from "firebase/auth";
 import { AuthCtx } from "../contexts/AuthProvider";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const SignUpPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-
-  const storeDataBase = getFirestore();
-
   const context = useContext(AuthCtx);
-  const navigate = useNavigate();
+
   const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -37,37 +27,14 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
-    if (role !== "employee" && role !== "employer") {
+    if (context.role !== "employee" && context.role !== "employer") {
       window.alert('Role must be: "employee" or "employer"');
       return;
     }
 
-    try {
-      // Register the user
-      const userCredential = await createUserWithEmailAndPassword(
-        context.auth,
-        email,
-        password
-      );
-
-      // Set user role
-      context.setUserRole(role);
-
-      const user = userCredential.user;
-      const userDocRef = doc(storeDataBase, "roles", user.uid);
-      await setDoc(userDocRef, {
-        email: user.email,
-        role: role,
-      });
-
-      window.alert("Successfully registered");
-      navigate("/");
-    } catch (error: any) {
-      const errorMessage = error.message;
-      window.alert(errorMessage);
-    }
-
     context.onSubmitionSignupHandler(e);
+    window.alert("Successfully registered");
+    navigate("/");
   };
 
   return (
@@ -81,21 +48,21 @@ const SignUpPage: React.FC = () => {
         <label>Email</label>
         <input
           type="email"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => context.setEmail(e.target.value)}
           placeholder="Enter your Email"
           required
         />
         <label>Password</label>
         <input
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => context.setPassword(e.target.value)}
           placeholder="Enter your password"
           required
         />
         <label>Role</label>
         <input
           type="text"
-          onChange={(e: any) => setRole(e.target.value)}
+          onChange={(e: any) => context.setRole(e.target.value)}
           placeholder="Enter your role"
           required
         />
