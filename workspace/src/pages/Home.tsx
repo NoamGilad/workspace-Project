@@ -23,20 +23,21 @@ const HomePage = () => {
     );
   }
 
-  if (context?.userRole === context?.approvedRoles[0]) {
+  if (context?.curUserRole === "employee") {
     content = (
       <>
         <Summary />
+        <div>{context?.curUserRole}</div>
       </>
     );
   }
 
-  if (context?.userRole === context?.approvedRoles[1]) {
-    console.log(context?.currentUser);
+  if (context?.curUserRole === "employer") {
+    console.log(context?.curUserRole);
     content = (
       <>
         <div>Hey Admin</div>
-        <div>{context?.currentUser}</div>
+        <div>{context?.curUserRole}</div>
       </>
     );
   }
