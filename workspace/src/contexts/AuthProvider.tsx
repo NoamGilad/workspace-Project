@@ -1,6 +1,12 @@
 import { createContext, useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, Auth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  Auth,
+  createUserWithEmailAndPassword,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import {
   getFirestore,
   doc,
@@ -27,6 +33,7 @@ type AuthContextType = {
   password: string | null;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   curUserRole: string | null;
+  onSubmitLoginHandler: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -44,7 +51,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  const auth: Auth = getAuth(app);
+
   const storeDataBase = getFirestore();
 
   const [email, setEmail] = useState<string>("");
@@ -88,6 +96,34 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const errorMessage = error.message;
       window.alert(errorMessage);
     }
+  };
+  const onSubmitLoginHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      ).then((userApproval) => {
+        const user = userApproval.user;
+        console.log(user);
+
+        if (userRole === "employee") {
+          setUserRole(userRole);
+        }
+      });
+    } catch (error: any) {
+      const errorMessage = error.message;
+      window.alert(errorMessage);
+    }
+    // await setPersistence(auth)
+    //   .then(() => {
+    //     // Persistence successfully enabled
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error enabling persistence:", error);
+    //   });
   };
   // const onSubmitionSignupHandler = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -170,6 +206,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         password,
         setPassword,
         curUserRole,
+        onSubmitLoginHandler,
       }}
     >
       {children}
