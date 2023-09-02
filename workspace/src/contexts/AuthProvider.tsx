@@ -105,25 +105,32 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         auth,
         email,
         password
-      ).then((userApproval) => {
+      ).then(async (userApproval) => {
         const user = userApproval.user;
         console.log(user);
 
-        if (userRole === "employee") {
-          setUserRole(userRole);
+        const userDocRef = doc(storeDataBase, "roles", user.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          const currentUserRole = userData.role;
+
+          setCurUserRole(currentUserRole);
         }
       });
+
+      // await setPersistence(auth)
+      //   .then(() => {
+      //     // Persistence successfully enabled
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error enabling persistence:", error);
+      //   });
     } catch (error: any) {
       const errorMessage = error.message;
       window.alert(errorMessage);
     }
-    // await setPersistence(auth)
-    //   .then(() => {
-    //     // Persistence successfully enabled
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error enabling persistence:", error);
-    //   });
   };
   // const onSubmitionSignupHandler = async (e: React.FormEvent) => {
   //   e.preventDefault();
