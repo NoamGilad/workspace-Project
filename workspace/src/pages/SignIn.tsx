@@ -1,12 +1,8 @@
 import { Link, useNavigate, useNavigation } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { useContext, useState } from "react";
 
 const SignInPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -26,25 +22,9 @@ const SignInPage = () => {
   const onSubmitLoginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await signInWithEmailAndPassword(auth, email, password)
-      .then(async (userApproval: { user: any }) => {
-        const user = userApproval.user;
-        console.log(user);
+    context.onSubmitLoginHandler(e);
 
-        // Store user role in the authentication context
-
-        let userRole;
-
-        if (userRole === "employee") {
-          context.setUserRole(userRole);
-        }
-
-        return navigate("/");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        window.alert(errorMessage);
-      });
+    return navigate("/");
   };
 
   return (
@@ -55,14 +35,14 @@ const SignInPage = () => {
           <label>Email</label>
           <input
             type="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => context.setEmail(e.target.value)}
             placeholder="Enter your Email"
             required
           />
           <label>Password</label>
           <input
             type="password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => context.setPassword(e.target.value)}
             placeholder="Enter your password"
             required
           />

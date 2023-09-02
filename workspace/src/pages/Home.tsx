@@ -3,7 +3,7 @@ import { AuthCtx } from "../contexts/AuthProvider";
 
 import SignUpPage from "./SignUp";
 import SignInPage from "./SignIn";
-import Summary from "../components/Summary";
+import NonAdminSummary from "../components/NonAdminSummary";
 
 const HomePage = () => {
   const context = useContext(AuthCtx);
@@ -26,7 +26,7 @@ const HomePage = () => {
   if (context?.curUserRole === "employee") {
     content = (
       <>
-        <Summary />
+        <NonAdminSummary />
         <div>{context?.curUserRole}</div>
       </>
     );
