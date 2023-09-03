@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Roles collection: Only authenticated users can read roles
+    match /roles/{document=**} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if false; // Prevent direct modification of roles
+    }
+
+    // Additional pages for employers (admins)
+    match /extra_pages/{document=**} {
+      allow read, write: if isEmployer();
+    }
+
+    // Data that can be edited or deleted by employers (admins)
+    match /editable_data/{document=**} {
+      allow read, write, delete: if isEmployer();
+    }
+
+    // Adding new admins
+    match /roles/{newAdmin} {
+      allow create: if isEmployer() && request.resource.data.role == "employer";
+      allow update, delete: if false; // Prevent modification of existing roles
+    }
+
+    // Custom function to check if the user is an employer (admin)
+    function isEmployer() {
+      return exists(/databases/$(database)/documents/roles/$(request.auth.uid))
+        && get(/databases/$(database)/documents/roles/$(request.auth.uid)).data.role == "employer";
+    }
+  }
+}

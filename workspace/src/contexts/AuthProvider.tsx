@@ -6,14 +6,9 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  collection,
-  getDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 type AuthContextType = {
   firebaseConfig: any;
@@ -34,11 +29,14 @@ type AuthContextType = {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   curUserRole: string | null;
   onSubmitLoginHandler: Function;
+  handleLogout: Function;
+  currentUser: any | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<any | null>>;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const firebaseConfig = {
@@ -60,9 +58,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [role, setRole] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   // Initialize currentUser state to store the user's information
-  // const [currentUser, setCurrentUser] = useState<any | null>(null);
+  const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [curUserRole, setCurUserRole] = useState<string>("");
 
+  // SIGNUP HANDLER
   const onSubmitionSignupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -97,40 +96,38 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       window.alert(errorMessage);
     }
   };
-  const onSubmitLoginHandler = async (e: React.FormEvent) => {
+
+  // SIGNIN HANDLER
+  const onSubmitLoginHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    setPersistence(auth, { type: "LOCAL" })
+      .then(async () => {
+        try {
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const user = userCredential.user;
+          console.log(user);
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).then(async (userApproval) => {
-        const user = userApproval.user;
-        console.log(user);
+          const userDocRef = doc(storeDataBase, "roles", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
 
-        const userDocRef = doc(storeDataBase, "roles", user.uid);
-        const userDocSnapshot = await getDoc(userDocRef);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            const currentUserRole = userData.role;
 
-        if (userDocSnapshot.exists()) {
-          const userData = userDocSnapshot.data();
-          const currentUserRole = userData.role;
-
-          setCurUserRole(currentUserRole);
+            setCurUserRole(currentUserRole);
+          }
+        } catch (error: any) {
+          const errorMessage = error.message;
+          window.alert(errorMessage);
         }
+      })
+      .catch((error) => {
+        console.error("Error enabling persistence:", error);
       });
-
-      // await setPersistence(auth)
-      //   .then(() => {
-      //     // Persistence successfully enabled
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error enabling persistence:", error);
-      //   });
-    } catch (error: any) {
-      const errorMessage = error.message;
-      window.alert(errorMessage);
-    }
   };
   // const onSubmitionSignupHandler = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -156,6 +153,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   //   //   window.alert(errorMessage);
   //   // }
   // };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   //////////////////////////////////////////////////////////////////
   // DEFINING ROLES AND PERMISSIONS
@@ -214,11 +219,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setPassword,
         curUserRole,
         onSubmitLoginHandler,
+        handleLogout,
+        currentUser,
+        setCurrentUser,
       }}
     >
       {children}
     </AuthCtx.Provider>
   );
 };
-
-export default AuthProvider;

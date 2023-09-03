@@ -1,10 +1,20 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
+import { useContext } from "react";
+import { AuthCtx } from "../contexts/AuthProvider";
 
 const MainNavigation = () => {
+  const context = useContext(AuthCtx);
+  const navigate = useNavigate();
+
+  const onLogoutHandler = () => {
+    context?.handleLogout();
+    return navigate("/");
+  };
+
   return (
     <header className={classes.header}>
       <nav>
@@ -40,21 +50,8 @@ const MainNavigation = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/Loggedout"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-            >
-              Logout
-            </NavLink>
+            <button onClick={onLogoutHandler}>Logout</button>
           </li>
-          {/* <li>
-            <SignInPage userRole={null} />
-          </li>
-          <li>
-            <SignUpPage />
-          </li> */}
         </ul>
       </nav>
     </header>

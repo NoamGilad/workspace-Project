@@ -1,6 +1,7 @@
 import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { useContext, useState } from "react";
+import { AuthProvider } from "../contexts/AuthProvider";
 
 const SignInPage = () => {
   const context = useContext(AuthCtx);
@@ -19,7 +20,7 @@ const SignInPage = () => {
     return <div>No authentication avilable</div>;
   }
 
-  const onSubmitLoginHandler = async (e: React.FormEvent) => {
+  const onSubmitLoginHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
     context.onSubmitLoginHandler(e);
