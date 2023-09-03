@@ -4,15 +4,13 @@ import {
   getAuth,
   Auth,
   createUserWithEmailAndPassword,
-  setPersistence,
-  signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 type AuthContextType = {
   firebaseConfig: any;
-  auth: Auth | null; // Auth type or null
+  auth: Auth; // Auth type or null
   // collectionRefs: Function;
   approvedRoles: string[];
   // onSubmitionSignupHandler: Function;
@@ -23,12 +21,12 @@ type AuthContextType = {
   setRole: React.Dispatch<React.SetStateAction<string | null>>;
   userRole: string | null;
   setUserRole: React.Dispatch<React.SetStateAction<string | null>>;
-  email: string | null;
+  email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string | null;
+  password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   curUserRole: string | null;
-  onSubmitLoginHandler: Function;
+  setCurUserRole: React.Dispatch<React.SetStateAction<string>>;
   handleLogout: Function;
   currentUser: any | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<any | null>>;
@@ -61,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [curUserRole, setCurUserRole] = useState<string>("");
 
+  //need to move signup handler just like signin handler (to his component)
   // SIGNUP HANDLER
   const onSubmitionSignupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,37 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // SIGNIN HANDLER
-  const onSubmitLoginHandler = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPersistence(auth, { type: "LOCAL" })
-      .then(async () => {
-        try {
-          const userCredential = await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
-          const user = userCredential.user;
-          console.log(user);
 
-          const userDocRef = doc(storeDataBase, "roles", user.uid);
-          const userDocSnapshot = await getDoc(userDocRef);
-
-          if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            const currentUserRole = userData.role;
-
-            setCurUserRole(currentUserRole);
-          }
-        } catch (error: any) {
-          const errorMessage = error.message;
-          window.alert(errorMessage);
-        }
-      })
-      .catch((error) => {
-        console.error("Error enabling persistence:", error);
-      });
-  };
   // const onSubmitionSignupHandler = async (e: React.FormEvent) => {
   //   e.preventDefault();
 
@@ -202,7 +171,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         firebaseConfig,
         auth,
-
         approvedRoles,
         // collectionRefs,
         // onSubmitionSignupHandler,
@@ -218,7 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         password,
         setPassword,
         curUserRole,
-        onSubmitLoginHandler,
+        setCurUserRole,
         handleLogout,
         currentUser,
         setCurrentUser,
