@@ -32,9 +32,14 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
-    context.onSubmitionSignupHandler(e);
-    window.alert("Successfully registered");
-    navigate("/");
+    try {
+      await context.onSubmitionSignupHandler(e);
+      window.alert("Successfully registered");
+      navigate("/");
+    } catch (error) {
+      console.error("Signup error:", error);
+      window.alert("Error during signup. Please try again.");
+    }
   };
 
   return (
