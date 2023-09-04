@@ -1,6 +1,8 @@
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { useContext } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUpPage: React.FC = () => {
   const context = useContext(AuthCtx);
@@ -14,7 +16,7 @@ const SignUpPage: React.FC = () => {
     return <div>No context</div>;
   }
 
-  const onSubmitSignupHandler = async (e: React.FormEvent) => {
+  const handleSignUpSubmittion = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!context) {
@@ -33,19 +35,44 @@ const SignUpPage: React.FC = () => {
     }
 
     try {
-      await context.onSubmitionSignupHandler(e);
+      // Register the user
+      const userCredential = await createUserWithEmailAndPassword(
+        context.auth,
+        context.email,
+        context.password
+      );
+
+      // Set user role
+      context.setUserRole(context.role);
+
+      const user = userCredential.user;
+      const userDocRef = doc(context.storeDataBase, "roles", user.uid);
+      await setDoc(userDocRef, {
+        email: user.email,
+        role: context.role,
+      });
+
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const currentUserRole = userData.role;
+
+        context.setCurUserRole(currentUserRole);
+      }
+
       window.alert("Successfully registered");
       navigate("/");
-    } catch (error) {
-      console.error("Signup error:", error);
-      window.alert("Error during signup. Please try again.");
+    } catch (error: any) {
+      const errorMessage = error.message;
+      window.alert(errorMessage);
     }
   };
 
   return (
     <>
       <h5>Sign up</h5>
-      <form onSubmit={onSubmitSignupHandler}>
+      <form onSubmit={handleSignUpSubmittion}>
         {/* <label>First name</label>
         <input type="text" placeholder="Enter your first name" />
         <label>Last name</label>

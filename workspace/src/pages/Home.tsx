@@ -12,8 +12,7 @@ const HomePage = () => {
 
   if (
     context?.userRole === null ||
-    context?.userRole !== context?.approvedRoles[0] ||
-    context?.userRole !== context?.approvedRoles[1]
+    (context?.userRole !== "employee" && context?.userRole !== "employer")
   ) {
     content = (
       <>
