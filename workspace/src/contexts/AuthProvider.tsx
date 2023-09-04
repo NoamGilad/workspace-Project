@@ -1,22 +1,13 @@
 import { createContext, useState } from "react";
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  Auth,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getAuth, Auth, signOut } from "firebase/auth";
+import { getFirestore, doc, getDoc, Firestore } from "firebase/firestore";
 
 type AuthContextType = {
   firebaseConfig: any;
   auth: Auth; // Auth type or null
-  // collectionRefs: Function;
-  approvedRoles: string[];
-  // onSubmitionSignupHandler: Function;
+  storeDataBase: Firestore;
   gettingExistingUser: Function;
-  // currentUser: any | null;
-  onSubmitionSignupHandler: Function;
   role: string | null;
   setRole: React.Dispatch<React.SetStateAction<string | null>>;
   userRole: string | null;
@@ -28,8 +19,6 @@ type AuthContextType = {
   curUserRole: string | null;
   setCurUserRole: React.Dispatch<React.SetStateAction<string>>;
   handleLogout: Function;
-  currentUser: any | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<any | null>>;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -56,73 +45,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [role, setRole] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   // Initialize currentUser state to store the user's information
-  const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [curUserRole, setCurUserRole] = useState<string>("");
 
-  //need to move signup handler just like signin handler (to his component)
-  // SIGNUP HANDLER
-  const onSubmitionSignupHandler = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      // Register the user
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      // Set user role
-      setUserRole(role);
-
-      const user = userCredential.user;
-      const userDocRef = doc(storeDataBase, "roles", user.uid);
-      await setDoc(userDocRef, {
-        email: user.email,
-        role: role,
-      });
-
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
-        const currentUserRole = userData.role;
-
-        setCurUserRole(currentUserRole);
-      }
-    } catch (error: any) {
-      const errorMessage = error.message;
-      window.alert(errorMessage);
-    }
-  };
-
-  // SIGNIN HANDLER
-
-  // const onSubmitionSignupHandler = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   // try {
-  //   //   // Register the user
-  //   //   const userCredential = await createUserWithEmailAndPassword(
-  //   //     auth,
-  //   //     email,
-  //   //     password
-  //   //   );
-  //   //   const user = userCredential.user;
-
-  //   //   setUserRole(role);
-
-  //   //   setCurrentUser({
-  //   //     uid: user.uid,
-  //   //     email: user.email,
-  //   //     role: role,
-  //   //   });
-  //   // } catch (error: any) {
-  //   //   const errorMessage = error.message;
-  //   //   window.alert(errorMessage);
-  //   // }
-  // };
-
+  // LOGOUT
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -134,24 +59,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   //////////////////////////////////////////////////////////////////
   // DEFINING ROLES AND PERMISSIONS
   const storeDatabase = getFirestore();
-
-  // const rolesRef = collection(storeDatabase, "roles");
-
-  // // Add "admin" document
-  // const collectionRefs = async () => {
-  //   await setDoc(doc(rolesRef, "employer"), {
-  //     role: "admin",
-  //     permissions: ["create", "edit", "delete"],
-  //   });
-
-  //   // Add "user" document
-  //   await setDoc(doc(rolesRef, "employee"), {
-  //     role: "user",
-  //     permissions: ["create", "edit"],
-  //   });
-  // };
-
-  const approvedRoles = ["employee", "employer"];
 
   const gettingExistingUser = async (user: any) => {
     console.log(user);
@@ -171,12 +78,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         firebaseConfig,
         auth,
-        approvedRoles,
-        // collectionRefs,
-        // onSubmitionSignupHandler,
+        storeDataBase,
         gettingExistingUser,
-        // currentUser,
-        onSubmitionSignupHandler,
         role,
         setRole,
         userRole,
@@ -188,8 +91,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         curUserRole,
         setCurUserRole,
         handleLogout,
-        currentUser,
-        setCurrentUser,
       }}
     >
       {children}
