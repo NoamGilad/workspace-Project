@@ -5,7 +5,7 @@ import { getFirestore, doc, getDoc, Firestore } from "firebase/firestore";
 
 type AuthContextType = {
   firebaseConfig: any;
-  auth: Auth; // Auth type or null
+  auth: Auth | any; // Auth type or null
   storeDataBase: Firestore;
   gettingExistingUser: Function;
   role: string | null;
@@ -18,7 +18,6 @@ type AuthContextType = {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   curUserRole: string | null;
   setCurUserRole: React.Dispatch<React.SetStateAction<string>>;
-  handleLogout: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -38,23 +37,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const app = initializeApp(firebaseConfig);
   const auth: Auth = getAuth(app);
 
-  const storeDataBase = getFirestore();
+  const storeDataBase = getFirestore(app);
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<any>("");
+  const [password, setPassword] = useState<any>("");
   const [role, setRole] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   // Initialize currentUser state to store the user's information
   const [curUserRole, setCurUserRole] = useState<string>("");
-
-  // LOGOUT
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
 
   //////////////////////////////////////////////////////////////////
   // DEFINING ROLES AND PERMISSIONS
@@ -90,7 +80,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setPassword,
         curUserRole,
         setCurUserRole,
-        handleLogout,
       }}
     >
       {children}

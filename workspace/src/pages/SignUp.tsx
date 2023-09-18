@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { useContext } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
@@ -16,63 +16,43 @@ const SignUpPage: React.FC = () => {
     return <div>No context</div>;
   }
 
-  const handleSignUpSubmittion = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!context) {
-      console.error("No context available");
-      return;
-    }
-
-    if (!context.auth) {
-      console.error("No authentication available");
-      return;
-    }
-
-    if (context.role !== "employee" && context.role !== "employer") {
-      window.alert('Role must be: "employee" or "employer"');
-      return;
-    }
-
+  const registerWithEmailAndPassword = async (
+    name: string,
+    email: any,
+    password: any
+  ) => {
     try {
-      // Register the user
-      const userCredential = await createUserWithEmailAndPassword(
-        context.auth,
-        context.email,
-        context.password
+      const res = await createUserWithEmailAndPassword(
+        context?.auth,
+        email,
+        password
       );
-
-      // Set user role
-      context.setUserRole(context.role);
-
-      const user = userCredential.user;
-      const userDocRef = doc(context.storeDataBase, "roles", user.uid);
-      await setDoc(userDocRef, {
-        email: user.email,
-        role: context.role,
+      const user = res.user;
+      await addDoc(collection(context?.storeDataBase, "users"), {
+        uid: user.uid,
+        name,
+        authProvider: "local",
+        email,
       });
-
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
-        const currentUserRole = userData.role;
-
-        context.setCurUserRole(currentUserRole);
-      }
-
-      window.alert("Successfully registered");
       navigate("/");
-    } catch (error: any) {
-      const errorMessage = error.message;
-      window.alert(errorMessage);
+    } catch (err) {
+      console.error(err);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await registerWithEmailAndPassword(
+      "noam",
+      context?.email,
+      context?.password
+    );
   };
 
   return (
     <>
       <h5>Sign up</h5>
-      <form onSubmit={handleSignUpSubmittion}>
+      <form onSubmit={handleSubmit}>
         {/* <label>First name</label>
         <input type="text" placeholder="Enter your first name" />
         <label>Last name</label>

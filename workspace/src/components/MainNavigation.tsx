@@ -5,14 +5,14 @@ import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import { useContext } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
+import { signOut } from "firebase/auth";
 
 const MainNavigation = () => {
   const context = useContext(AuthCtx);
-  const navigate = useNavigate();
 
   const onLogoutHandler = () => {
-    context?.handleLogout();
-    return navigate("/");
+    if (context?.auth) signOut(context?.auth);
+    if (!context?.auth) alert("No context.auth");
   };
 
   return (
