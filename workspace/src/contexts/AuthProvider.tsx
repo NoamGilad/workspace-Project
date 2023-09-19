@@ -8,13 +8,13 @@ type AuthContextType = {
   auth: Auth | any; // Auth type or null
   storeDataBase: Firestore;
   gettingExistingUser: Function;
-  role: string | null;
+  role: string | any;
   setRole: React.Dispatch<React.SetStateAction<string | null>>;
   userRole: string | null;
   setUserRole: React.Dispatch<React.SetStateAction<string | null>>;
-  email: string;
+  email: string | any;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
+  password: string | any;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   curUserRole: string | null;
   setCurUserRole: React.Dispatch<React.SetStateAction<string>>;
