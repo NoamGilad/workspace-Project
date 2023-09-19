@@ -1,7 +1,15 @@
 import { createContext, useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, Auth, signOut } from "firebase/auth";
+import {
+  getAuth,
+  Auth,
+  signOut,
+  setPersistence,
+  browserLocalPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, Firestore } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   firebaseConfig: any;
@@ -18,6 +26,10 @@ type AuthContextType = {
   setFirstName: React.Dispatch<React.SetStateAction<string | null>>;
   lastName: string | any;
   setLastName: React.Dispatch<React.SetStateAction<string | null>>;
+  isSubmitting: boolean;
+  setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
+  login: Function;
+  user: any | null;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -44,6 +56,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [role, setRole] = useState<string | null>(null);
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
+
+  /////////////////////////////////////////////////////////////////////
+  // LOGIN
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [user, setUser] = useState<any | null>(null);
+
+  const login = async () => {
+    setIsSubmitting(true);
+
+    try {
+      await setPersistence(auth, browserLocalPersistence);
+
+      await signInWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          const user = userCredential.user;
+          setUser(user);
+          return user;
+        }
+      );
+    } catch (error) {
+      console.error("Login error:", error);
+      window.alert(`Login error: ${error}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   //////////////////////////////////////////////////////////////////
   // DEFINING ROLES AND PERMISSIONS
@@ -79,6 +117,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setFirstName,
         lastName,
         setLastName,
+        isSubmitting,
+        setIsSubmitting,
+        login,
+        user,
       }}
     >
       {children}
