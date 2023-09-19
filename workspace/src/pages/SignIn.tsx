@@ -2,11 +2,14 @@ import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { FormEvent, useCallback, useContext } from "react";
 import {
+  browserLocalPersistence,
   browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+
+import classes from "./SignIn.module.css";
 
 const SignInPage = () => {
   const context = useContext(AuthCtx);
@@ -52,14 +55,14 @@ const SignInPage = () => {
     async (e: FormEvent) => {
       e.preventDefault();
       try {
-        await setPersistence(context?.auth, browserSessionPersistence).then(
+        await setPersistence(context?.auth, browserLocalPersistence).then(
           () => {
-            navigate("/");
-            return signInWithEmailAndPassword(
+            signInWithEmailAndPassword(
               context?.auth,
               context?.email,
               context?.password
             );
+            return navigate("/");
           }
         );
       } catch (error) {
@@ -75,7 +78,7 @@ const SignInPage = () => {
   // };
 
   return (
-    <>
+    <div className={classes.container}>
       <h5>Sign in</h5>
       <form onSubmit={login}>
         <main>
@@ -97,10 +100,10 @@ const SignInPage = () => {
             {isSubmitting ? "Submitting..." : "Login"}
           </button>
         </main>
-        <label>New account?</label>
+        <label>New account? </label>
         <Link to={"/signup"}>Sign up</Link>
       </form>
-    </>
+    </div>
   );
 };
 

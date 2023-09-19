@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
+import classes from "./SignUp.module.css";
+
 const SignUpPage: React.FC = () => {
   const context = useContext(AuthCtx);
 
@@ -19,7 +21,9 @@ const SignUpPage: React.FC = () => {
   const registerWithEmailAndPassword = async (
     email: string,
     password: string,
-    role: string
+    role: string,
+    firstName: string,
+    lastName: string
   ) => {
     if (role !== "employee" && role !== "employer") {
       window.alert("Role must be employee OR employer");
@@ -33,6 +37,8 @@ const SignUpPage: React.FC = () => {
         email,
         password,
         role,
+        firstName,
+        lastName,
       });
       navigate("/");
     } catch (err) {
@@ -45,14 +51,30 @@ const SignUpPage: React.FC = () => {
     await registerWithEmailAndPassword(
       context?.email,
       context?.password,
-      context?.role
+      context?.role,
+      context?.firstName,
+      context?.lastName
     );
   };
 
   return (
-    <>
+    <div className={classes.container}>
       <h5>Sign up</h5>
       <form onSubmit={handleSubmit}>
+        <label>First name</label>
+        <input
+          type="text"
+          onChange={(e) => context.setFirstName(e.target.value)}
+          placeholder="Enter your first name"
+          required
+        />{" "}
+        <label>Last name</label>
+        <input
+          type="text"
+          onChange={(e) => context.setLastName(e.target.value)}
+          placeholder="Enter your last name"
+          required
+        />
         <label>Email</label>
         <input
           type="email"
@@ -78,9 +100,9 @@ const SignUpPage: React.FC = () => {
           {isSubmitting ? "Submitting..." : "Sign up!"}
         </button>
       </form>
-      <label>Already an account?</label>
+      <label>Already an account? </label>
       <Link to={"/signin"}>Sign in</Link>
-    </>
+    </div>
   );
 };
 

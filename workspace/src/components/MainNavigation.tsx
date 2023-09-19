@@ -1,11 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-import classes from "./MainNavigation.module.css";
 import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import { useContext } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { signOut } from "firebase/auth";
+
+import classes from "./MainNavigation.module.css";
 
 const MainNavigation = () => {
   const context = useContext(AuthCtx);
