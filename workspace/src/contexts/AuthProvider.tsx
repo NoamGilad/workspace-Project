@@ -5,19 +5,19 @@ import { getFirestore, doc, getDoc, Firestore } from "firebase/firestore";
 
 type AuthContextType = {
   firebaseConfig: any;
-  auth: Auth | any; // Auth type or null
+  auth: Auth | any;
   storeDataBase: Firestore;
-  gettingExistingUser: Function;
-  role: string | any;
-  setRole: React.Dispatch<React.SetStateAction<string | null>>;
-  userRole: string | null;
-  setUserRole: React.Dispatch<React.SetStateAction<string | null>>;
+  // gettingExistingUser: Function;
   email: string | any;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   password: string | any;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
-  curUserRole: string | null;
-  setCurUserRole: React.Dispatch<React.SetStateAction<string>>;
+  role: string | any;
+  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+  firstName: string | any;
+  setFirstName: React.Dispatch<React.SetStateAction<string | null>>;
+  lastName: string | any;
+  setLastName: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -42,26 +42,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [email, setEmail] = useState<any>("");
   const [password, setPassword] = useState<any>("");
   const [role, setRole] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  // Initialize currentUser state to store the user's information
-  const [curUserRole, setCurUserRole] = useState<string>("");
+  const [firstName, setFirstName] = useState<string | null>(null);
+  const [lastName, setLastName] = useState<string | null>(null);
 
   //////////////////////////////////////////////////////////////////
   // DEFINING ROLES AND PERMISSIONS
   const storeDatabase = getFirestore();
 
-  const gettingExistingUser = async (user: any) => {
-    console.log(user);
+  // const gettingExistingUser = async (user: any) => {
+  //   console.log(user);
 
-    const docRefUser = doc(storeDatabase, "roles", user.uid);
-    const docSnapUser = await getDoc(docRefUser);
+  //   const docRefUser = doc(storeDatabase, "roles", user.uid);
+  //   const docSnapUser = await getDoc(docRefUser);
 
-    if (!docSnapUser.exists()) {
-      console.log("No such documents");
-    }
+  //   if (!docSnapUser.exists()) {
+  //     console.log("No such documents");
+  //   }
 
-    return <p>{user.email}</p>;
-  };
+  //   return <p>{user.email}</p>;
+  // };
 
   return (
     <AuthCtx.Provider
@@ -69,17 +68,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         firebaseConfig,
         auth,
         storeDataBase,
-        gettingExistingUser,
-        role,
-        setRole,
-        userRole,
-        setUserRole,
+        // gettingExistingUser,
         email,
         setEmail,
         password,
         setPassword,
-        curUserRole,
-        setCurUserRole,
+        role,
+        setRole,
+        firstName,
+        setFirstName,
+        lastName,
+        setLastName,
       }}
     >
       {children}
