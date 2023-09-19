@@ -43,6 +43,7 @@ const HomePage = () => {
       <h1>Home page</h1>
       <p>{context?.email}</p>
       <p>{context?.password}</p>
+      <p>{context?.role}</p>
     </>
   );
 };

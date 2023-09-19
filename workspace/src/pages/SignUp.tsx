@@ -17,22 +17,22 @@ const SignUpPage: React.FC = () => {
   }
 
   const registerWithEmailAndPassword = async (
-    name: string,
-    email: any,
-    password: any
+    email: string,
+    password: string,
+    role: string
   ) => {
+    if (role !== "employee" && role !== "employer") {
+      window.alert("Role must be employee OR employer");
+      return;
+    }
+
     try {
-      const res = await createUserWithEmailAndPassword(
-        context?.auth,
+      await createUserWithEmailAndPassword(context?.auth, email, password);
+
+      await setDoc(doc(context.storeDataBase, "users", email), {
         email,
-        password
-      );
-      const user = res.user;
-      await addDoc(collection(context?.storeDataBase, "users"), {
-        uid: user.uid,
-        name,
-        authProvider: "local",
-        email,
+        password,
+        role,
       });
       navigate("/");
     } catch (err) {
@@ -43,9 +43,9 @@ const SignUpPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await registerWithEmailAndPassword(
-      "noam",
       context?.email,
-      context?.password
+      context?.password,
+      context?.role
     );
   };
 
@@ -53,10 +53,6 @@ const SignUpPage: React.FC = () => {
     <>
       <h5>Sign up</h5>
       <form onSubmit={handleSubmit}>
-        {/* <label>First name</label>
-        <input type="text" placeholder="Enter your first name" />
-        <label>Last name</label>
-        <input type="text" placeholder="Enter your last name" /> */}
         <label>Email</label>
         <input
           type="email"

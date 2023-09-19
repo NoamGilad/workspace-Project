@@ -1,7 +1,11 @@
 import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { AuthCtx } from "../contexts/AuthProvider";
-import { FormEvent, useContext } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { FormEvent, useCallback, useContext } from "react";
+import {
+  browserSessionPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 const SignInPage = () => {
@@ -11,31 +15,69 @@ const SignInPage = () => {
 
   const isSubmitting = navigation.state === "submitting";
 
-  const logInWithEmailAndPassword = async (email: any, password: any) => {
-    try {
-      const userRes = await signInWithEmailAndPassword(
-        context?.auth,
-        email,
-        password
-      );
-      const curUser = userRes.user;
+  // const handleLogin = (e: FormEvent) => {
+  //   e.preventDefault();
 
-      console.log(curUser);
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //   setPersistence(context?.auth, browserSessionPersistence).then(() => {
+  //     signInWithEmailAndPassword(
+  //       context?.auth,
+  //       context?.email,
+  //       context?.password
+  //     );
+  //     navigate("/");
+  //   });
+  // };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    await logInWithEmailAndPassword(context?.email, context?.password);
-  };
+  // const logInWithEmailAndPassword = async (email: any, password: any) => {
+  //   try {
+  //     setPersistence(context?.auth, browserLocalPersistence).then(() => {
+  //       return signInWithEmailAndPassword(context?.auth, email, password);
+  //     });
+
+  //     // const userRes = await signInWithEmailAndPassword(
+  //     //   context?.auth,
+  //     //   email,
+  //     //   password
+  //     //   );
+  //     //   const curUser = userRes.user;
+
+  //     //   console.log(curUser);
+  //     navigate("/");
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  const login = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      try {
+        await setPersistence(context?.auth, browserSessionPersistence).then(
+          () => {
+            navigate("/");
+            return signInWithEmailAndPassword(
+              context?.auth,
+              context?.email,
+              context?.password
+            );
+          }
+        );
+      } catch (error) {
+        window.alert(error);
+      }
+    },
+    [context?.email, context?.password]
+  );
+
+  // const handleSubmit = (e: FormEvent) => {
+  //   e.preventDefault();
+  //   login(context?.email, context?.password);
+  // };
 
   return (
     <>
       <h5>Sign in</h5>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={login}>
         <main>
           <label>Email</label>
           <input
