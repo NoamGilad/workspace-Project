@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         path: "signin",
-        element: <SignInPage />,
+        element: <SignInPage user />,
       },
       {
         path: "loggedout",

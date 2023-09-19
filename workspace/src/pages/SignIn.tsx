@@ -1,9 +1,8 @@
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { AuthCtx } from "../contexts/AuthProvider";
-import { FormEvent, useCallback, useContext } from "react";
 import {
   browserLocalPersistence,
-  browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -11,76 +10,36 @@ import { doc, getDoc } from "firebase/firestore";
 
 import classes from "./SignIn.module.css";
 
-const SignInPage = () => {
+const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
-  const navigation = useNavigation();
+  const user = context?.user;
+
   const navigate = useNavigate();
 
-  const isSubmitting = navigation.state === "submitting";
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // const handleLogin = (e: FormEvent) => {
-  //   e.preventDefault();
+    if (!context) {
+      window.alert("No context!");
+      return;
+    }
 
-  //   setPersistence(context?.auth, browserSessionPersistence).then(() => {
-  //     signInWithEmailAndPassword(
-  //       context?.auth,
-  //       context?.email,
-  //       context?.password
-  //     );
-  //     navigate("/");
-  //   });
-  // };
+    const email = context?.email;
+    const password = context?.password;
 
-  // const logInWithEmailAndPassword = async (email: any, password: any) => {
-  //   try {
-  //     setPersistence(context?.auth, browserLocalPersistence).then(() => {
-  //       return signInWithEmailAndPassword(context?.auth, email, password);
-  //     });
+    if (!email || !password) {
+      window.alert("Please provide both email and password.");
+      return;
+    }
 
-  //     // const userRes = await signInWithEmailAndPassword(
-  //     //   context?.auth,
-  //     //   email,
-  //     //   password
-  //     //   );
-  //     //   const curUser = userRes.user;
-
-  //     //   console.log(curUser);
-  //     navigate("/");
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  const login = useCallback(
-    async (e: FormEvent) => {
-      e.preventDefault();
-      try {
-        await setPersistence(context?.auth, browserLocalPersistence).then(
-          () => {
-            signInWithEmailAndPassword(
-              context?.auth,
-              context?.email,
-              context?.password
-            );
-            return navigate("/");
-          }
-        );
-      } catch (error) {
-        window.alert(error);
-      }
-    },
-    [context?.email, context?.password]
-  );
-
-  // const handleSubmit = (e: FormEvent) => {
-  //   e.preventDefault();
-  //   login(context?.email, context?.password);
-  // };
+    context.login();
+    navigate("/");
+  };
 
   return (
     <div className={classes.container}>
       <h5>Sign in</h5>
-      <form onSubmit={login}>
+      <form onSubmit={handleLoginSubmit}>
         <main>
           <label>Email</label>
           <input
@@ -96,8 +55,8 @@ const SignInPage = () => {
             placeholder="Enter your password"
             required
           />
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Login"}
+          <button type="submit" disabled={context?.isSubmitting}>
+            {context?.isSubmitting ? "Submitting..." : "Login"}
           </button>
         </main>
         <label>New account? </label>

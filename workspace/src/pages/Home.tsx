@@ -5,6 +5,7 @@ import classes from "./Home.module.css";
 
 const HomePage = () => {
   const context = useContext(AuthCtx);
+  const user = context?.user;
 
   if (context?.role === "employee" || context?.role === "employer") {
     return (
@@ -19,6 +20,7 @@ const HomePage = () => {
         </p>
         <p>Email: {context.email}</p>
         <p>Role: {context.role}</p>
+        <p>{user.accessToken}</p>
       </div>
     );
   }
