@@ -5,10 +5,25 @@ import classes from "./Home.module.css";
 
 const HomePage = () => {
   const context = useContext(AuthCtx);
-  const user = context?.user;
 
-  if (context?.role === "employee" || context?.role === "employer") {
-    return (
+  let content;
+
+  if (!context || context === null) {
+    window.alert("No context!");
+    content = <div className={classes.container}>No context!</div>;
+  }
+
+  if (context?.isSubmitting && !context?.loggedIn) {
+    content = <div className={classes.container}>Loading...</div>;
+  }
+
+  if (
+    (context?.loggedIn &&
+      context?.auth?.currentUser &&
+      context?.role === "employee") ||
+    context?.role === "employer"
+  ) {
+    content = (
       <div className={classes.container}>
         <h1>
           Welcome {context.role === "employer" ? "Admin " : ""}
@@ -27,6 +42,7 @@ const HomePage = () => {
   return (
     <div className={classes.container}>
       <h1 className={classes.h1}>Home page</h1>
+      {content}
     </div>
   );
 };

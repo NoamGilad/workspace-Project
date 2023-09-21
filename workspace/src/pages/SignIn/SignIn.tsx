@@ -1,18 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
-import { AuthCtx } from "../contexts/AuthProvider";
-import {
-  browserLocalPersistence,
-  setPersistence,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./SignIn.module.css";
 
 const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
-  const user = context?.user;
 
   const navigate = useNavigate();
 

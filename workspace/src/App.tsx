@@ -2,14 +2,16 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
-import SignUpPage from "./pages/SignUp";
-import SignInPage from "./pages/SignIn";
-import Logout from "./pages/Logout";
+import SignUpPage from "./pages/SignUp/SignUp";
+import SignInPage from "./pages/SignIn/SignIn";
+import ErrorPage from "./pages/error-page/Error";
+import EmployeeProfilePage from "./pages/user/EmployeeProfile";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -24,8 +26,9 @@ const router = createBrowserRouter([
         element: <SignInPage user />,
       },
       {
-        path: "loggedout",
-        element: <Logout />,
+        path: "user",
+        element: <EmployeeProfilePage />,
+        children: [],
       },
     ],
   },
