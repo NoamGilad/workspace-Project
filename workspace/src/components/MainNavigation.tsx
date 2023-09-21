@@ -1,19 +1,22 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-import SignInPage from "../pages/SignIn";
-import SignUpPage from "../pages/SignUp";
 import { useContext } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
-import { signOut } from "firebase/auth";
 
 import classes from "./MainNavigation.module.css";
 
 const MainNavigation = () => {
   const context = useContext(AuthCtx);
+  const navigate = useNavigate();
 
   const onLogoutHandler = () => {
-    if (context?.auth) signOut(context?.auth);
-    if (!context?.auth) alert("No context.auth");
+    if (!context?.auth) {
+      alert("No context.auth");
+      return;
+    }
+
+    context?.signout();
+    navigate("/signin");
   };
 
   return (

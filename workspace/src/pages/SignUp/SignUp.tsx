@@ -1,5 +1,5 @@
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { AuthCtx } from "../contexts/AuthProvider";
+import { AuthCtx } from "../../contexts/AuthProvider";
 import { useContext } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -18,63 +18,28 @@ const SignUpPage: React.FC = () => {
     return <div>No context</div>;
   }
 
-  const registerWithEmailAndPassword = async (
-    email: string,
-    password: string,
-    role: string,
-    firstName: string,
-    lastName: string
-  ) => {
-    if (role !== "employee" && role !== "employer") {
-      window.alert("Role must be employee OR employer");
-      return;
-    }
-
-    if (!context.auth) {
-      window.alert("No auth!");
-      return;
-    }
-
-    try {
-      await createUserWithEmailAndPassword(context.auth, email, password);
-
-      await setDoc(doc(context.storeDataBase, "users", email), {
-        role,
-        firstName,
-        lastName,
-      });
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !context.email ||
-      !context.password ||
-      !context.role ||
-      !context.firstName ||
-      !context.lastName
-    ) {
-      window.alert("something not valid");
+    if (!context) {
+      window.alert("No context!");
       return;
     }
-    await registerWithEmailAndPassword(
+
+    context.registerWithEmailAndPassword(
       context.email,
       context.password,
       context.role,
       context.firstName,
       context.lastName
     );
+    navigate("/");
   };
 
   return (
     <div className={classes.container}>
       <h5>Sign up</h5>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSignupSubmit}>
         <label>First name</label>
         <input
           type="text"
