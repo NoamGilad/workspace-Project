@@ -20,7 +20,6 @@ const HomePage = () => {
         </p>
         <p>Email: {context.email}</p>
         <p>Role: {context.role}</p>
-        <p>{user.accessToken}</p>
       </div>
     );
   }
