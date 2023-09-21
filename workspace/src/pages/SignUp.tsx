@@ -30,12 +30,15 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
+    if (!context.auth) {
+      window.alert("No auth!");
+      return;
+    }
+
     try {
-      await createUserWithEmailAndPassword(context?.auth, email, password);
+      await createUserWithEmailAndPassword(context.auth, email, password);
 
       await setDoc(doc(context.storeDataBase, "users", email), {
-        email,
-        password,
         role,
         firstName,
         lastName,
@@ -48,12 +51,23 @@ const SignUpPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (
+      !context.email ||
+      !context.password ||
+      !context.role ||
+      !context.firstName ||
+      !context.lastName
+    ) {
+      window.alert("something not valid");
+      return;
+    }
     await registerWithEmailAndPassword(
-      context?.email,
-      context?.password,
-      context?.role,
-      context?.firstName,
-      context?.lastName
+      context.email,
+      context.password,
+      context.role,
+      context.firstName,
+      context.lastName
     );
   };
 

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -7,24 +7,25 @@ import {
   setPersistence,
   browserLocalPersistence,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, Firestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   firebaseConfig: any;
-  auth: Auth | any;
+  auth: Auth | null;
   storeDataBase: Firestore;
   // gettingExistingUser: Function;
-  email: string | any;
+  email: string | null;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string | any;
+  password: string | null;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
-  role: string | any;
+  role: string | null;
   setRole: React.Dispatch<React.SetStateAction<string | null>>;
-  firstName: string | any;
+  firstName: string | null;
   setFirstName: React.Dispatch<React.SetStateAction<string | null>>;
-  lastName: string | any;
+  lastName: string | null;
   setLastName: React.Dispatch<React.SetStateAction<string | null>>;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,6 +62,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // LOGIN
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [user, setUser] = useState<any | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log("onAuthStateChanged", user);
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        setUser(user);
+        //USE getDoc etc...
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  }, []);
 
   const login = async () => {
     setIsSubmitting(true);

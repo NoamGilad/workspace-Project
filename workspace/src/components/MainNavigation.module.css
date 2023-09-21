@@ -31,7 +31,6 @@
 }
 
 .list a.active {
-  text-decoration: underline;
   font-weight: bold;
   color: darkblue;
 }
