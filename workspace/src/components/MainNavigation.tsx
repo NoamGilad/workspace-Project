@@ -33,29 +33,35 @@ const MainNavigation = () => {
               Home
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/signin"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-            >
-              Sign In
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/signup"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-            >
-              Sign Up
-            </NavLink>
-          </li>
-          <li>
-            <button onClick={onLogoutHandler}>Logout</button>
-          </li>
+          {!context?.loggedIn && (
+            <li>
+              <NavLink
+                to="/signin"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Sign In
+              </NavLink>
+            </li>
+          )}
+          {!context?.loggedIn && (
+            <li>
+              <NavLink
+                to="/signup"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Sign Up
+              </NavLink>
+            </li>
+          )}
+          {context?.loggedIn && (
+            <li>
+              <button onClick={onLogoutHandler}>Logout</button>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

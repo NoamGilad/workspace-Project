@@ -20,13 +20,13 @@ const HomePage = () => {
   if (
     (context?.loggedIn &&
       context?.auth?.currentUser &&
-      context?.role === "employee") ||
-    context?.role === "employer"
+      context?.role === "Employee") ||
+    context?.role === "Employer"
   ) {
     content = (
       <div className={classes.container}>
         <h1>
-          Welcome {context.role === "employer" ? "Admin " : ""}
+          Welcome {context.role === "Employer" ? "Admin " : ""}
           {context.firstName}
         </h1>
         <h2>Account details</h2>

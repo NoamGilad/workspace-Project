@@ -23,12 +23,12 @@ type AuthContextType = {
   auth: Auth | null;
   storeDatabase: Firestore;
   // gettingExistingUser: Function;
-  email: string | null;
+  email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string | null;
+  password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
-  role: string | null;
-  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+  role: string;
+  setRole: React.Dispatch<React.SetStateAction<string>>;
   firstName: string | null;
   setFirstName: React.Dispatch<React.SetStateAction<string | null>>;
   lastName: string | null;
@@ -66,9 +66,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const curUser = auth.currentUser;
 
-  const [email, setEmail] = useState<any>("");
-  const [password, setPassword] = useState<any>("");
-  const [role, setRole] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [role, setRole] = useState<string>("");
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
 
@@ -78,21 +78,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Signup
   const usersCollectionRef = collection(storeDatabase, "users");
+  const adminsCollectionRef = collection(storeDatabase, "admins");
 
   const registerWithEmailAndPassword = (
+    e: React.FormEvent<HTMLFormElement>,
     email: string,
     password: string,
     role: string,
     firstName: string,
     lastName: string
   ) => {
-    if (!email || !password || !role || !firstName || !lastName) {
-      window.alert("something not valid");
+    e.preventDefault();
+
+    if (!email || !password || !firstName || !lastName) {
+      window.alert("One or more of the inputs are not valid");
       return;
     }
 
-    if (role !== "employee" && role !== "employer") {
-      window.alert("Role must be employee OR employer");
+    if (role !== "Employee" && role !== "Employer") {
+      window.alert("Role must be Employee OR Employer");
       return;
     }
 
@@ -103,6 +107,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         .then((userCredential) => {
           const curUser = userCredential.user;
           console.log(curUser);
+
+          const userCollectionRef =
+            role === "Employee" ? usersCollectionRef : adminsCollectionRef;
+
+          setDoc(doc(userCollectionRef, email), {
+            role,
+            firstName,
+            lastName,
+          });
+
           setLoggedIn(true);
         })
         .catch((error) => {
@@ -110,11 +124,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           const errorMessage = error.message;
           console.error(errorCode, errorMessage);
           window.alert(errorMessage);
-          setDoc(doc(usersCollectionRef, email), {
-            role,
-            firstName,
-            lastName,
-          });
         });
     } catch (err) {
       console.error(err);
@@ -136,6 +145,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       signInWithEmailAndPassword(auth, email, password).then(
         (userCredential) => {
           const curUser = userCredential.user;
+          if (role === "Employee") gettingExistingUserDocData(email, "users");
+          if (role === "Employer") gettingExistingUserDocData(email, "admins");
           setLoggedIn(true);
         }
       );
@@ -154,10 +165,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (user) {
         const uid = user.uid;
-        //USE getDoc etc...
-        // ...
-        gettingExistingUserDocData(user?.email);
+        setLoggedIn(true);
+        if (role === "Employee") gettingExistingUserDocData(email, "users");
+        if (role === "Employer") gettingExistingUserDocData(email, "admins");
       } else {
+        setLoggedIn(false);
         console.error("No account logged in.");
       }
     });
@@ -179,8 +191,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Getting doc data from Firestore
 
-  const gettingExistingUserDocData = async (userData: any) => {
-    const docRef = doc(storeDatabase, "users", userData);
+  const gettingExistingUserDocData = async (
+    userData: string,
+    curRole: string
+  ) => {
+    const docRef = doc(storeDatabase, curRole, userData);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -188,9 +203,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLastName(docSnap.data().lastName);
       setEmail(userData);
       setRole(docSnap.data().role);
+      console.log(firstName, lastName, email, role);
     } else {
       console.error("No such document!");
-      console.log("No such document!");
     }
   };
 

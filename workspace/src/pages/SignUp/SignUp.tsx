@@ -1,8 +1,6 @@
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { useContext } from "react";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Form, Link, useNavigate, useNavigation } from "react-router-dom";
 
 import classes from "./SignUp.module.css";
 
@@ -27,13 +25,20 @@ const SignUpPage: React.FC = () => {
     }
 
     context.registerWithEmailAndPassword(
+      e,
       context.email,
       context.password,
       context.role,
       context.firstName,
       context.lastName
     );
-    navigate("/");
+    if (context.loggedIn) navigate("/");
+  };
+
+  const handleSelectRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    context.setRole(e.target.value);
+    console.log(e.target.value);
+    console.log(`role state: ${context.role}`);
   };
 
   return (
@@ -69,12 +74,15 @@ const SignUpPage: React.FC = () => {
           required
         />
         <label>Role</label>
-        <input
-          type="text"
-          onChange={(e: any) => context.setRole(e.target.value)}
-          placeholder="Enter your role"
+        <select
+          value={context.role}
+          onChange={(e) => context.setRole(e.target.value)}
           required
-        />
+        >
+          <option value="">Select</option>
+          <option value="Employee">Employee</option>
+          <option value="Employer">Employer</option>
+        </select>
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Sign up!"}
         </button>
