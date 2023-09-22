@@ -23,9 +23,9 @@ type AuthContextType = {
   auth: Auth | null;
   storeDatabase: Firestore;
   // gettingExistingUser: Function;
-  email: string;
+  email: string | null;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
+  password: string | null;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   role: string;
   setRole: React.Dispatch<React.SetStateAction<string>>;
@@ -66,8 +66,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const curUser = auth.currentUser;
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<any>("");
+  const [password, setPassword] = useState<any>("");
   const [role, setRole] = useState<string>("");
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
@@ -81,17 +81,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const adminsCollectionRef = collection(storeDatabase, "admins");
 
   const registerWithEmailAndPassword = (
-    e: React.FormEvent<HTMLFormElement>,
     email: string,
     password: string,
     role: string,
     firstName: string,
     lastName: string
   ) => {
-    e.preventDefault();
-
-    if (!email || !password || !firstName || !lastName) {
-      window.alert("One or more of the inputs are not valid");
+    if (!email || !password || !role || !firstName || !lastName) {
+      window.alert("something not valid");
       return;
     }
 
@@ -107,17 +104,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         .then((userCredential) => {
           const curUser = userCredential.user;
           console.log(curUser);
-
-          const userCollectionRef =
-            role === "Employee" ? usersCollectionRef : adminsCollectionRef;
-
-          setDoc(doc(userCollectionRef, email), {
-            role,
-            firstName,
-            lastName,
-          });
-
           setLoggedIn(true);
+
+          if (role === "Employee") {
+            setDoc(doc(usersCollectionRef, email), {
+              role,
+              firstName,
+              lastName,
+            });
+          }
+
+          if (role === "Employer") {
+            setDoc(doc(adminsCollectionRef, email), {
+              role,
+              firstName,
+              lastName,
+            });
+          }
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -145,8 +148,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       signInWithEmailAndPassword(auth, email, password).then(
         (userCredential) => {
           const curUser = userCredential.user;
-          if (role === "Employee") gettingExistingUserDocData(email, "users");
-          if (role === "Employer") gettingExistingUserDocData(email, "admins");
           setLoggedIn(true);
         }
       );
@@ -164,12 +165,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("auth.currentUser:", auth.currentUser);
 
       if (user) {
-        const uid = user.uid;
-        setLoggedIn(true);
-        if (role === "Employee") gettingExistingUserDocData(email, "users");
-        if (role === "Employer") gettingExistingUserDocData(email, "admins");
+        const signInTime = user.metadata.lastSignInTime;
+        //USE getDoc etc...
+        // ...
+        gettingExistingUserDocData(user?.email);
+        gettingExistingAdminDocData(user?.email);
       } else {
-        setLoggedIn(false);
         console.error("No account logged in.");
       }
     });
@@ -191,11 +192,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Getting doc data from Firestore
 
-  const gettingExistingUserDocData = async (
-    userData: string,
-    curRole: string
-  ) => {
-    const docRef = doc(storeDatabase, curRole, userData);
+  const gettingExistingUserDocData = async (userData: any) => {
+    const docRef = doc(storeDatabase, "users", userData);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -203,9 +201,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLastName(docSnap.data().lastName);
       setEmail(userData);
       setRole(docSnap.data().role);
-      console.log(firstName, lastName, email, role);
     } else {
       console.error("No such document!");
+      console.log("No such document!");
+    }
+  };
+
+  const gettingExistingAdminDocData = async (userData: any) => {
+    const docRef = doc(storeDatabase, "admins", userData);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setFirstName(docSnap.data().firstName);
+      setLastName(docSnap.data().lastName);
+      setEmail(userData);
+      setRole(docSnap.data().role);
+    } else {
+      console.error("No such document!");
+      console.log("No such document!");
     }
   };
 

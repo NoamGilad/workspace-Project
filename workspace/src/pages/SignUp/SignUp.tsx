@@ -1,6 +1,8 @@
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { useContext } from "react";
-import { Form, Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import classes from "./SignUp.module.css";
 
@@ -25,20 +27,13 @@ const SignUpPage: React.FC = () => {
     }
 
     context.registerWithEmailAndPassword(
-      e,
       context.email,
       context.password,
       context.role,
       context.firstName,
       context.lastName
     );
-    if (context.loggedIn) navigate("/");
-  };
-
-  const handleSelectRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    context.setRole(e.target.value);
-    console.log(e.target.value);
-    console.log(`role state: ${context.role}`);
+    navigate("/");
   };
 
   return (

@@ -42,7 +42,18 @@ const HomePage = () => {
   return (
     <div className={classes.container}>
       <h1 className={classes.h1}>Home page</h1>
-      {content}
+      <div className={classes.container}>
+        <h1>
+          Welcome {context?.role === "Employer" ? "Admin " : ""}
+          {context?.firstName}
+        </h1>
+        <h2>Account details</h2>
+        <p>
+          Name: {context?.firstName} {context?.lastName}
+        </p>
+        <p>Email: {context?.email}</p>
+        <p>Role: {context?.role}</p>
+      </div>
     </div>
   );
 };
