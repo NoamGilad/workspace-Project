@@ -43,6 +43,7 @@ type AuthContextType = {
   signout: Function;
   loggedIn: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  isRefreshing: boolean;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -74,13 +75,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   /////////////////////////////////////////////////////////////////////
   // Signup
   const usersCollectionRef = collection(storeDatabase, "users");
   const adminsCollectionRef = collection(storeDatabase, "admins");
 
-  const registerWithEmailAndPassword = (
+  const registerWithEmailAndPassword = async (
     email: string,
     password: string,
     role: string,
@@ -88,48 +90,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     lastName: string
   ) => {
     if (!email || !password || !role || !firstName || !lastName) {
-      window.alert("something not valid");
+      window.alert("Please fill in all required fields.");
       return;
     }
 
     if (role !== "Employee" && role !== "Employer") {
-      window.alert("Role must be Employee OR Employer");
+      window.alert("Role must be Employee or Employer.");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const curUser = userCredential.user;
-          console.log(curUser);
-          setLoggedIn(true);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const curUser = userCredential.user;
 
-          if (role === "Employee") {
-            setDoc(doc(usersCollectionRef, email), {
-              role,
-              firstName,
-              lastName,
-            });
-          }
-
-          if (role === "Employer") {
-            setDoc(doc(adminsCollectionRef, email), {
-              role,
-              firstName,
-              lastName,
-            });
-          }
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.error(errorCode, errorMessage);
-          window.alert(errorMessage);
+      if (role === "Employee") {
+        await setDoc(doc(usersCollectionRef, email), {
+          role,
+          firstName,
+          lastName,
         });
-    } catch (err) {
-      console.error(err);
+      } else if (role === "Employer") {
+        await setDoc(doc(adminsCollectionRef, email), {
+          role,
+          firstName,
+          lastName,
+        });
+      }
+
+      setLoggedIn(true);
+    } catch (error: any) {
+      const errorCode = (error as { code: string }).code;
+      const errorMessage = (error as { message: string }).message;
+      console.error("Firebase Error Code:", errorCode);
+      console.error("Firebase Error Message:", errorMessage);
+      window.alert(`Registration failed: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -137,23 +137,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   /////////////////////////////////////////////////////////////////////
   // LOGIN
-  // const [user, setUser] = useState<any | null>(null);
 
-  const login = () => {
+  const login = async () => {
+    console.log("Setting isSubmitting to true");
     setIsSubmitting(true);
 
     try {
-      // setPersistence(auth, browserLocalPersistence);
-
-      signInWithEmailAndPassword(auth, email, password).then(
-        (userCredential) => {
-          const curUser = userCredential.user;
-          setLoggedIn(true);
-        }
-      );
+      await signInWithEmailAndPassword(auth, email, password);
+      setLoggedIn(true);
+      setIsSubmitting(false);
     } catch (error) {
+      window.alert(`LOGIN PROBLEM (CONTEXT)`);
       console.error("Login error:", error);
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -164,12 +159,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     onAuthStateChanged(auth, (user) => {
       console.log("auth.currentUser:", auth.currentUser);
 
-      if (user) {
+      if (user && auth.currentUser !== null) {
+        setIsSubmitting(true);
         const signInTime = user.metadata.lastSignInTime;
         //USE getDoc etc...
         // ...
         gettingExistingUserDocData(user?.email);
         gettingExistingAdminDocData(user?.email);
+        setLoggedIn(true);
+        setIsSubmitting(false);
       } else {
         console.error("No account logged in.");
       }
@@ -178,7 +176,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   /////////////////////////////////////////////////////////////////////
   // Signout
-  const signout = (e: React.FormEvent) => {
+  const signout = () => {
     signOut(auth)
       .then(() => {
         setLoggedIn(false);
@@ -203,7 +201,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setRole(docSnap.data().role);
     } else {
       console.error("No such document!");
-      console.log("No such document!");
+      console.error("No such USER document!");
     }
   };
 
@@ -217,10 +215,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setEmail(userData);
       setRole(docSnap.data().role);
     } else {
-      console.error("No such document!");
-      console.log("No such document!");
+      console.error("No such ADMIN document!");
     }
   };
+
+  /////////////////////////////////////////////////////////////////////
+  // Refreshing page
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isSubmitting) {
+        const confirmationMessage =
+          "There are pending changes. Are you sure you want to refresh?";
+
+        if (window.confirm(confirmationMessage)) {
+          setIsRefreshing(true);
+        } else {
+          e.preventDefault();
+        }
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      setIsRefreshing(false);
+    };
+  }, [isSubmitting]);
 
   return (
     <AuthCtx.Provider
@@ -248,6 +269,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signout,
         loggedIn,
         setLoggedIn,
+        isRefreshing,
       }}
     >
       {children}

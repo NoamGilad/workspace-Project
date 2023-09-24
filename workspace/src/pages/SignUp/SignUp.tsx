@@ -1,18 +1,13 @@
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthCtx } from "../../contexts/AuthProvider";
-import { useContext } from "react";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import classes from "./SignUp.module.css";
+import CircleLoader from "../../UI/CircleLoader";
 
 const SignUpPage: React.FC = () => {
   const context = useContext(AuthCtx);
-
-  const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const isSubmitting = navigation.state === "submitting";
 
   if (!context) {
     return <div>No context</div>;
@@ -26,14 +21,26 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
-    context.registerWithEmailAndPassword(
-      context.email,
-      context.password,
-      context.role,
-      context.firstName,
-      context.lastName
-    );
-    navigate("/");
+    try {
+      await context.registerWithEmailAndPassword(
+        context.email,
+        context.password,
+        context.role,
+        context.firstName,
+        context.lastName
+      );
+
+      if (context?.loggedIn) {
+        navigate("/");
+      } else {
+        window.alert("Registration problem");
+      }
+    } catch (error) {
+      console.error(error);
+      window.alert("Registration problem");
+    } finally {
+      context.setIsSubmitting(false);
+    }
   };
 
   return (
@@ -78,8 +85,8 @@ const SignUpPage: React.FC = () => {
           <option value="Employee">Employee</option>
           <option value="Employer">Employer</option>
         </select>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Sign up!"}
+        <button type="submit" disabled={context.isSubmitting}>
+          {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
         </button>
       </form>
       <label>Already an account? </label>

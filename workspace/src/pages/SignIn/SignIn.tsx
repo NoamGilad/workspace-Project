@@ -3,6 +3,7 @@ import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./SignIn.module.css";
+import CircleLoader from "../../UI/CircleLoader";
 
 const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
@@ -25,8 +26,21 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
       return;
     }
 
-    context.login();
-    navigate("/");
+    try {
+      await context.login();
+
+      if (context?.loggedIn) {
+        navigate("/");
+      } else {
+        window.alert("Login problem");
+        console.log(context.loggedIn, context.isSubmitting);
+      }
+    } catch (error) {
+      console.error(error);
+      window.alert("Login problem");
+    } finally {
+      context.setIsSubmitting(false);
+    }
   };
 
   return (
@@ -49,7 +63,7 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
             required
           />
           <button type="submit" disabled={context?.isSubmitting}>
-            {context?.isSubmitting ? "Submitting..." : "Login"}
+            {context?.isSubmitting ? <CircleLoader /> : "Login"}
           </button>
         </main>
         <label>New account? </label>
