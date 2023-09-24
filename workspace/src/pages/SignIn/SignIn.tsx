@@ -26,17 +26,21 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
       return;
     }
 
+    console.log("Logging in...");
+
     try {
       await context.login();
+
+      console.log("Login successful:", context?.loggedIn);
 
       if (context?.loggedIn) {
         navigate("/");
       } else {
         window.alert("Login problem");
-        console.log(context.loggedIn, context.isSubmitting);
+        console.log("Login problem:", context.loggedIn, context.isSubmitting);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Login error:", error);
       window.alert("Login problem");
     } finally {
       context.setIsSubmitting(false);

@@ -139,7 +139,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // LOGIN
 
   const login = async () => {
-    console.log("Setting isSubmitting to true");
     setIsSubmitting(true);
 
     try {
@@ -170,6 +169,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsSubmitting(false);
       } else {
         console.error("No account logged in.");
+        setLoggedIn(false);
       }
     });
   }, []);
