@@ -45,7 +45,7 @@ const HomePage = () => {
 
   useEffect(() => {
     console.log("isSubmitting changed to:", context?.isSubmitting);
-    console.log("isSubmitting changed to:", context?.loggedIn);
+    console.log("isLoggedIn changed to:", context?.loggedIn);
 
     // Rest of your useEffect logic
   }, [context?.isSubmitting, context?.loggedIn]);

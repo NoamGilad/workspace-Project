@@ -4,6 +4,9 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./SignIn.module.css";
 import CircleLoader from "../../UI/CircleLoader";
+import { resolve } from "path";
+import { rejects } from "assert";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
@@ -29,22 +32,36 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
     console.log("Logging in...");
 
     try {
-      await context.login();
+      const loginSuccess = await context.login();
 
-      console.log("Login successful:", context?.loggedIn);
-
-      if (context?.loggedIn) {
+      if (loginSuccess) {
         navigate("/");
       } else {
         window.alert("Login problem");
-        console.log("Login problem:", context.loggedIn, context.isSubmitting);
+        console.log(context.loggedIn, context.isSubmitting);
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error(error);
       window.alert("Login problem");
     } finally {
       context.setIsSubmitting(false);
     }
+  };
+
+  const handleResetPassword = () => {
+    if (!context?.auth || context.auth === null) return;
+    if (!context?.email || context.email === null) return;
+
+    sendPasswordResetEmail(context.auth, context.email)
+      .then(() => {
+        console.log("Password reset email sent!");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        window.alert(errorMessage);
+        console.log(`Error code:`, errorCode, "Errror message:", errorMessage);
+      });
   };
 
   return (
@@ -70,9 +87,13 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
             {context?.isSubmitting ? <CircleLoader /> : "Login"}
           </button>
         </main>
-        <label>New account? </label>
-        <Link to={"/signup"}>Sign up</Link>
       </form>
+      <label>Forgot your password?</label>
+      <button className={classes.resetButton} onClick={handleResetPassword}>
+        Reset password
+      </button>
+      <label>New account? </label>
+      <Link to={"/signup"}>Sign up</Link>
     </div>
   );
 };
