@@ -7,6 +7,7 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -24,7 +25,7 @@ type AuthContextType = {
   storeDatabase: Firestore;
   // gettingExistingUser: Function;
   email: string | null;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setEmail: React.Dispatch<React.SetStateAction<string | null | undefined>>;
   password: string | null;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   role: string;
@@ -108,6 +109,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         password
       );
       const curUser = userCredential.user;
+
+      if (auth.currentUser) {
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.log("Email verification sent!");
+        });
+      }
 
       if (role === "Employee") {
         await setDoc(doc(usersCollectionRef, email), {

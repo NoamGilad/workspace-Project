@@ -4,14 +4,26 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./SignIn.module.css";
 import CircleLoader from "../../UI/CircleLoader";
-import { resolve } from "path";
-import { rejects } from "assert";
+
 import { sendPasswordResetEmail } from "firebase/auth";
+import ResetPassword from "../../components/ResetPassword";
+import Modal from "../../UI/Modal";
 
 const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
 
   const navigate = useNavigate();
+
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
+    useState(false);
+
+  const openResetPasswordModal = () => {
+    setIsResetPasswordModalOpen(true);
+  };
+
+  const closeResetPasswordModal = () => {
+    setIsResetPasswordModalOpen(false);
+  };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,9 +101,14 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
         </main>
       </form>
       <label>Forgot your password?</label>
-      <button className={classes.resetButton} onClick={handleResetPassword}>
+      <button className={classes.resetButton} onClick={openResetPasswordModal}>
         Reset password
       </button>
+      {isResetPasswordModalOpen && (
+        <Modal onClose={closeResetPasswordModal}>
+          <ResetPassword onResetPassword={handleResetPassword} />
+        </Modal>
+      )}
       <label>New account? </label>
       <Link to={"/signup"}>Sign up</Link>
     </div>
