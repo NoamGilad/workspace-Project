@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
 
 import classes from "./Home.module.css";
-import CircleLoader from "../UI/CircleLoader";
+import CircleLoader from "../UI/CircleLoader/CircleLoader";
 
 const HomePage = () => {
   const context = useContext(AuthCtx);

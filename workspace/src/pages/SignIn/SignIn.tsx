@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./SignIn.module.css";
-import CircleLoader from "../../UI/CircleLoader";
+import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
-import Modal from "../../UI/Modal";
+import Modal from "../../UI/Modal/Modal";
 
 const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
@@ -64,9 +64,10 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
     if (!context?.auth || context.auth === null) return;
     if (!context?.email || context.email === null) return;
 
-    sendPasswordResetEmail(context.auth, context.email)
+    return sendPasswordResetEmail(context.auth, context.email)
       .then(() => {
         console.log("Password reset email sent!");
+        console.log(context.email);
       })
       .catch((error) => {
         const errorCode = error.code;
