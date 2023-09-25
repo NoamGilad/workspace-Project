@@ -1,19 +1,39 @@
-import React from "react";
-import classes from "./Modal.module.css";
-import Card from "../Card/Card";
+import ReactDOM from "react-dom";
 
-const Modal: React.FC<{ onClose: () => void; children: React.ReactNode }> = (
+import classes from "./Modal.module.css";
+
+const BackDrop: React.FC<{ onClose: any }> = (props) => {
+  return <div className={classes.backdrop} onClick={props.onClose} />;
+};
+
+const ModalOverlay: React.FC<{ children: React.ReactNode }> = (props) => {
+  return (
+    <div className={classes.modal}>
+      <div className={classes.content}>{props.children}</div>
+    </div>
+  );
+};
+
+const portalElement = document.getElementById("overlays");
+
+const Modal: React.FC<{ children: React.ReactNode; onClose: any }> = (
   props
 ) => {
+  if (!portalElement) {
+    return null;
+  }
+
   return (
-    <Card className={classes.modal}>
-      <div className={classes.modalContent}>
-        {props.children}
-        <button className={classes.modalClose} onClick={props.onClose}>
-          Close
-        </button>
-      </div>
-    </Card>
+    <div>
+      {ReactDOM.createPortal(
+        <BackDrop onClose={props.onClose} />,
+        portalElement
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay>{props.children}</ModalOverlay>,
+        portalElement
+      )}
+    </div>
   );
 };
 
