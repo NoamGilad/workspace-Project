@@ -32,6 +32,17 @@ input {
   margin-bottom: 10px;
 }
 
+input:focus {
+  outline: none;
+  border-color: #4f005f;
+  background: #f6dbfc;
+}
+
+input:invalid {
+  border-color: red;
+  background: #fbdada;
+}
+
 select {
   width: 100%;
   padding: 10px;

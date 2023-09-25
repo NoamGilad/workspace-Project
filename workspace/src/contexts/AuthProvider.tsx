@@ -45,6 +45,10 @@ type AuthContextType = {
   loggedIn: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   isRefreshing: boolean;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  openModal: Function;
+  closeModal: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -77,6 +81,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -288,6 +300,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         loggedIn,
         setLoggedIn,
         isRefreshing,
+        showModal,
+        setShowModal,
+        openModal,
+        closeModal,
       }}
     >
       {children}

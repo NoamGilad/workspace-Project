@@ -7,23 +7,11 @@ import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
-import Modal from "../../UI/Modal/Modal";
 
 const SignInPage: React.FC<{ user: any }> = (props) => {
   const context = useContext(AuthCtx);
 
   const navigate = useNavigate();
-
-  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
-    useState(false);
-
-  const openResetPasswordModal = () => {
-    setIsResetPasswordModalOpen(true);
-  };
-
-  const closeResetPasswordModal = () => {
-    setIsResetPasswordModalOpen(false);
-  };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,10 +49,16 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
   };
 
   const handleResetPassword = () => {
-    if (!context?.auth || context.auth === null) return;
-    if (!context?.email || context.email === null) return;
+    if (!context?.auth || context.auth === null) {
+      console.log("No auth");
+      return;
+    }
+    if (!context?.email || context.email === null) {
+      console.log("No email");
+      return;
+    }
 
-    return sendPasswordResetEmail(context.auth, context.email)
+    sendPasswordResetEmail(context.auth, context.email)
       .then(() => {
         console.log("Password reset email sent!");
         console.log(context.email);
@@ -102,13 +96,11 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
         </main>
       </form>
       <label>Forgot your password?</label>
-      <button className={classes.resetButton} onClick={openResetPasswordModal}>
+      <button className={classes.resetButton} onClick={context?.openModal?.()}>
         Reset password
       </button>
-      {isResetPasswordModalOpen && (
-        <Modal onClose={closeResetPasswordModal}>
-          <ResetPassword onResetPassword={handleResetPassword} />
-        </Modal>
+      {context?.showModal && (
+        <ResetPassword onResetPassword={handleResetPassword} />
       )}
       <label>New account? </label>
       <Link to={"/signup"}>Sign up</Link>
