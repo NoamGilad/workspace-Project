@@ -88,15 +88,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     role: string,
     firstName: string,
     lastName: string
-  ) => {
+  ): Promise<boolean> => {
     if (!email || !password || !role || !firstName || !lastName) {
       window.alert("Please fill in all required fields.");
-      return;
+      return false;
     }
 
     if (role !== "Employee" && role !== "Employer") {
       window.alert("Role must be Employee or Employer.");
-      return;
+      return false;
     }
 
     setIsSubmitting(true);
@@ -124,14 +124,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       setLoggedIn(true);
+      setIsSubmitting(false);
+
+      return true;
     } catch (error: any) {
       const errorCode = (error as { code: string }).code;
       const errorMessage = (error as { message: string }).message;
       console.error("Firebase Error Code:", errorCode);
       console.error("Firebase Error Message:", errorMessage);
       window.alert(`Registration failed: ${errorMessage}`);
-    } finally {
       setIsSubmitting(false);
+      return false;
     }
   };
 
@@ -141,15 +144,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async () => {
     setIsSubmitting(true);
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setLoggedIn(true);
-      setIsSubmitting(false);
-    } catch (error) {
-      window.alert(`LOGIN PROBLEM (CONTEXT)`);
-      console.error("Login error:", error);
-      setIsSubmitting(false);
-    }
+    return signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        setLoggedIn(true);
+        setIsSubmitting(false);
+        return true;
+      })
+      .catch((error) => {
+        if (
+          error.code === "auth/wrong-password" ||
+          error.code === "auth/user-not-found"
+        ) {
+          window.alert("Wrong User/password!");
+        }
+        console.error("Login error:", error.code);
+        setIsSubmitting(false);
+        return false;
+      });
   };
 
   /////////////////////////////////////////////////////////////////////

@@ -22,7 +22,7 @@ const SignUpPage: React.FC = () => {
     }
 
     try {
-      await context.registerWithEmailAndPassword(
+      const registrationSuccess = await context.registerWithEmailAndPassword(
         context.email,
         context.password,
         context.role,
@@ -30,7 +30,7 @@ const SignUpPage: React.FC = () => {
         context.lastName
       );
 
-      if (context?.loggedIn) {
+      if (registrationSuccess) {
         navigate("/");
       } else {
         window.alert("Registration problem");

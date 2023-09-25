@@ -32,3 +32,18 @@ input {
   display: block;
   margin-bottom: 10px;
 }
+
+.resetButton {
+  background-color: rgb(122, 122, 122);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.resetButton:hover {
+  background-color: rgb(81, 81, 81);
+}
