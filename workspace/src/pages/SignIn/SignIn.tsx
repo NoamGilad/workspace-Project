@@ -21,22 +21,16 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
       return;
     }
 
-    const email = context?.email;
-    const password = context?.password;
-
-    if (!email || !password) {
-      window.alert("Please provide both email and password.");
-      return;
-    }
-
-    console.log("Logging in...");
-
     try {
       const loginSuccess = await context.login();
 
-      if (loginSuccess) {
-        navigate("/");
-      } else {
+      if (loginSuccess && context.role === "Employee") {
+        navigate("/user");
+      }
+      if (loginSuccess && context.role === "Employer") {
+        navigate("/admin");
+      }
+      if (!loginSuccess) {
         window.alert("Login problem");
         console.log(context.loggedIn, context.isSubmitting);
       }
@@ -55,6 +49,7 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
     }
     if (!context?.email || context.email === null) {
       console.log("No email");
+      window.alert("Please enter your email.");
       return;
     }
 
@@ -96,7 +91,10 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
         </main>
       </form>
       <label>Forgot your password?</label>
-      <button className={classes.resetButton} onClick={context?.openModal?.()}>
+      <button
+        className={classes.resetButton}
+        onClick={() => context?.setShowModal(true)}
+      >
         Reset password
       </button>
       {context?.showModal && (

@@ -8,6 +8,9 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   sendEmailVerification,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  updateProfile,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -17,7 +20,6 @@ import {
   setDoc,
   collection,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   firebaseConfig: any;
@@ -47,8 +49,7 @@ type AuthContextType = {
   isRefreshing: boolean;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  openModal: Function;
-  closeModal: Function;
+  gettingExistingUserDocData: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -83,12 +84,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const openModal = () => {
-    setShowModal(true);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -142,6 +137,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
       }
 
+      await updateUserProfile();
+
       setLoggedIn(true);
       setIsSubmitting(false);
 
@@ -167,6 +164,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       .then(() => {
         setLoggedIn(true);
         setIsSubmitting(false);
+
         return true;
       })
       .catch((error) => {
@@ -250,28 +248,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   /////////////////////////////////////////////////////////////////////
-  // Refreshing page
+  // Update profile
 
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isSubmitting) {
-        const confirmationMessage =
-          "There are pending changes. Are you sure you want to refresh?";
+  const updateUserProfile = async () => {
+    if (auth.currentUser === null || !auth.currentUser) {
+      console.error("No currentUser");
+      return;
+    }
 
-        if (window.confirm(confirmationMessage)) {
-          setIsRefreshing(true);
-        } else {
-          e.preventDefault();
-        }
-      }
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      setIsRefreshing(false);
-    };
-  }, [isSubmitting]);
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: `${firstName} ${lastName}`,
+        photoURL: "https://example.com/jane-q-user/profile.jpg",
+      });
+      // Profile updated successfully
+      // ...
+    } catch (error) {
+      // An error occurred while updating the profile
+      // Handle the error here
+      // ...
+    }
+  };
 
   return (
     <AuthCtx.Provider
@@ -291,8 +288,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setLastName,
         isSubmitting,
         setIsSubmitting,
-        // user,
-        // setUser,
         curUser,
         registerWithEmailAndPassword,
         login,
@@ -302,8 +297,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isRefreshing,
         showModal,
         setShowModal,
-        openModal,
-        closeModal,
+        gettingExistingUserDocData,
       }}
     >
       {children}

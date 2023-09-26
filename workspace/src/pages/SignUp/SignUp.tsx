@@ -30,8 +30,10 @@ const SignUpPage: React.FC = () => {
         context.lastName
       );
 
-      if (registrationSuccess) {
-        navigate("/");
+      if (registrationSuccess && context.role === "Employee") {
+        navigate("/user");
+      } else if (registrationSuccess && context.role === "Employer") {
+        navigate("/admin");
       } else {
         window.alert("Registration problem");
       }
