@@ -1,18 +1,19 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("./workspace-f24ed-firebase-adminsdk-yqj3x-c2b7307598.json");
+const serviceAccount = require("./workspace-f24ed-firebase-adminsdk-yqj3x-7a150e4a5f.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://your-project-id.firebaseio.com",
+  databaseURL: "https://workspace-f24ed.firebaseio.com",
 });
 
+// List all users
 admin
   .auth()
   .listUsers()
   .then((listUsersResult) => {
-    listUsersResult.users.forEach((userRecord) => {
-      // Delete each user
-      admin
+    const promises = listUsersResult.users.map((userRecord) => {
+      // Delete each user and return a promise
+      return admin
         .auth()
         .deleteUser(userRecord.uid)
         .then(() => {
@@ -22,10 +23,18 @@ admin
           console.error(`Error deleting user: ${userRecord.uid}`, error);
         });
     });
+
+    // Wait for all deletion promises to complete
+    return Promise.all(promises);
+  })
+  .then(() => {
+    console.log("All users have been deleted.");
+    process.exit(0);
   })
   .catch((error) => {
-    console.error("Error listing users:", error);
+    console.error("Error listing/deleting users:", error);
+    process.exit(1);
   });
 
-// to initiate this code and delete all the authenticated users, write in the terminal: 'node Admin SDK'
-// make sure to cd to this file's folder
+// To initiate this code and delete all the authenticated users, write in the terminal: 'node AdminSDK'
+// Make sure to cd to this file's folder

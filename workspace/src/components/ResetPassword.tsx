@@ -10,9 +10,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
   const context = useContext(AuthCtx);
 
   return (
-    <Modal onClose={context?.closeModal}>
+    <Modal onClose={() => context?.setShowModal(false)}>
       <label>Reset your password:</label>
-      <label>Email</label>
+      <p>Email</p>
       <input
         type="email"
         onChange={(e) => context?.setEmail(e.target.value)}
@@ -20,7 +20,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
         required
       />
       <button onClick={props.onResetPassword}>Reset password</button>
-      <button onClick={context?.closeModal?.()}>Close</button>
+      <button onClick={() => context?.setShowModal(false)}>Close</button>
     </Modal>
   );
 };
