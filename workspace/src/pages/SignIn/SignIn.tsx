@@ -8,7 +8,7 @@ import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
 
-const SignInPage: React.FC<{ user: any }> = (props) => {
+const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
 
   const navigate = useNavigate();
@@ -22,18 +22,13 @@ const SignInPage: React.FC<{ user: any }> = (props) => {
     }
 
     try {
-      const loginSuccess = await context.login();
+      await context.login();
 
-      if (loginSuccess && context.role === "Employee") {
-        navigate("/user");
-      }
-      if (loginSuccess && context.role === "Employer") {
-        navigate("/admin");
-      }
-      if (!loginSuccess) {
-        window.alert("Login problem");
-        console.log(context.loggedIn, context.isSubmitting);
-      }
+      if (context.auth?.currentUser === null) return;
+
+      return context.role === "Employer"
+        ? navigate("/admin")
+        : navigate("/user");
     } catch (error) {
       console.error(error);
       window.alert("Login problem");

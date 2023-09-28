@@ -32,10 +32,10 @@ type AuthContextType = {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   role: string;
   setRole: React.Dispatch<React.SetStateAction<string>>;
-  firstName: string | null;
-  setFirstName: React.Dispatch<React.SetStateAction<string | null>>;
-  lastName: string | null;
-  setLastName: React.Dispatch<React.SetStateAction<string | null>>;
+  firstName: string;
+  setFirstName: React.Dispatch<React.SetStateAction<string>>;
+  lastName: string;
+  setLastName: React.Dispatch<React.SetStateAction<string>>;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   // user: {} | null;
@@ -50,6 +50,7 @@ type AuthContextType = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   gettingExistingUserDocData: Function;
+  nameToCapital: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -76,8 +77,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [email, setEmail] = useState<any>("");
   const [password, setPassword] = useState<any>("");
   const [role, setRole] = useState<string>("");
-  const [firstName, setFirstName] = useState<string | null>(null);
-  const [lastName, setLastName] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -144,11 +145,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return true;
     } catch (error: any) {
-      const errorCode = (error as { code: string }).code;
-      const errorMessage = (error as { message: string }).message;
-      console.error("Firebase Error Code:", errorCode);
-      console.error("Firebase Error Message:", errorMessage);
-      window.alert(`Registration failed: ${errorMessage}`);
+      if (error.code === "auth/email-already-in-use") {
+        window.alert("Email is already in use!");
+      }
+
+      console.error(error.code);
       setIsSubmitting(false);
       return false;
     }
@@ -173,6 +174,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           error.code === "auth/user-not-found"
         ) {
           window.alert("Wrong User/password!");
+          setLoggedIn(false);
+          return;
         }
         console.error("Login error:", error.code);
         setIsSubmitting(false);
@@ -183,7 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // onAuthStateChanged
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       console.log("auth.currentUser:", auth.currentUser);
 
       if (user && auth.currentUser !== null) {
@@ -191,8 +194,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const signInTime = user.metadata.lastSignInTime;
         //USE getDoc etc...
         // ...
-        gettingExistingUserDocData(user?.email);
-        gettingExistingAdminDocData(user?.email);
+        await gettingExistingUserDocData(user?.email);
+        await gettingExistingAdminDocData(user?.email);
         setLoggedIn(true);
         setIsSubmitting(false);
       } else {
@@ -270,6 +273,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  /////////////////////////////////////////////////////////////////////
+  // Full name
+
+  function nameToCapital(firstName: string, lastName: string): string {
+    if (firstName.length === 0) {
+      return "No name";
+    }
+
+    const firstNameFirstLetter = firstName[0].toUpperCase();
+    const firstNameRestOfName = firstName.slice(1);
+
+    const lastNameFirstLetter = lastName[0].toUpperCase();
+    const lastNameRestOfName = lastName.slice(1);
+
+    return (
+      firstNameFirstLetter +
+      firstNameRestOfName +
+      ` ` +
+      lastNameFirstLetter +
+      lastNameRestOfName
+    );
+  }
+
   return (
     <AuthCtx.Provider
       value={{
@@ -298,6 +324,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         showModal,
         setShowModal,
         gettingExistingUserDocData,
+        nameToCapital,
       }}
     >
       {children}
