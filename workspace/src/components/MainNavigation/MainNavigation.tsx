@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useContext } from "react";
-import { AuthCtx } from "../contexts/AuthProvider";
+import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./MainNavigation.module.css";
 
@@ -9,13 +9,15 @@ const MainNavigation = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
 
+  if (!context) return <h2>No context!</h2>;
+
   const onLogoutHandler = () => {
-    if (!context?.auth) {
+    if (!context.auth) {
       alert("No context.auth");
       return;
     }
 
-    context?.signout();
+    context.signout();
     navigate("/signin");
   };
 
@@ -33,7 +35,7 @@ const MainNavigation = () => {
               Home
             </NavLink>
           </li>
-          {!context?.loggedIn && (
+          {!context.loggedIn && (
             <li>
               <NavLink
                 to="/signin"
@@ -45,7 +47,7 @@ const MainNavigation = () => {
               </NavLink>
             </li>
           )}
-          {!context?.loggedIn && (
+          {!context.loggedIn && (
             <li>
               <NavLink
                 to="/signup"
@@ -57,7 +59,30 @@ const MainNavigation = () => {
               </NavLink>
             </li>
           )}
-          {context?.loggedIn && (
+          {context.role === "Employee" ? (
+            <li>
+              <NavLink
+                to="/user"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Profile
+              </NavLink>
+            </li>
+          ) : (
+            <li>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Profile
+              </NavLink>
+            </li>
+          )}
+          {context.loggedIn && (
             <li>
               <button onClick={onLogoutHandler}>Logout</button>
             </li>
