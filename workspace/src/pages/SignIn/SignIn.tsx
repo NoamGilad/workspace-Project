@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 
 import classes from "./SignIn.module.css";

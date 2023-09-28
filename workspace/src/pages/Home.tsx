@@ -14,13 +14,6 @@ const HomePage = () => {
     content = <div className={classes.container}>No context!</div>;
   } else if (context.auth?.currentUser === null) {
     content = <div className={classes.container}>Please login.</div>;
-  } else if (context.isRefreshing) {
-    // Show CircleLoader while refreshing
-    content = (
-      <div className={classes.container}>
-        <CircleLoader />
-      </div>
-    );
   } else if (
     (context.loggedIn &&
       context.auth?.currentUser &&

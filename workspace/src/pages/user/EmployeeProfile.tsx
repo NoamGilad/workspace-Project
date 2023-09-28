@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import classes from "./EmployeeProfile.module.css";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
+import UserInfo from "../../components/UserInfo/UserInfo";
 
 const EmployeeProfilePage = () => {
   const context = useContext(AuthCtx);
@@ -18,11 +19,20 @@ const EmployeeProfilePage = () => {
       <h1>My profile</h1>
 
       {isRole ? (
-        <h2>
-          Welcome {context.nameToCapital(context.firstName, context.lastName)!}
-        </h2>
+        <>
+          <h2>
+            Welcome{" "}
+            {context.nameToCapital(context.firstName, context.lastName)!}
+          </h2>
+          <div>
+            <UserInfo />
+            {/* all the components right in this div */}
+          </div>
+        </>
       ) : (
-        <CircleLoader />
+        <div>
+          <CircleLoader />
+        </div>
       )}
     </div>
   );

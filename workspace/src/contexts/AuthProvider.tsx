@@ -8,8 +8,6 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   sendEmailVerification,
-  GoogleAuthProvider,
-  signInWithRedirect,
   updateProfile,
 } from "firebase/auth";
 import {
@@ -20,12 +18,12 @@ import {
   setDoc,
   collection,
 } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
 type AuthContextType = {
   firebaseConfig: any;
   auth: Auth | null;
   storeDatabase: Firestore;
-  // gettingExistingUser: Function;
   email: string | null;
   setEmail: React.Dispatch<React.SetStateAction<string | null | undefined>>;
   password: string | null;
@@ -38,19 +36,20 @@ type AuthContextType = {
   setLastName: React.Dispatch<React.SetStateAction<string>>;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
-  // user: {} | null;
-  // setUser: React.Dispatch<React.SetStateAction<{} | null>>;
-  curUser: any | null; // any for now...
   registerWithEmailAndPassword: Function;
   login: Function;
   signout: Function;
   loggedIn: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  isRefreshing: boolean;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   gettingExistingUserDocData: Function;
   nameToCapital: Function;
+  selectedFile: File | null;
+  setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
+  uploadProfilePicture: Function;
+  profilePictureURL: string | null;
+  setProfilePictureURL: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -71,8 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const auth: Auth = getAuth(app);
 
   const storeDatabase = getFirestore(app);
-
-  const curUser = auth.currentUser;
+  const storage = getStorage(app);
 
   const [email, setEmail] = useState<any>("");
   const [password, setPassword] = useState<any>("");
@@ -82,9 +80,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [profilePictureURL, setProfilePictureURL] = useState<string | null>(
+    null
+  );
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -116,7 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         password
       );
-      const curUser = userCredential.user;
+      const curUser = userCredential.user || null;
 
       if (auth.currentUser) {
         sendEmailVerification(auth.currentUser).then(() => {
@@ -137,8 +139,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           lastName,
         });
       }
-
-      await updateUserProfile();
 
       setLoggedIn(true);
       setIsSubmitting(false);
@@ -251,25 +251,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   /////////////////////////////////////////////////////////////////////
-  // Update profile
+  // Upload profile picture
 
-  const updateUserProfile = async () => {
-    if (auth.currentUser === null || !auth.currentUser) {
-      console.error("No currentUser");
+  const uploadProfilePicture = async (file: File) => {
+    const user = auth.currentUser;
+
+    if (!user) {
+      console.error("No user.");
       return;
     }
 
+    const storageRef = ref(storage, `profile-pictures/${user.uid}`);
+
     try {
-      await updateProfile(auth.currentUser, {
+      const snapshot = await uploadBytes(storageRef, file);
+
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      await updateProfile(user, {
         displayName: `${firstName} ${lastName}`,
-        photoURL: "https://example.com/jane-q-user/profile.jpg",
+        photoURL: downloadURL,
       });
-      // Profile updated successfully
-      // ...
+
+      setProfilePictureURL(downloadURL);
     } catch (error) {
-      // An error occurred while updating the profile
-      // Handle the error here
-      // ...
+      console.error("Error uploading profile picture:", error);
+      throw error;
     }
   };
 
@@ -314,17 +321,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setLastName,
         isSubmitting,
         setIsSubmitting,
-        curUser,
         registerWithEmailAndPassword,
         login,
         signout,
         loggedIn,
         setLoggedIn,
-        isRefreshing,
         showModal,
         setShowModal,
         gettingExistingUserDocData,
         nameToCapital,
+        selectedFile,
+        setSelectedFile,
+        uploadProfilePicture,
+        profilePictureURL,
+        setProfilePictureURL,
       }}
     >
       {children}
