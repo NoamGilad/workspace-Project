@@ -280,6 +280,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  useEffect(() => {
+    if (auth.currentUser?.photoURL) {
+      setProfilePictureURL(auth.currentUser?.photoURL);
+    }
+
+    if (!auth.currentUser?.photoURL) {
+      console.error("No photoURL");
+      return;
+    }
+  }, [auth.currentUser]);
+
   /////////////////////////////////////////////////////////////////////
   // Full name
 
