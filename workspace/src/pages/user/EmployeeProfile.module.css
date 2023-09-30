@@ -7,3 +7,13 @@
   background-color: lightsalmon;
   text-align: center;
 }
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.cardContainer {
+  flex: 1;
+}

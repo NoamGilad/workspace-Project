@@ -3,6 +3,7 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 import classes from "./EmployeeProfile.module.css";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import UserInfo from "../../components/UserInfo/UserInfo";
+import Shifts from "../../components/Shifts/Shifts";
 
 const EmployeeProfilePage = () => {
   const context = useContext(AuthCtx);
@@ -21,11 +22,16 @@ const EmployeeProfilePage = () => {
       {isRole ? (
         <>
           <h2>
-            Welcome{" "}
+            Welcome
             {context.nameToCapital(context.firstName, context.lastName)!}
           </h2>
-          <div>
-            <UserInfo />
+          <div className={classes.cards}>
+            <div className={classes.cardContainer}>
+              <UserInfo />
+            </div>
+            <div className={classes.cardContainer}>
+              <Shifts />
+            </div>
             {/* all the components right in this div */}
           </div>
         </>

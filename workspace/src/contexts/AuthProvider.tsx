@@ -314,6 +314,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   }
 
+  /////////////////////////////////////////////////////////////////////
+  // Shifts
+
   return (
     <AuthCtx.Provider
       value={{
