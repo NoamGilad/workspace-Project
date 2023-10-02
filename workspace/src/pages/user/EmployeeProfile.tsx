@@ -10,7 +10,7 @@ const EmployeeProfilePage = () => {
 
   if (!context) {
     console.error("No context!");
-    return <div>No context!</div>;
+    return <p>No context!</p>;
   }
 
   const isRole = context.role;
@@ -26,13 +26,13 @@ const EmployeeProfilePage = () => {
             {context.nameToCapital(context.firstName, context.lastName)!}
           </h2>
           <div className={classes.cards}>
+            {/* all the components right in this div */}
             <div className={classes.cardContainer}>
               <UserInfo />
             </div>
             <div className={classes.cardContainer}>
               <Shifts />
             </div>
-            {/* all the components right in this div */}
           </div>
         </>
       ) : (

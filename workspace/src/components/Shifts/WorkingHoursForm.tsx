@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import classes from "./WorkingHoursForm.module.css";
+
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const [date, setDate] = useState<string>("");
   const [from, setFrom] = useState<string>("");
@@ -36,10 +38,11 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmitAddShift}>
+      <form className={classes.hoursForm} onSubmit={handleSubmitAddShift}>
         <label>
           Date
           <input
+            className={classes.hoursInput}
             type="date"
             value={date}
             onChange={handleDateChanger}
@@ -50,6 +53,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         <label>
           From
           <input
+            className={classes.hoursInput}
             type="time"
             value={from}
             onChange={handleFromChanger}
@@ -60,6 +64,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         <label>
           To
           <input
+            className={classes.hoursInput}
             type="time"
             value={to}
             onChange={handleToChanger}
