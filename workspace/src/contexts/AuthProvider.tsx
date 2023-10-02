@@ -17,6 +17,8 @@ import {
   Firestore,
   setDoc,
   collection,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
@@ -50,6 +52,9 @@ type AuthContextType = {
   uploadProfilePicture: Function;
   profilePictureURL: string | null;
   setProfilePictureURL: React.Dispatch<React.SetStateAction<string | null>>;
+  list: any;
+  setList: React.Dispatch<React.SetStateAction<any>>;
+  storingWorkingHours: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -87,6 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [profilePictureURL, setProfilePictureURL] = useState<string | null>(
     null
   );
+  const [list, setList] = useState<any[]>([]);
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -230,6 +236,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLastName(docSnap.data().lastName);
       setEmail(userData);
       setRole(docSnap.data().role);
+      setList(docSnap.data().workingHours || []);
     } else {
       console.error("No such document!");
       console.error("No such USER document!");
@@ -261,10 +268,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    const storageRef = ref(storage, `profile-pictures/${user.uid}`);
+    const photoStorageRef = ref(storage, `profile-pictures/${user.uid}`);
 
     try {
-      const snapshot = await uploadBytes(storageRef, file);
+      const snapshot = await uploadBytes(photoStorageRef, file);
 
       const downloadURL = await getDownloadURL(snapshot.ref);
 
@@ -290,6 +297,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
   }, [auth.currentUser]);
+
+  /////////////////////////////////////////////////////////////////////
+  // Store working hours
+
+  const storingWorkingHours = async (workingHours: any) => {
+    const thisUserDocRef = doc(storeDatabase, "users", email);
+
+    const user = auth.currentUser;
+
+    if (!user) {
+      console.error("No user.");
+      return;
+    }
+
+    await updateDoc(thisUserDocRef, {
+      workingHours: workingHours,
+    });
+  };
 
   /////////////////////////////////////////////////////////////////////
   // Full name
@@ -349,6 +374,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         uploadProfilePicture,
         profilePictureURL,
         setProfilePictureURL,
+        list,
+        setList,
+        storingWorkingHours,
       }}
     >
       {children}

@@ -1,0 +1,13 @@
+.hoursForm {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hoursInput {
+  margin-right: 10px;
+  margin-left: -10px;
+}
