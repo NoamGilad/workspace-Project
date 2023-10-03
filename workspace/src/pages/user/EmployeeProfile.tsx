@@ -22,7 +22,7 @@ const EmployeeProfilePage = () => {
       {isRole ? (
         <>
           <h2>
-            Welcome
+            Welcome{" "}
             {context.nameToCapital(context.firstName, context.lastName)!}
           </h2>
           <div className={classes.cards}>
