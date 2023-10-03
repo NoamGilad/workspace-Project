@@ -7,6 +7,8 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
 
+  const today = new Date().toISOString().split("T")[0];
+
   const handleDateChanger = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
   };
@@ -22,8 +24,11 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const handleSubmitAddShift = (e: React.FormEvent) => {
     e.preventDefault();
     if (!date || !from || !to) return;
+
+    const shiftDate = new Date(date);
+
     const shift = {
-      date: date,
+      date: shiftDate,
       from: from,
       to: to,
     };
@@ -47,6 +52,8 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
             value={date}
             onChange={handleDateChanger}
             placeholder="Select a date."
+            min="2020-01-01"
+            max={today}
             required
           />
         </label>

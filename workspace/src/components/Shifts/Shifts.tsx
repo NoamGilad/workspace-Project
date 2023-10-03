@@ -1,14 +1,16 @@
 import { useContext, useState } from "react";
 import Card from "../../UI/Card/Card";
-import WorkingHoursForm from "./WorkingHoursForm";
+import WorkingHoursForm from "./WorkingHoursForm/WorkingHoursForm";
 import classes from "./Shifts.module.css";
-import ShiftList from "./ShiftsList";
+import ShiftList from "./ShiftsList/ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
+import ShiftsFilter from "./ShiftsFilter/ShiftsFilter";
 
 const Shifts = () => {
   const context = useContext(AuthCtx);
 
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [filteredYear, setFilteredYear] = useState<string>("2023");
 
   if (!context) {
     console.error("No context!");
@@ -32,13 +34,28 @@ const Shifts = () => {
     setSelectedDate(date);
   };
 
+  const filterChangHandler = (selectedYear: string) => {
+    console.log(selectedYear);
+    setFilteredYear(selectedYear);
+  };
+
   return (
     <Card className={classes.workingHoursContainer}>
       <WorkingHoursForm addEntryMainForm={addEntryHandler} />
       {!context.list || context.list.length < 1 ? (
         <p>No shifts to render</p>
       ) : (
-        <ShiftList shifts={context.list} selectedDate={selectedDate} />
+        <div>
+          <ShiftsFilter
+            onChangeFilter={filterChangHandler}
+            selected={filteredYear}
+          />
+          <ShiftList
+            shifts={context.list}
+            selectedDate={selectedDate}
+            filteredYear={filteredYear}
+          />
+        </div>
       )}
     </Card>
   );

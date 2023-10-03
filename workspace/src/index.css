@@ -19,7 +19,7 @@ h5 {
 }
 
 label {
-  text-align: center; /* Center the label text */
+  text-align: center;
   font-size: 16px;
   color: #555;
   margin-top: 10px;
@@ -32,7 +32,7 @@ input {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  background-color: rgb(255, 238, 213);
+  background-color: white;
   margin-bottom: 10px;
 }
 
@@ -54,7 +54,7 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  background-color: rgb(247, 211, 211);
+  background-color: white;
   display: block;
   margin-bottom: 20px;
   color: #555;
@@ -75,7 +75,20 @@ button:hover {
   background-color: #0056b3;
 }
 
+ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
 li {
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  text-align: center;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
