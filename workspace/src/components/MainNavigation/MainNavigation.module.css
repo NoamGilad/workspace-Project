@@ -1,15 +1,12 @@
-/* MainNavigation.module.css */
-
-/* Style the header */
 .header {
-  background-color: lightcoral; /* Background color */
+  background-color: lightcoral;
   padding: 10px 0;
   text-align: center;
 }
 
 .list {
   list-style: none;
-  padding: 0;
+  padding: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,6 +14,7 @@
 
 .list li {
   margin: 0 10px;
+  text-align: center;
 }
 
 .list a {
@@ -33,4 +31,11 @@
 .list a.active {
   font-weight: bold;
   color: darkblue;
+}
+
+.list button {
+  text-align: center;
+  display: flex;
+  margin: 5px;
+  align-items: center;
 }
