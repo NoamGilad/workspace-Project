@@ -1,13 +1,14 @@
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import Card from "../../UI/Card/Card";
 import WorkingHoursForm from "./WorkingHoursForm";
-
 import classes from "./Shifts.module.css";
 import ShiftList from "./ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
 
 const Shifts = () => {
   const context = useContext(AuthCtx);
+
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   if (!context) {
     console.error("No context!");
@@ -27,6 +28,8 @@ const Shifts = () => {
     });
 
     context.storingWorkingHours([...context.list, newShift]);
+
+    setSelectedDate(date);
   };
 
   return (
@@ -35,7 +38,7 @@ const Shifts = () => {
       {!context.list || context.list.length < 1 ? (
         <p>No shifts to render</p>
       ) : (
-        <ShiftList shifts={context.list} />
+        <ShiftList shifts={context.list} selectedDate={selectedDate} />
       )}
     </Card>
   );

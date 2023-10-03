@@ -1,5 +1,11 @@
-import { useContext } from "react";
-import { FieldPath, deleteField, doc, updateDoc } from "firebase/firestore";
+import { useContext, useState } from "react";
+import {
+  FieldPath,
+  deleteField,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { AuthCtx } from "../../contexts/AuthProvider";
 
 interface Shift {
@@ -9,10 +15,22 @@ interface Shift {
   to: string;
 }
 
-const ShiftList: React.FC<{ shifts: Shift[] }> = (props) => {
+const ShiftList: React.FC<{ shifts: Shift[]; selectedDate: string }> = (
+  props
+) => {
   const context = useContext(AuthCtx);
 
-  const handleDeleteShift = async (shift: Shift) => {
+  const formatDateWithMonthLetters = (date: string) => {
+    const dateObject = new Date(date || props.selectedDate);
+    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+      dateObject
+    );
+    const day = dateObject.getDate().toString().padStart(2, "0");
+    const year = dateObject.getFullYear();
+    return `${month} ${day}, ${year}`;
+  };
+
+  const handleDeleteShift = async (index: number) => {
     if (!context) {
       console.error("No context!");
       return <p>No context!</p>;
@@ -23,21 +41,30 @@ const ShiftList: React.FC<{ shifts: Shift[] }> = (props) => {
       return <p>No email!</p>;
     }
 
-    const shiftRef = doc(context.storeDatabase, "users", context.email);
+    const docRef = doc(context.storeDatabase, "users", context.email);
+    const docSnap = await getDoc(docRef);
 
-    updateDoc(shiftRef, {
-      workingHours: deleteField(),
-    });
+    if (docSnap.exists()) {
+      const shiftsArray = Object.values(docSnap.data().workingHours);
 
-    console.log(`clicked ${shift.id}`);
+      shiftsArray.splice(index, 1);
+
+      await updateDoc(docRef, {
+        workingHours: shiftsArray,
+      });
+
+      context.setList(shiftsArray);
+      console.log("Shift deleted successfully.");
+    }
   };
 
   return (
     <ul>
-      {props.shifts.map((shift: any) => (
+      {Object.values(props.shifts).map((shift: any, index: number) => (
         <li key={shift.id}>
-          {shift.date} {shift.from} {shift.to}
-          <button onClick={(e) => handleDeleteShift(shift)}>X</button>
+          Date: {formatDateWithMonthLetters(shift.date)} From: {shift.from} To:{" "}
+          {shift.to}
+          <button onClick={() => handleDeleteShift(index)}>x</button>
         </li>
       ))}
     </ul>
