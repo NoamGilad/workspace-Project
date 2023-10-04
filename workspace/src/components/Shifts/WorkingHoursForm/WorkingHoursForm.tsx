@@ -1,11 +1,15 @@
-import { useState } from "react";
-
+import { AuthCtx } from "../../../contexts/AuthProvider";
+import { useContext } from "react";
 import classes from "./WorkingHoursForm.module.css";
 
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
-  const [date, setDate] = useState<string>("");
-  const [from, setFrom] = useState<string>("");
-  const [to, setTo] = useState<string>("");
+  const context = useContext(AuthCtx);
+  if (!context) {
+    console.error("No context!");
+    return <p>No context!</p>;
+  }
+
+  const { date, setDate, from, setFrom, to, setTo } = context;
 
   const today = new Date().toISOString().split("T")[0];
 

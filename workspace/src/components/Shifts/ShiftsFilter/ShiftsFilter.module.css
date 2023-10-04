@@ -15,15 +15,17 @@
   text-decoration: underline;
   align-self: center;
   white-space: nowrap;
-  font-weight: bold;
+  font-weight: bolder;
   margin-bottom: 8px;
   margin-right: 160px;
 }
 
 .shiftsFilter select {
   width: auto;
+  align-self: center;
   font: inherit;
   padding: 10px;
   font-weight: bold;
   border-radius: 6px;
+  margin: 0%;
 }

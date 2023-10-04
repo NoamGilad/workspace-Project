@@ -18,7 +18,6 @@ import {
   setDoc,
   collection,
   updateDoc,
-  arrayUnion,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
@@ -55,6 +54,12 @@ type AuthContextType = {
   list: any;
   setList: React.Dispatch<React.SetStateAction<any>>;
   storingWorkingHours: Function;
+  date: string;
+  setDate: React.Dispatch<React.SetStateAction<string>>;
+  from: string;
+  setFrom: React.Dispatch<React.SetStateAction<string>>;
+  to: string;
+  setTo: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -93,6 +98,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     null
   );
   const [list, setList] = useState<any[]>([]);
+
+  const [date, setDate] = useState<string>("");
+  const [from, setFrom] = useState<string>("");
+  const [to, setTo] = useState<string>("");
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -377,6 +386,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         list,
         setList,
         storingWorkingHours,
+        date,
+        setDate,
+        from,
+        setFrom,
+        to,
+        setTo,
       }}
     >
       {children}
