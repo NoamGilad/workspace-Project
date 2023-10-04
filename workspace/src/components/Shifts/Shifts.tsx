@@ -5,6 +5,7 @@ import classes from "./Shifts.module.css";
 import ShiftList from "./ShiftsList/ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import ShiftsFilter from "./ShiftsFilter/ShiftsFilter";
+import Salary from "../MainNavigation/Salary/Salary";
 
 const Shifts = () => {
   const context = useContext(AuthCtx);
@@ -39,6 +40,9 @@ const Shifts = () => {
     setFilteredYear(selectedYear);
   };
 
+  const fromNumber = +context.from;
+  const toNumber = +context.to;
+
   return (
     <Card className={classes.workingHoursContainer}>
       <WorkingHoursForm addEntryMainForm={addEntryHandler} />
@@ -55,6 +59,7 @@ const Shifts = () => {
             selectedDate={selectedDate}
             filteredYear={filteredYear}
           />
+          {/* <Salary calcTimeDiff={handleClacTimeDiff} /> */}
         </div>
       )}
     </Card>
