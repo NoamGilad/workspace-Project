@@ -1,3 +1,4 @@
+import Card from "../../../UI/Card/Card";
 import classes from "./ShiftsFilter.module.css";
 
 const ShiftsFilter: React.FC<{
@@ -9,7 +10,7 @@ const ShiftsFilter: React.FC<{
   };
 
   return (
-    <div className={classes.shiftsFilter}>
+    <Card className={classes.shiftsFilter}>
       <div className={classes.shiftsFilterControl}>
         <label>Filter by year</label>
         <select value={props.selected} onChange={dropdownChangeHandler}>
@@ -19,7 +20,7 @@ const ShiftsFilter: React.FC<{
           <option value="2020">2020</option>
         </select>
       </div>
-    </div>
+    </Card>
   );
 };
 

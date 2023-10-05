@@ -1,6 +1,7 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
 import classes from "./WorkingHoursForm.module.css";
+import Card from "../../../UI/Card/Card";
 
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const context = useContext(AuthCtx);
@@ -64,8 +65,8 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   };
 
   return (
-    <div>
-      <form className={classes.hoursForm} onSubmit={handleSubmitAddShift}>
+    <Card className={classes.hoursForm}>
+      <form onSubmit={handleSubmitAddShift}>
         <label>
           Date
           <input
@@ -103,7 +104,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         </label>
         <button type="submit">Add shift</button>
       </form>
-    </div>
+    </Card>
   );
 };
 
