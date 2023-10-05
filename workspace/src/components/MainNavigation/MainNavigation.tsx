@@ -59,21 +59,10 @@ const MainNavigation = () => {
               </NavLink>
             </li>
           )}
-          {context.role === "Employee" ? (
+          {context.loggedIn && context.role === "Employee" && (
             <li>
               <NavLink
                 to="/user"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Profile
-              </NavLink>
-            </li>
-          ) : (
-            <li>
-              <NavLink
-                to="/admin"
                 className={({ isActive }) =>
                   isActive ? classes.active : undefined
                 }

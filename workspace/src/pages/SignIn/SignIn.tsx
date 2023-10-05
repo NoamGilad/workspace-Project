@@ -56,7 +56,6 @@ const SignInPage: React.FC = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        window.alert(errorMessage);
         console.log(`Error code:`, errorCode, "Errror message:", errorMessage);
       });
   };

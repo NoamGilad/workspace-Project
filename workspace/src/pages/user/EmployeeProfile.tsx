@@ -17,14 +17,10 @@ const EmployeeProfilePage = () => {
 
   return (
     <div className={classes.container}>
-      <h1>My profile</h1>
-
+      <h1 className={classes.h1Welcome}> Welcome</h1>
       {isRole ? (
         <>
-          <h2>
-            Welcome{" "}
-            {context.nameToCapital(context.firstName, context.lastName)!}
-          </h2>
+          <h1>{context.nameToCapital(context.firstName, context.lastName)!}</h1>
           <div className={classes.cards}>
             {/* all the components right in this div */}
             <div className={classes.cardContainer}>

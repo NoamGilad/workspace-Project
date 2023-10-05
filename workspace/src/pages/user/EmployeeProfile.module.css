@@ -8,6 +8,10 @@
   text-align: center;
 }
 
+.h1Welcome {
+  margin: 0%;
+}
+
 .cards {
   display: flex;
   flex-direction: row;

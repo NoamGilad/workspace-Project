@@ -326,6 +326,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   /////////////////////////////////////////////////////////////////////
+  // Store amount per hour
+
+  const storeAmountPerHour = () => {};
+
+  /////////////////////////////////////////////////////////////////////
   // Full name
 
   function nameToCapital(firstName: string, lastName: string): string {

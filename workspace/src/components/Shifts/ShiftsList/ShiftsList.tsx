@@ -9,6 +9,7 @@ interface Shift {
   date: Date;
   from: string;
   to: string;
+  shiftDuration: string;
 }
 
 const ShiftList: React.FC<{
@@ -79,8 +80,22 @@ const ShiftList: React.FC<{
               <Card className={classes.shiftsListCard}>
                 <div className={classes.cardContent}>
                   <div className={classes.cardContentDivText}>
-                    Date: {formatDateWithMonthLetters(shift.date)} From:{" "}
-                    {shift.from} To: {shift.to}
+                    <div>
+                      <label>Date:</label>
+                      <p>{formatDateWithMonthLetters(shift.date)}</p>
+                    </div>
+                    <div>
+                      <label>From:</label>
+                      <p>{shift.from}</p>
+                    </div>
+                    <div>
+                      <label>To:</label>
+                      <p>{shift.to}</p>
+                    </div>
+                    <div>
+                      <label>Duration:</label>
+                      <p>{shift.shiftDuration}</p>
+                    </div>
                   </div>
                   <div>
                     <button onClick={() => handleDeleteShift(shift)}>x</button>
