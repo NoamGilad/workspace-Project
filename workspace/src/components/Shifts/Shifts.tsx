@@ -18,13 +18,24 @@ const Shifts = () => {
     return <p>No context!</p>;
   }
 
-  const addEntryHandler = (date: string, from: string, to: string) => {
-    if (!date || !from || !to) {
-      console.error("Date, from, or to is missing.");
+  const addEntryHandler = (
+    date: string,
+    from: string,
+    to: string,
+    shiftDuration: string
+  ) => {
+    if (!date || !from || !to || !shiftDuration) {
+      console.error("Date, from, to or shiftDuration is missing.");
       return;
     }
 
-    const newShift = { date, from, to, id: Math.random().toString() };
+    const newShift = {
+      date,
+      from,
+      to,
+      shiftDuration,
+      id: Math.random().toString(),
+    };
 
     context.setList((prevShiftsList: any) => {
       return [...prevShiftsList, newShift];
@@ -36,7 +47,6 @@ const Shifts = () => {
   };
 
   const filterChangHandler = (selectedYear: string) => {
-    console.log(selectedYear);
     setFilteredYear(selectedYear);
   };
 
@@ -59,9 +69,9 @@ const Shifts = () => {
             selectedDate={selectedDate}
             filteredYear={filteredYear}
           />
-          {/* <Salary calcTimeDiff={handleClacTimeDiff} /> */}
         </div>
       )}
+      <Salary />
     </Card>
   );
 };

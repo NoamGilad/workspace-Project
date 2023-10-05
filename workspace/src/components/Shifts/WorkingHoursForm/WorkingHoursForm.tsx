@@ -27,6 +27,23 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
 
   const handleSubmitAddShift = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const fromDate = new Date(date);
+    const fromTime = new Date(`${date}T${from}`);
+    const toTime = new Date(`${date}T${to}`);
+
+    const durationMs = toTime.getTime() - fromTime.getTime();
+
+    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    const totalShiftTime = [hours, ":", minutes].join("");
+
+    console.log("Date:", fromDate);
+    console.log("From Time:", fromTime);
+    console.log("To Time:", toTime);
+    console.log("Duration (hours:minutes):", totalShiftTime);
+
     if (!date || !from || !to) return;
 
     const shiftDate = new Date(date);
@@ -35,8 +52,9 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
       date: shiftDate,
       from: from,
       to: to,
+      totalShiftTime,
     };
-    props.addEntryMainForm(date, from, to);
+    props.addEntryMainForm(date, from, to, totalShiftTime);
 
     setDate("");
     setFrom("");
