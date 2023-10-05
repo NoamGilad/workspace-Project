@@ -6,6 +6,23 @@
   text-align: center;
 }
 
+.userInfoContainer p {
+  font-weight: bold;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileInfo div {
+  border-radius: 12px;
+  border: 2px solid black;
+  /* box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25); */
+  margin: 5px;
+  background-color: rgb(255, 255, 255);
+}
+
 .profilePhotoContainer {
   width: 100px;
   height: 100px;
@@ -35,23 +52,15 @@
 .fileLabel {
   background-color: rgb(122, 122, 122);
   color: #fff;
-  border: none;
+  border: 2px solid black;
   border-radius: 15px;
   padding: 2px 4px;
   cursor: pointer;
   font-size: 16px;
   margin-top: 10px;
+  font-weight: bold;
 }
 
 .fileLabel:hover {
   background-color: rgb(81, 81, 81);
-}
-
-.uploadButton {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
 }

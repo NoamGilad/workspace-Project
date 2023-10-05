@@ -28,7 +28,7 @@ const UserInfo = () => {
 
   return (
     <Card className={classes.userInfoContainer}>
-      <div className={classes.profileInfo}>
+      <div>
         <div className={classes.profilePhotoContainer}>
           <img
             src={context.profilePictureURL || ""}
@@ -53,11 +53,18 @@ const UserInfo = () => {
       </div>
       <div className={classes.profileInfo}>
         <h4>User information</h4>
-        <p>
-          Name: {context.nameToCapital(context.firstName, context.lastName)}
-        </p>
-        <p>Role: {context.role}</p>
-        <p>Email: {context.email}</p>
+        <div>
+          <label>Name:</label>
+          <p>{context.nameToCapital(context.firstName, context.lastName)}</p>
+        </div>
+        <div>
+          <label>Role:</label>
+          <p>{context.role}</p>
+        </div>
+        <div>
+          <label>Email:</label>
+          <p>{context.email}</p>
+        </div>
       </div>
     </Card>
   );

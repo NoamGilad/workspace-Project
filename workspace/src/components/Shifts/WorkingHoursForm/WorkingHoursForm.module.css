@@ -5,9 +5,17 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  background-color: rgb(255, 255, 255);
 }
 
 .hoursInput {
   margin-right: 10px;
   margin-left: -10px;
+  background-color: peachpuff;
+  border: 2px solid black;
+  border-radius: 12px;
+}
+
+.hoursForm label {
+  font-weight: bold;
 }

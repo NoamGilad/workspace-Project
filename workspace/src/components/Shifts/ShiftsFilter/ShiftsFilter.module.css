@@ -1,6 +1,7 @@
 .shiftsFilter {
   color: white;
   padding: 10px;
+  background-color: rgb(255, 255, 255);
 }
 
 .shiftsFilterControl {
@@ -26,6 +27,8 @@
   font: inherit;
   padding: 10px;
   font-weight: bold;
-  border-radius: 6px;
+  border: 2px solid black;
+  border-radius: 12px;
   margin: 0%;
+  background-color: peachpuff;
 }
