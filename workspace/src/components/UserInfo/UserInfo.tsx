@@ -28,28 +28,26 @@ const UserInfo = () => {
 
   return (
     <Card className={classes.userInfoContainer}>
-      <div>
-        <div className={classes.profilePhotoContainer}>
-          <img
-            src={context.profilePictureURL || ""}
-            alt="Profile"
-            className={classes.profilePhoto}
+      <Card className={classes.profilePhotoContainer}>
+        <img
+          src={context.profilePictureURL || ""}
+          alt="Profile"
+          className={classes.profilePhoto}
+        />
+      </Card>
+      <div className={classes.inputContainer}>
+        <label className={classes.fileLabel}>
+          Select File
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className={classes.fileInput}
           />
-        </div>
-        <div className={classes.inputContainer}>
-          <label className={classes.fileLabel}>
-            Select File
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className={classes.fileInput}
-            />
-          </label>
-          <button onClick={handleUpload} className={classes.uploadButton}>
-            Upload Photo
-          </button>
-        </div>
+        </label>
+        <button onClick={handleUpload} className={classes.uploadButton}>
+          Upload Photo
+        </button>
       </div>
       <div className={classes.profileInfo}>
         <h4>User information</h4>

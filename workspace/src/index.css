@@ -10,6 +10,7 @@ body {
 p {
   align-self: center;
   white-space: nowrap;
+  color: #555;
 }
 
 h4 {
@@ -56,7 +57,7 @@ select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: 1px solid #ccc;
+  border: 2px solid black;
   border-radius: 4px;
   font-size: 16px;
   background-color: white;
