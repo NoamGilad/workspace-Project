@@ -2,6 +2,7 @@
   color: white;
   padding: 10px;
   background-color: rgb(255, 255, 255);
+  margin-bottom: -4px;
 }
 
 .shiftsFilterControl {
@@ -9,7 +10,6 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  margin: 16px 0;
 }
 
 .shiftsFilter label {
@@ -18,16 +18,16 @@
   white-space: nowrap;
   font-weight: bolder;
   margin-bottom: 8px;
-  margin-right: 160px;
+  margin-right: 142px;
 }
 
 .shiftsFilter select {
-  width: auto;
+  width: 150px;
   align-self: center;
   font: inherit;
-  padding: 10px;
+  padding: 1px;
   font-weight: bold;
-  border: 2px solid black;
+  border: 3px solid black;
   border-radius: 12px;
   margin: 0%;
   background-color: peachpuff;

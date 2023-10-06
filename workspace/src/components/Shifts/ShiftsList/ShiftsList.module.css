@@ -26,7 +26,7 @@
 }
 
 .cardContentDivText label {
-  margin: 5px;
+  margin: 7px;
 }
 
 .cardContentDivText p {
@@ -36,7 +36,7 @@
 
 .cardContentDivText div {
   border-radius: 12px;
-  border: 2px solid black;
+  border: 3px solid black;
   /* box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25); */
   margin: 5px;
   background-color: peachpuff;
@@ -46,7 +46,7 @@
   text-align: center;
   background-color: red;
   color: black;
-  border: 2px solid black;
+  border: 3px solid black;
   margin-bottom: 6px;
   margin-left: 2px;
 }

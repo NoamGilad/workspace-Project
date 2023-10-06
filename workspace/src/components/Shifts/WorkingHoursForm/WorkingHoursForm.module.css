@@ -8,12 +8,13 @@
   background-color: rgb(255, 255, 255);
 }
 
-.hoursInput {
+.hoursForm input {
   margin-right: 10px;
-  margin-left: -10px;
+  margin-left: -12px;
   background-color: peachpuff;
-  border: 2px solid black;
+  border: 3px solid black;
   border-radius: 12px;
+  text-align: center;
 }
 
 .hoursForm label {

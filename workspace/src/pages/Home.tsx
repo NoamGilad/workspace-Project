@@ -2,39 +2,10 @@ import { useContext, useEffect } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
 
 import classes from "./Home.module.css";
-import CircleLoader from "../UI/CircleLoader/CircleLoader";
+import Card from "../UI/Card/Card";
 
 const HomePage = () => {
   const context = useContext(AuthCtx);
-
-  let content;
-
-  if (!context || context === null) {
-    window.alert("No context!");
-    content = <div className={classes.container}>No context!</div>;
-  } else if (context.auth?.currentUser === null) {
-    content = <div className={classes.container}>Please login.</div>;
-  } else if (
-    (context.loggedIn &&
-      context.auth?.currentUser &&
-      context.role === "Employee") ||
-    context.role === "Employer"
-  ) {
-    content = (
-      <div className={classes.container}>
-        <h1>
-          Welcome {context.role === "Employer" ? "Admin " : ""}
-          {context.firstName}
-        </h1>
-        <h2>Account details</h2>
-        <p>
-          Name: {context.firstName} {context.lastName}
-        </p>
-        <p>Email: {context.email}</p>
-        <p>Role: {context.role}</p>
-      </div>
-    );
-  }
 
   useEffect(() => {
     console.log("isSubmitting changed to:", context?.isSubmitting);
@@ -45,8 +16,17 @@ const HomePage = () => {
 
   return (
     <div className={classes.container}>
-      <h1 className={classes.h1}>Home page</h1>
-      {content}
+      <h1 className={classes.h1}>WorkEase</h1>
+      <Card className={classes.homeCard}>
+        <p>
+          Welcome to WorkEase, the user-friendly workspace platform designed to
+          streamline collaboration between employers and employees.
+        </p>
+        <p>
+          Our simple and effective features cater to the essential needs of both
+          roles, making work organization a breeze.
+        </p>
+      </Card>
     </div>
   );
 };
