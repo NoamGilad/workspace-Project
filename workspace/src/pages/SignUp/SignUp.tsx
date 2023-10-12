@@ -10,7 +10,7 @@ const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
 
   if (!context) {
-    return <div>No context</div>;
+    return <p>No context</p>;
   }
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
@@ -56,7 +56,7 @@ const SignUpPage: React.FC = () => {
             onChange={(e) => context.setFirstName(e.target.value)}
             placeholder="Enter your first name"
             required
-          />{" "}
+          />
           <label>Last name</label>
           <input
             type="text"

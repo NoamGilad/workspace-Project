@@ -32,6 +32,7 @@ label {
 }
 
 input {
+  display: block;
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -54,7 +55,7 @@ input:invalid {
 } */
 
 select {
-  width: 100%;
+  width: 110%;
   padding: 10px;
   margin-top: 5px;
   border: 2px solid black;

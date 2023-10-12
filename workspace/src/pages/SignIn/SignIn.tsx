@@ -17,8 +17,7 @@ const SignInPage: React.FC = () => {
     e.preventDefault();
 
     if (!context) {
-      window.alert("No context!");
-      return;
+      return <p>No context</p>;
     }
 
     try {
