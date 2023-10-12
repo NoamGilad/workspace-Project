@@ -7,3 +7,15 @@
   background-color: lightsalmon;
   text-align: center;
 }
+
+.container input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  margin-bottom: 10px;
+}

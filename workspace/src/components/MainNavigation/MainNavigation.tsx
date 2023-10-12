@@ -71,6 +71,18 @@ const MainNavigation = () => {
               </NavLink>
             </li>
           )}
+          {context.loggedIn && context.role === "Employer" && (
+            <li>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Control
+              </NavLink>
+            </li>
+          )}
           {context.loggedIn && (
             <li>
               <button onClick={onLogoutHandler}>Logout</button>

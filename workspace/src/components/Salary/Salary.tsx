@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import Card from "../../../UI/Card/Card";
-import { AuthCtx } from "../../../contexts/AuthProvider";
+import Card from "../../UI/Card/Card";
+import { AuthCtx } from "../../contexts/AuthProvider";
 import classes from "./Salary.module.css";
 
 const Salary: React.FC = () => {
