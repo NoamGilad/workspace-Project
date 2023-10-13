@@ -1,34 +1,57 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import Card from "../../../UI/Card/Card";
 import classes from "./UsersList.module.css";
 
 const UsersList = () => {
   const context = useContext(AuthCtx);
 
-  if (!context) {
-    return <p>No context</p>;
-  }
+  const [usersList, setUsersList] = useState<any[]>([]);
 
-  const gettingUsersList = async () => {
-    const docRef = doc(context.storeDatabase, "users");
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const arr = [docSnap.data];
-      console.log(arr);
+  useEffect(() => {
+    if (!context) {
       return;
     } else {
-      console.error("No such document! No users!");
-      return;
+      const getUsers = async () => {
+        const querySnapshot = await getDocs(
+          collection(context.storeDatabase, "users")
+        );
+        const users: any[] = [];
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          const userData = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          users.push(userData);
+        });
+
+        setUsersList(users);
+      };
+      getUsers();
     }
-  };
+  }, [context]);
 
   return (
     <Card className={classes.UsersListCard}>
       <h5>Users List</h5>
-      <p>{123}</p>
+      {!context ? (
+        <p>No context</p>
+      ) : (
+        <ul>
+          {usersList.map((user, index) => (
+            <Card className={classes.UsersListCard}>
+              <li key={index}>
+                <p>
+                  Name: {user.firstName} {user.lastName}
+                </p>
+                <p>Email: {user.id}</p>
+              </li>
+            </Card>
+          ))}
+        </ul>
+      )}
     </Card>
   );
 };
