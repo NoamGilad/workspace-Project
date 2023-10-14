@@ -41,12 +41,18 @@ const UsersList = () => {
       ) : (
         <ul>
           {usersList.map((user, index) => (
-            <Card className={classes.UsersListCard}>
+            <Card className={classes.userInfo}>
               <li key={index}>
-                <p>
-                  Name: {user.firstName} {user.lastName}
-                </p>
-                <p>Email: {user.id}</p>
+                <div>
+                  <label>Name</label>
+                  <p>
+                    {user.firstName} {user.lastName}
+                  </p>
+                </div>
+                <div>
+                  <label>Email</label>
+                  <p>{user.id}</p>
+                </div>
               </li>
             </Card>
           ))}

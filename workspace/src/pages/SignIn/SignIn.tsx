@@ -1,12 +1,10 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
-
-import classes from "./SignIn.module.css";
-import CircleLoader from "../../UI/CircleLoader/CircleLoader";
-
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
+import CircleLoader from "../../UI/CircleLoader/CircleLoader";
+import classes from "./SignIn.module.css";
 
 const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
