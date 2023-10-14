@@ -21,7 +21,6 @@
 .profileInfo div {
   border-radius: 12px;
   border: 3px solid black;
-  /* box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25); */
   margin: 5px;
   background-color: rgb(255, 255, 255);
 }
