@@ -7,7 +7,7 @@ import classes from "./UserInfo.module.css";
 const UserInfo = () => {
   const context = useContext(AuthCtx);
 
-  if (!context) return <h2>No context</h2>;
+  if (!context) return <p>No context</p>;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

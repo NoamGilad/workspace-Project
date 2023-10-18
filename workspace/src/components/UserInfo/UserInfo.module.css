@@ -46,8 +46,8 @@
 
 .inputContainer {
   display: flex;
-  flex-direction: column; /* Display children in a column */
-  align-items: center; /* Center items horizontally */
+  flex-direction: column;
+  align-items: center;
 }
 
 .fileInput {
