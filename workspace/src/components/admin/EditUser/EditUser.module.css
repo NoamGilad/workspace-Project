@@ -1,0 +1,25 @@
+.selectedUser {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectedUser div {
+  display: flex;
+  flex-direction: row;
+}
+
+.selectedUser label {
+  text-align: justify;
+  font-size: medium;
+}
+
+.selectedUser input {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 0px;
+}
