@@ -1,4 +1,8 @@
-/* UsersList.module.css */
+.mainDiv {
+  display: flex;
+  flex-direction: row;
+}
+
 .usersListCard {
   display: flex;
   flex-direction: column;

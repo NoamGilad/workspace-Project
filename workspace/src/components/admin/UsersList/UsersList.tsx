@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import Card from "../../../UI/Card/Card";
 import classes from "./UsersList.module.css";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
+import EditUser from "../EditUser/EditUser";
 
 type User = {
   firstName: string;
@@ -16,6 +17,7 @@ const UsersList = () => {
   const context = useContext(AuthCtx);
 
   const [usersList, setUsersList] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     // context?.setIsSubmitting(true);
@@ -43,23 +45,6 @@ const UsersList = () => {
     }
   }, [context]);
 
-  let selectedContent = "";
-
-  const handelSelectUser = (index: number, user: User) => {
-    console.log("Selected user at index:", index, user.id);
-
-    return (
-      <Card className={classes.usersListCard}>
-        <label>First Name</label>
-        <div>{user.firstName}</div>
-        <label>Last Name</label>
-        <div>{user.lastName}</div>
-        <label>Email</label>
-        <div>{user.id}</div>
-      </Card>
-    );
-  };
-
   let content;
 
   if (!context) {
@@ -69,9 +54,9 @@ const UsersList = () => {
   if (context) {
     content = (
       <ul>
-        {usersList.map((user, index) => (
+        {usersList.map((user: User, index) => (
           <Card className={classes.InnerUserList}>
-            <li key={index} onClick={() => handelSelectUser(index, user)}>
+            <li key={index} onClick={() => handelSelectUser(user)}>
               <div>
                 <label>Name</label>
                 <p>
@@ -93,17 +78,28 @@ const UsersList = () => {
     content = <CircleLoader />;
   }
 
+  const handelSelectUser = (user: User) => {
+    console.log("Selected user:", user.id);
+    setSelectedUser(user);
+    context?.setShowModal(true);
+  };
+
   return (
-    <div>
+    <>
       <Card className={classes.usersListCard}>
         <h5>Users List</h5>
         {content}
       </Card>
-      <Card className={classes.usersListCard}>
-        <h5>Selected User</h5>
-        {selectedContent}
-      </Card>
-    </div>
+      {selectedUser &&
+        context?.showModal &&
+        context?.isSubmitting === false && (
+          <EditUser
+            firstName={selectedUser.firstName}
+            lastName={selectedUser.lastName}
+            id={selectedUser.id}
+          />
+        )}
+    </>
   );
 };
 
