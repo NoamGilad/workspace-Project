@@ -16,8 +16,7 @@ h1 {
 }
 
 .homeCard {
-  width: 65%;
-  max-width: 100%;
+  max-width: 65%;
   max-height: 100%;
   overflow: hidden;
   background-color: rgb(255, 255, 255);
