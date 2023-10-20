@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import Card from "../../../UI/Card/Card";
 import classes from "./UsersList.module.css";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
@@ -17,7 +17,6 @@ const UsersList = () => {
   const context = useContext(AuthCtx);
 
   const [usersList, setUsersList] = useState<any[]>([]);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     // context?.setIsSubmitting(true);
@@ -80,8 +79,33 @@ const UsersList = () => {
 
   const handelSelectUser = (user: User) => {
     console.log("Selected user:", user.id);
-    setSelectedUser(user);
+    context?.setSelectedUser(user);
     context?.setShowModal(true);
+  };
+
+  const updateProfileHandler = async (
+    e: React.FormEvent,
+    firstName: string,
+    lastName: string,
+    email: string
+  ) => {
+    e.preventDefault();
+
+    if (!context) return <p>No context</p>;
+
+    context?.setSelectedUser({
+      firstName: firstName,
+      lastName: lastName,
+      role: "Employee",
+      id: email,
+    });
+
+    const userRef = doc(context.storeDatabase, "users", email);
+
+    await updateDoc(userRef, {
+      firstName: firstName,
+      lastName: lastName,
+    });
   };
 
   return (
@@ -90,13 +114,14 @@ const UsersList = () => {
         <h5>Users List</h5>
         {content}
       </Card>
-      {selectedUser &&
+      {context?.selectedUser &&
         context?.showModal &&
         context?.isSubmitting === false && (
           <EditUser
-            firstName={selectedUser.firstName}
-            lastName={selectedUser.lastName}
-            id={selectedUser.id}
+            firstName={context.selectedUser.firstName}
+            lastName={context.selectedUser.lastName}
+            id={context.selectedUser.id}
+            updateProfileHandler={updateProfileHandler}
           />
         )}
     </>

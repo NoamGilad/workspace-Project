@@ -60,6 +60,20 @@ type AuthContextType = {
   setFrom: React.Dispatch<React.SetStateAction<string>>;
   to: string;
   setTo: React.Dispatch<React.SetStateAction<string>>;
+  selectedUser: {
+    firstName: string;
+    lastName: string;
+    role: string;
+    id: string;
+  } | null;
+  setSelectedUser: React.Dispatch<
+    React.SetStateAction<{
+      firstName: string;
+      lastName: string;
+      role: string;
+      id: string;
+    } | null>
+  >;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -102,6 +116,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [date, setDate] = useState<string>("");
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
+
+  const [selectedUser, setSelectedUser] = useState<{
+    firstName: string;
+    lastName: string;
+    role: string;
+    id: string;
+  } | null>(null);
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -397,6 +418,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setFrom,
         to,
         setTo,
+        selectedUser,
+        setSelectedUser,
       }}
     >
       {children}
