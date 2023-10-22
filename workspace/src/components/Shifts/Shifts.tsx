@@ -12,9 +12,9 @@ const Shifts = () => {
 
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [filteredYear, setFilteredYear] = useState<string>("2023");
+  const [filteredMonth, setFilteredMonth] = useState<string>("01");
 
   if (!context) {
-    console.error("No context!");
     return <p>No context!</p>;
   }
 
@@ -46,8 +46,12 @@ const Shifts = () => {
     setSelectedDate(date);
   };
 
-  const filterChangHandler = (selectedYear: string) => {
-    setFilteredYear(selectedYear);
+  const filterChangeHandler = (filterName: string, selectedValue: string) => {
+    if (filterName === "selectedYear") {
+      setFilteredYear(selectedValue);
+    } else if (filterName === "selectedMonth") {
+      setFilteredMonth(selectedValue);
+    }
   };
 
   const fromNumber = +context.from;
@@ -61,13 +65,15 @@ const Shifts = () => {
       ) : (
         <div>
           <ShiftsFilter
-            onChangeFilter={filterChangHandler}
-            selected={filteredYear}
+            onChangeFilter={filterChangeHandler}
+            selectedYear={filteredYear}
+            selectedMonth={filteredMonth}
           />
           <ShiftList
             shifts={context.list}
             selectedDate={selectedDate}
             filteredYear={filteredYear}
+            filteredMonth={filteredMonth}
           />
         </div>
       )}
