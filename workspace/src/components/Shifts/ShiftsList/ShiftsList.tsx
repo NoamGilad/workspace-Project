@@ -16,6 +16,7 @@ const ShiftList: React.FC<{
   shifts: Shift[];
   selectedDate: string;
   filteredYear: string;
+  filteredMonth: string;
 }> = (props) => {
   const context = useContext(AuthCtx);
 
@@ -32,7 +33,21 @@ const ShiftList: React.FC<{
   const filteredShifts = props.shifts.filter((shift) => {
     const shiftDate = new Date(shift.date);
     const shiftYear = shiftDate.getFullYear().toString();
-    return shiftYear === props.filteredYear;
+    const shiftMonth = (shiftDate.getMonth() + 1).toString().padStart(2, "0");
+
+    return (
+      shiftYear === props.filteredYear && shiftMonth === props.filteredMonth
+    );
+  });
+
+  const sortedShifts = filteredShifts.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+
+    const dayA = dateA.getDate();
+    const dayB = dateB.getDate();
+
+    return dayA - dayB;
   });
 
   const handleDeleteShift = async (shift: any) => {
@@ -71,8 +86,8 @@ const ShiftList: React.FC<{
 
   return (
     <div>
-      {filteredShifts.length < 1 ? (
-        <p>No shifts this year.</p>
+      {sortedShifts.length < 1 ? (
+        <p>There are no shifts at this month.</p>
       ) : (
         <ul className={classes.shiftsList}>
           {Object.values(filteredShifts).map((shift: any) => (

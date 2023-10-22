@@ -2,6 +2,7 @@ import classes from "./EditUser.module.css";
 import Modal from "../../../UI/Modal/Modal";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext, useRef } from "react";
+import Card from "../../../UI/Card/Card";
 
 const EditUser: React.FC<{
   firstName: string;
@@ -33,7 +34,7 @@ const EditUser: React.FC<{
 
   return (
     <Modal onClose={() => context.setShowModal(false)}>
-      <div className={classes.selectedUser}>
+      <Card className={classes.selectedUser}>
         <form onSubmit={handleFormSubmit}>
           <label>First Name</label>
           <input ref={firstNameRef} defaultValue={props.firstName} />
@@ -47,7 +48,7 @@ const EditUser: React.FC<{
             Close
           </button>
         </form>
-      </div>
+      </Card>
     </Modal>
   );
 };

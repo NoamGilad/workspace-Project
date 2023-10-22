@@ -5,6 +5,7 @@ import Card from "../../../UI/Card/Card";
 import classes from "./UsersList.module.css";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
+import ModifyIcon from "../../../assets/Modify.svg";
 
 type User = {
   firstName: string;
@@ -55,7 +56,7 @@ const UsersList = () => {
       <ul>
         {usersList.map((user: User, index) => (
           <Card className={classes.InnerUserList}>
-            <li key={index} onClick={() => handelSelectUser(user)}>
+            <li key={index}>
               <div>
                 <label>Name</label>
                 <p>
@@ -66,6 +67,9 @@ const UsersList = () => {
                 <label>Email</label>
                 <p>{user.id}</p>
               </div>
+              <button onClick={() => handelSelectUser(user)}>
+                <img src={ModifyIcon} />
+              </button>
             </li>
           </Card>
         ))}

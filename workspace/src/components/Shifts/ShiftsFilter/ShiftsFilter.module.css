@@ -5,20 +5,13 @@
   margin-bottom: -4px;
 }
 
-.shiftsFilterControl {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .shiftsFilter label {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   align-self: center;
   white-space: nowrap;
   font-weight: bolder;
   margin-bottom: 8px;
-  margin-right: 142px;
+  margin-right: 94.5px;
 }
 
 .shiftsFilter select {
@@ -31,4 +24,26 @@
   border-radius: 12px;
   margin: 0%;
   background-color: peachpuff;
+}
+
+.shiftsFilterControl {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shiftsFilterControl div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.shiftsFilterControl label {
+  margin: auto;
+  margin-bottom: 3px;
 }

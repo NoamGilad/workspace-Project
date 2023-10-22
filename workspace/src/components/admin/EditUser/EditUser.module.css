@@ -1,4 +1,5 @@
 .selectedUser {
+  width: 92%;
   display: flex;
   flex-direction: column;
   background-color: rgb(255, 255, 255);
@@ -22,6 +23,7 @@
   margin-left: 10px;
   margin-right: 10px;
   width: 85%;
+  background-color: lightsalmon;
 }
 
 .closeButton {
