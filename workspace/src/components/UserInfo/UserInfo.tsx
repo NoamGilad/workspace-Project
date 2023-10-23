@@ -19,7 +19,6 @@ const UserInfo = () => {
     if (context.selectedFile) {
       try {
         await context.uploadProfilePicture(context.selectedFile);
-        console.log(context.auth?.currentUser?.photoURL);
       } catch (error) {
         console.error("Error uploading profile picture:", error);
       }

@@ -33,7 +33,7 @@ const Shifts = () => {
       date,
       from,
       to,
-      shiftDuration,
+      shiftDuration: shiftDuration.padEnd(2, "0"),
       id: Math.random().toString(),
     };
 
