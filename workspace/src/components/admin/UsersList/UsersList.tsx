@@ -30,7 +30,6 @@ const UsersList = () => {
         );
         const users: any[] = [];
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
           const userData = {
             id: doc.id,
             ...doc.data(),

@@ -127,7 +127,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Signup
   const usersCollectionRef = collection(storeDatabase, "users");
-  const adminsCollectionRef = collection(storeDatabase, "admins");
 
   const registerWithEmailAndPassword = async (
     email: string,
@@ -162,19 +161,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
       }
 
-      if (role === "Employee") {
-        await setDoc(doc(usersCollectionRef, email), {
-          role,
-          firstName,
-          lastName,
-        });
-      } else if (role === "Employer") {
-        await setDoc(doc(adminsCollectionRef, email), {
-          role,
-          firstName,
-          lastName,
-        });
-      }
+      await setDoc(doc(usersCollectionRef, email), {
+        role,
+        firstName,
+        lastName,
+      });
 
       setLoggedIn(true);
       setIsSubmitting(false);
@@ -197,12 +188,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async () => {
     setIsSubmitting(true);
 
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+    return await signInWithEmailAndPassword(auth, email, password)
+      .then(async () => {
+        const userRole = await gettingExistingUserDocData(email);
+        console.log();
+
         setLoggedIn(true);
         setIsSubmitting(false);
 
-        return true;
+        return userRole;
       })
       .catch((error) => {
         if (
@@ -227,11 +221,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (user && auth.currentUser !== null) {
         setIsSubmitting(true);
-        const signInTime = user.metadata.lastSignInTime;
-        //USE getDoc etc...
-        // ...
+
         await gettingExistingUserDocData(user?.email);
-        await gettingExistingAdminDocData(user?.email);
         setLoggedIn(true);
         setIsSubmitting(false);
       } else {
@@ -267,23 +258,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setEmail(userData);
       setRole(docSnap.data().role);
       setList(docSnap.data().workingHours || []);
+      return docSnap.data().role;
     } else {
       console.error("No such document!");
-      console.error("No such USER document!");
-    }
-  };
-
-  const gettingExistingAdminDocData = async (userData: any) => {
-    const docRef = doc(storeDatabase, "admins", userData);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setFirstName(docSnap.data().firstName);
-      setLastName(docSnap.data().lastName);
-      setEmail(userData);
-      setRole(docSnap.data().role);
-    } else {
-      console.error("No such ADMIN document!");
     }
   };
 
@@ -373,9 +350,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       lastNameRestOfName
     );
   }
-
-  /////////////////////////////////////////////////////////////////////
-  // Shifts
 
   return (
     <AuthCtx.Provider
