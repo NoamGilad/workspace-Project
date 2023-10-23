@@ -21,6 +21,11 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
+    if (!samePassword) {
+      window.alert("Password do not match.");
+      return;
+    }
+
     try {
       const registrationSuccess = await context.registerWithEmailAndPassword(
         context.email,
@@ -42,6 +47,16 @@ const SignUpPage: React.FC = () => {
       window.alert("Registration problem");
     } finally {
       context.setIsSubmitting(false);
+    }
+  };
+
+  let samePassword: boolean;
+
+  const handleConfirmPassword = (value: string) => {
+    if (value === context.password) {
+      samePassword = true;
+    } else {
+      samePassword = false;
     }
   };
 
@@ -76,6 +91,13 @@ const SignUpPage: React.FC = () => {
             type="password"
             onChange={(e) => context.setPassword(e.target.value)}
             placeholder="Enter your password"
+            required
+          />
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            onChange={(e) => handleConfirmPassword(e.target.value)}
+            placeholder="Enter your password again"
             required
           />
           <label>Role</label>

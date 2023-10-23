@@ -19,13 +19,19 @@ const SignInPage: React.FC = () => {
     }
 
     try {
-      await context.login();
+      const curRole = await context.login();
 
       if (context.auth?.currentUser === null) return;
 
-      return context.role === "Employer"
-        ? navigate("/admin")
-        : navigate("/user");
+      if (curRole === "Employee") {
+        navigate("/user");
+        return;
+      }
+
+      if (curRole === "Employer") {
+        navigate("/admin");
+        return;
+      }
     } catch (error) {
       console.error(error);
       window.alert("Login problem");
