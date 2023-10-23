@@ -14,7 +14,7 @@
 }
 
 .usersListCard h5 {
-  margin: 0px;
+  margin: 5px;
   margin-top: -15px;
 }
 
@@ -36,6 +36,7 @@
 .InnerUserList {
   background-color: lightsalmon;
   padding: 5px;
+  margin-bottom: 15px;
 }
 
 .InnerUserList img {
