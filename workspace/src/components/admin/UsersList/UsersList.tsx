@@ -53,25 +53,29 @@ const UsersList = () => {
   if (context) {
     content = (
       <ul>
-        {usersList.map((user: User, index) => (
-          <Card className={classes.InnerUserList}>
-            <li key={index}>
-              <div>
-                <label>Name</label>
-                <p>
-                  {user.firstName} {user.lastName}
-                </p>
-              </div>
-              <div>
-                <label>Email</label>
-                <p>{user.id}</p>
-              </div>
-              <button onClick={() => handelSelectUser(user)}>
-                <img src={ModifyIcon} />
-              </button>
-            </li>
-          </Card>
-        ))}
+        {usersList
+          .filter((user) => {
+            return user.role === "Employee";
+          })
+          .map((user: User, index) => (
+            <Card className={classes.InnerUserList}>
+              <li key={index}>
+                <div>
+                  <label>Name</label>
+                  <p>
+                    {user.firstName} {user.lastName}
+                  </p>
+                </div>
+                <div>
+                  <label>Email</label>
+                  <p>{user.id}</p>
+                </div>
+                <button onClick={() => handleSelectUser(user)}>
+                  <img src={ModifyIcon} />
+                </button>
+              </li>
+            </Card>
+          ))}
       </ul>
     );
   }
@@ -80,7 +84,7 @@ const UsersList = () => {
     content = <CircleLoader />;
   }
 
-  const handelSelectUser = (user: User) => {
+  const handleSelectUser = (user: User) => {
     console.log("Selected user:", user.id);
     context?.setSelectedUser(user);
     context?.setShowModal(true);

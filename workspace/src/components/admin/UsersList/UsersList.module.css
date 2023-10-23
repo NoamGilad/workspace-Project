@@ -36,6 +36,7 @@
 .InnerUserList {
   background-color: lightsalmon;
   padding: 5px;
+  margin-bottom: 15px;
 }
 
 .InnerUserList img {

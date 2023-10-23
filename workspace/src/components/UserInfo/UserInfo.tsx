@@ -3,9 +3,11 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 import Card from "../../UI/Card/Card";
 
 import classes from "./UserInfo.module.css";
+import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
   const context = useContext(AuthCtx);
+  const navigate = useNavigate();
 
   if (!context) return <p>No context</p>;
 
@@ -22,6 +24,15 @@ const UserInfo = () => {
       } catch (error) {
         console.error("Error uploading profile picture:", error);
       }
+    }
+  };
+
+  const handleDeleteUser = () => {
+    if (window.confirm("Are you sure you want to delete your user?")) {
+      context?.auth?.currentUser?.delete();
+      navigate("/signin");
+    } else {
+      return;
     }
   };
 
@@ -63,6 +74,14 @@ const UserInfo = () => {
           <p>{context.email}</p>
         </div>
       </div>
+      <button
+        className={classes.deleteButton}
+        onClick={() => {
+          handleDeleteUser();
+        }}
+      >
+        Delete user
+      </button>
     </Card>
   );
 };
