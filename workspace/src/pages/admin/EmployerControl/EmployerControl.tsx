@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AuthCtx } from "../../contexts/AuthProvider";
-import UsersList from "../../components/admin/UsersList/UsersList";
+import { AuthCtx } from "../../../contexts/AuthProvider";
+import UsersList from "../../../components/admin/UsersList/UsersList";
 import classes from "./EmployerControl.module.css";
 
 const EmployeeControlPage: React.FC = () => {

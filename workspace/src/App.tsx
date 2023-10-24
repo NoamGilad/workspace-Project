@@ -6,7 +6,8 @@ import SignUpPage from "./pages/SignUp/SignUp";
 import SignInPage from "./pages/SignIn/SignIn";
 import ErrorPage from "./pages/error-page/Error";
 import EmployeeProfilePage from "./pages/user/EmployeeProfile";
-import EmployeeControlPage from "./pages/admin/EmployerControl";
+import EmployeeControlPage from "./pages/admin/EmployerControl/EmployerControl";
+import SignUpAdminPage from "./pages/SignUp/SignUpAdmin/SignUpAdmin";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "signupadmin",
+        element: <SignUpAdminPage />,
       },
       {
         path: "signup",
