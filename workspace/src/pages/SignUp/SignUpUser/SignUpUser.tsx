@@ -1,11 +1,11 @@
-import { AuthCtx } from "../../contexts/AuthProvider";
+import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import classes from "./SignUp.module.css";
-import CircleLoader from "../../UI/CircleLoader/CircleLoader";
+import classes from "./SignUpUser.module.css";
+import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
-const SignUpPage: React.FC = () => {
+const SignUpUserPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
 
@@ -30,15 +30,15 @@ const SignUpPage: React.FC = () => {
       const registrationSuccess = await context.registerWithEmailAndPassword(
         context.email,
         context.password,
-        context.role,
+        "Employee",
         context.firstName,
-        context.lastName
+        context.lastName,
+        Math.random().toString(),
+        context.companyName
       );
 
-      if (registrationSuccess && context.role === "Employee") {
+      if (registrationSuccess) {
         navigate("/user");
-      } else if (registrationSuccess && context.role === "Employer") {
-        navigate("/admin");
       } else {
         window.alert("Registration problem");
       }
@@ -100,16 +100,6 @@ const SignUpPage: React.FC = () => {
             placeholder="Enter your password again"
             required
           />
-          <label>Role</label>
-          <select
-            value={context.role}
-            onChange={(e) => context.setRole(e.target.value)}
-            required
-          >
-            <option value="">Select</option>
-            <option value="Employee">Employee</option>
-            <option value="Employer">Employer</option>
-          </select>
           <button type="submit" disabled={context.isSubmitting}>
             {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
           </button>
@@ -121,4 +111,4 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUpUserPage;
