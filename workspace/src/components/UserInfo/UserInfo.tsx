@@ -80,7 +80,7 @@ const UserInfo = () => {
           handleDeleteUser();
         }}
       >
-        Delete userrrr
+        Delete user
       </button>
     </Card>
   );

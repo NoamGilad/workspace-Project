@@ -127,6 +127,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Signup
   const usersCollectionRef = collection(storeDatabase, "users");
+  const companiesCollectionRef = collection(storeDatabase, "users");
 
   const registerWithEmailAndPassword = async (
     email: string,
