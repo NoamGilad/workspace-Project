@@ -30,13 +30,14 @@ const SignUpAdminPage: React.FC = () => {
       const registrationSuccess = await context.registerWithEmailAndPassword(
         context.email,
         context.password,
-        context.role,
+        "Employer",
         context.firstName,
-        context.lastName
+        context.lastName,
+        Math.random().toString(),
+        context.companyName
       );
 
       if (registrationSuccess) {
-        context.setRole("Employer");
         navigate("/admin");
       } else {
         window.alert("Registration problem");
@@ -76,6 +77,13 @@ const SignUpAdminPage: React.FC = () => {
             type="text"
             onChange={(e) => context.setLastName(e.target.value)}
             placeholder="Enter your last name"
+            required
+          />
+          <label>Company name</label>
+          <input
+            type="text"
+            onChange={(e) => context.setCompanyName(e.target.value)}
+            placeholder="Enter the company name"
             required
           />
           <label>Email</label>

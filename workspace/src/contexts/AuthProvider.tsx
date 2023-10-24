@@ -23,7 +23,7 @@ import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
 type AuthContextType = {
   firebaseConfig: any;
-  auth: Auth | null;
+  auth: Auth;
   storeDatabase: Firestore;
   email: string | null;
   setEmail: React.Dispatch<React.SetStateAction<string | null | undefined>>;
@@ -35,10 +35,19 @@ type AuthContextType = {
   setFirstName: React.Dispatch<React.SetStateAction<string>>;
   lastName: string;
   setLastName: React.Dispatch<React.SetStateAction<string>>;
+  companyId: string;
+  setCompanyId: React.Dispatch<React.SetStateAction<string>>;
+  companyName: string;
+  setCompanyName: React.Dispatch<React.SetStateAction<string>>;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   registerWithEmailAndPassword: Function;
   login: Function;
+  actionCodeSettings: {
+    url: string;
+    handleCodeInApp: boolean;
+    dynamicLinkDomain: string;
+  };
   signout: Function;
   loggedIn: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -101,6 +110,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [role, setRole] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
+  const [companyId, setCompanyId] = useState<string>("");
+  const [companyName, setCompanyName] = useState<string>("");
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -127,15 +138,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Signup
   const usersCollectionRef = collection(storeDatabase, "users");
-  const companiesCollectionRef = collection(storeDatabase, "users");
+  const companiesCollectionRef = collection(storeDatabase, "companies");
 
   const registerWithEmailAndPassword = async (
     email: string,
     password: string,
     role: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    companyId: string,
+    companyName: string
   ): Promise<boolean> => {
+    setRole(role);
+
     if (!email || !password || !role || !firstName || !lastName) {
       window.alert("Please fill in all required fields.");
       return false;
@@ -166,7 +181,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         role,
         firstName,
         lastName,
+        companyId,
+        companyName,
       });
+
+      if (role === "Employer") {
+        await setDoc(doc(companiesCollectionRef, companyId), {
+          companyId,
+          companyName,
+        });
+      }
 
       setLoggedIn(true);
       setIsSubmitting(false);
@@ -184,6 +208,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   /////////////////////////////////////////////////////////////////////
+  // Signup with link
+
+  const actionCodeSettings = {
+    url: "signup-user",
+
+    handleCodeInApp: true,
+
+    dynamicLinkDomain: "signup-user",
+  };
+
+  /////////////////////////////////////////////////////////////////////
   // LOGIN
 
   const login = async () => {
@@ -192,7 +227,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return await signInWithEmailAndPassword(auth, email, password)
       .then(async () => {
         const userRole = await gettingExistingUserDocData(email);
-        console.log();
 
         setLoggedIn(true);
         setIsSubmitting(false);
@@ -258,6 +292,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLastName(docSnap.data().lastName);
       setEmail(userData);
       setRole(docSnap.data().role);
+      setCompanyId(docSnap.data().companyId);
+      setCompanyName(docSnap.data().companyName);
       setList(docSnap.data().workingHours || []);
       return docSnap.data().role;
     } else {
@@ -368,9 +404,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setFirstName,
         lastName,
         setLastName,
+        companyId,
+        setCompanyId,
+        companyName,
+        setCompanyName,
         isSubmitting,
         setIsSubmitting,
         registerWithEmailAndPassword,
+        actionCodeSettings,
         login,
         signout,
         loggedIn,
