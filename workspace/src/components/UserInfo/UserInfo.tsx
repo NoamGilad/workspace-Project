@@ -4,6 +4,7 @@ import Card from "../../UI/Card/Card";
 
 import classes from "./UserInfo.module.css";
 import { useNavigate } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const UserInfo = () => {
   const context = useContext(AuthCtx);
@@ -27,10 +28,15 @@ const UserInfo = () => {
     }
   };
 
-  const handleDeleteUser = () => {
-    if (window.confirm("Are you sure you want to delete your user?")) {
-      context?.auth?.currentUser?.delete();
-      navigate("/signin");
+  const handleDeleteUser = async () => {
+    const curEmail = context?.auth?.currentUser?.email?.toString();
+    if (
+      window.confirm("Are you sure you want to delete your user?") &&
+      curEmail
+    ) {
+      await context?.auth?.currentUser?.delete();
+      await deleteDoc(doc(context.storeDatabase, "users", curEmail));
+      navigate("/home");
     } else {
       return;
     }

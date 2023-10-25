@@ -211,11 +211,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Signup with link
 
   const actionCodeSettings = {
-    url: "signup-user",
+    url: "http://localhost:3000",
 
     handleCodeInApp: true,
 
-    dynamicLinkDomain: "signup-user",
+    dynamicLinkDomain: "/signup-user",
   };
 
   /////////////////////////////////////////////////////////////////////
@@ -337,7 +337,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (!auth.currentUser?.photoURL) {
-      console.error("No photoURL");
+      console.log("No photo url");
       return;
     }
   }, [auth.currentUser]);

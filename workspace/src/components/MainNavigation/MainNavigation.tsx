@@ -50,19 +50,19 @@ const MainNavigation = () => {
           {!context.loggedIn && (
             <li>
               <NavLink
-                to="/signup"
+                to="/signup-user"
                 className={({ isActive }) =>
                   isActive ? classes.active : undefined
                 }
               >
-                Sign Up
+                Sign Up User
               </NavLink>
             </li>
           )}
           {!context.loggedIn && (
             <li>
               <NavLink
-                to="/signupadmin"
+                to="/signup-admin"
                 className={({ isActive }) =>
                   isActive ? classes.active : undefined
                 }
