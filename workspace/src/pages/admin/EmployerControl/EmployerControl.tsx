@@ -12,9 +12,10 @@ const EmployeeControlPage: React.FC = () => {
   const handleShowAddUser = () => {
     context.setShowModal(true);
   };
+
   return (
     <div className={classes.container}>
-      <h1>{context.companyName}</h1>
+      <h1>{context.company.name}</h1>
       <h2>Admin control page</h2>
       <h3>
         Employer: {context.firstName} {context.lastName}

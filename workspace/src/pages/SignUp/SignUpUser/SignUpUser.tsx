@@ -1,13 +1,70 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { doc, updateDoc } from "firebase/firestore";
+import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
 import classes from "./SignUpUser.module.css";
-import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
 const SignUpUserPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [companyInfo, setCompanyInfo] = useState<{ id: string; name: string }>({
+    id: "",
+    name: "",
+  });
+
+  useEffect(() => {
+    if (!context) {
+      console.error("No context");
+      return;
+    }
+
+    const searchParams = new URLSearchParams(location.search);
+    const companyParam = searchParams.get("company");
+
+    if (!companyParam) {
+      console.error("No company in the URL");
+      return;
+    }
+
+    const companyName = searchParams.get("company");
+    const companyId = searchParams.get("companyId");
+
+    if (!context.storeDatabase) {
+      console.error("No storeDatabase in context");
+      return;
+    }
+
+    const newUserDocRef = doc(context.storeDatabase, "users", context.email);
+
+    const updatedCompanyInfo = {
+      id: companyId,
+      name: companyName,
+    };
+
+    if (updatedCompanyInfo) {
+      console.error("No storeDatabase in context");
+      return;
+    }
+
+    setCompanyInfo(updatedCompanyInfo);
+
+    const updateCompanyInfo = async () => {
+      try {
+        await updateDoc(newUserDocRef, {
+          company: updatedCompanyInfo,
+        });
+      } catch (error) {
+        console.error("Error updating user document:", error);
+      }
+    };
+
+    updateCompanyInfo();
+
+    return;
+  }, [location.search, context]);
 
   if (!context) {
     return <p>No context</p>;
@@ -33,8 +90,7 @@ const SignUpUserPage: React.FC = () => {
         "Employee",
         context.firstName,
         context.lastName,
-        Math.random().toString(),
-        context.companyName
+        context.company
       );
 
       if (registrationSuccess) {
@@ -100,6 +156,7 @@ const SignUpUserPage: React.FC = () => {
             placeholder="Enter your password again"
             required
           />
+          <p>Company Name: {context.company.name}</p>
           <button type="submit" disabled={context.isSubmitting}>
             {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
           </button>
