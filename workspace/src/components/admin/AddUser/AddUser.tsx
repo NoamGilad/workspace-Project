@@ -17,12 +17,15 @@ const AddUser = () => {
 
     sendSignInLinkToEmail(context.auth, email, context.actionCodeSettings)
       .then(() => {
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
+        if (email.length < 0) {
+          console.error("No email");
+          return;
+        }
+
         window.localStorage.setItem("emailForSignIn", email);
         console.log(email);
-        return <p>Sent.</p>;
+        context.setShowModal(false);
+        return;
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -43,6 +46,7 @@ const AddUser = () => {
             onChange={(e) => {
               setToEmail(e.target.value);
             }}
+            required
           />
           <button
             onClick={(e) => {

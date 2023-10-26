@@ -33,8 +33,7 @@ const SignUpAdminPage: React.FC = () => {
         "Employer",
         context.firstName,
         context.lastName,
-        Math.random().toString(),
-        context.companyName
+        context.company
       );
 
       if (registrationSuccess) {
@@ -82,7 +81,12 @@ const SignUpAdminPage: React.FC = () => {
           <label>Company name</label>
           <input
             type="text"
-            onChange={(e) => context.setCompanyName(e.target.value)}
+            onChange={(e) =>
+              context.setCompany({
+                id: Math.random().toString(),
+                name: e.target.value,
+              })
+            }
             placeholder="Enter the company name"
             required
           />

@@ -25,9 +25,9 @@ type AuthContextType = {
   firebaseConfig: any;
   auth: Auth;
   storeDatabase: Firestore;
-  email: string | null;
-  setEmail: React.Dispatch<React.SetStateAction<string | null | undefined>>;
-  password: string | null;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   role: string;
   setRole: React.Dispatch<React.SetStateAction<string>>;
@@ -35,10 +35,16 @@ type AuthContextType = {
   setFirstName: React.Dispatch<React.SetStateAction<string>>;
   lastName: string;
   setLastName: React.Dispatch<React.SetStateAction<string>>;
-  companyId: string;
-  setCompanyId: React.Dispatch<React.SetStateAction<string>>;
-  companyName: string;
-  setCompanyName: React.Dispatch<React.SetStateAction<string>>;
+  company: {
+    id: string;
+    name: string;
+  };
+  setCompany: React.Dispatch<
+    React.SetStateAction<{
+      id: string;
+      name: string;
+    }>
+  >;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   registerWithEmailAndPassword: Function;
@@ -46,7 +52,7 @@ type AuthContextType = {
   actionCodeSettings: {
     url: string;
     handleCodeInApp: boolean;
-    dynamicLinkDomain: string;
+    // dynamicLinkDomain: string;
   };
   signout: Function;
   loggedIn: boolean;
@@ -105,13 +111,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const storeDatabase = getFirestore(app);
   const storage = getStorage(app);
 
-  const [email, setEmail] = useState<any>("");
-  const [password, setPassword] = useState<any>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [role, setRole] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [companyId, setCompanyId] = useState<string>("");
-  const [companyName, setCompanyName] = useState<string>("");
+  const [company, setCompany] = useState<{ id: string; name: string }>({
+    id: "",
+    name: "",
+  });
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -146,8 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     role: string,
     firstName: string,
     lastName: string,
-    companyId: string,
-    companyName: string
+    company: { id: string; name: string }
   ): Promise<boolean> => {
     setRole(role);
 
@@ -181,14 +188,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         role,
         firstName,
         lastName,
-        companyId,
-        companyName,
+        company,
       });
 
       if (role === "Employer") {
-        await setDoc(doc(companiesCollectionRef, companyId), {
-          companyId,
-          companyName,
+        await setDoc(doc(companiesCollectionRef, company.name), {
+          companyId: company.id,
+          companyName: company.name,
         });
       }
 
@@ -211,11 +217,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Signup with link
 
   const actionCodeSettings = {
-    url: "http://localhost:3000",
+    url: `http://localhost:3000/?company=${encodeURIComponent(
+      company.name
+    )}&companyId=${company.id}`,
 
     handleCodeInApp: true,
 
-    dynamicLinkDomain: "/signup-user",
+    // dynamicLinkDomain: "signup-user",
   };
 
   /////////////////////////////////////////////////////////////////////
@@ -292,8 +300,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLastName(docSnap.data().lastName);
       setEmail(userData);
       setRole(docSnap.data().role);
-      setCompanyId(docSnap.data().companyId);
-      setCompanyName(docSnap.data().companyName);
+      setCompany(docSnap.data().company);
       setList(docSnap.data().workingHours || []);
       return docSnap.data().role;
     } else {
@@ -404,10 +411,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setFirstName,
         lastName,
         setLastName,
-        companyId,
-        setCompanyId,
-        companyName,
-        setCompanyName,
+        company,
+        setCompany,
         isSubmitting,
         setIsSubmitting,
         registerWithEmailAndPassword,

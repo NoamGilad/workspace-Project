@@ -11,3 +11,7 @@
 .container h1 {
   margin: 0px;
 }
+
+.container button {
+  margin-bottom: 5px;
+}
