@@ -217,7 +217,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Signup with link
 
   const actionCodeSettings = {
-    url: `http://localhost:3000/?company=${encodeURIComponent(
+    url: `http://localhost:3000/signup-user?company=${encodeURIComponent(
       company.name
     )}&companyId=${company.id}`,
 
