@@ -109,7 +109,7 @@ const ShiftList: React.FC<{
                     </div>
                     <div>
                       <label>Duration:</label>
-                      <p>{shift.shiftDuration.padEnd(2, "0")}</p>
+                      <p>{shift.shiftDuration}</p>
                     </div>
                   </div>
                   <div>

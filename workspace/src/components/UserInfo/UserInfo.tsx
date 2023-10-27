@@ -38,6 +38,7 @@ const UserInfo = () => {
       await deleteDoc(doc(context.storeDatabase, "users", curEmail));
       navigate("/home");
     } else {
+      console.error("ERROR");
       return;
     }
   };

@@ -35,10 +35,15 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
 
     const durationMs = toTime.getTime() - fromTime.getTime();
 
-    const hours = Math.floor(durationMs / (1000 * 60 * 60));
-    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+    const hours = String(Math.floor(durationMs / (1000 * 60 * 60))).padStart(
+      2,
+      "0"
+    );
+    const minutes = String(
+      Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60))
+    ).padStart(2, "0");
 
-    const totalShiftTime = [hours, ":", minutes].join("");
+    const totalShiftTime = `${hours}:${minutes}`;
 
     console.log("Date:", fromDate);
     console.log("From Time:", fromTime);

@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
-import SignUpPage from "./pages/SignUp/SignUpUser/SignUpUser";
 import SignInPage from "./pages/SignIn/SignIn";
 import ErrorPage from "./pages/error-page/Error";
 import EmployeeProfilePage from "./pages/user/EmployeeProfile";
@@ -25,22 +24,24 @@ const router = createBrowserRouter([
         element: <SignUpAdminPage />,
       },
       {
-        path: "signup-user",
-        element: <SignUpUserPage />,
-      },
-      {
         path: "signin",
         element: <SignInPage />,
       },
       {
-        path: "user",
-        element: <EmployeeProfilePage />,
-        children: [],
+        path: "signup-user",
+        element: <SignUpUserPage />,
+      },
+      {
+        path: "signup-user",
+        element: <SignUpUserPage />,
       },
       {
         path: "admin",
         element: <EmployeeControlPage />,
-        children: [],
+      },
+      {
+        path: "user",
+        element: <EmployeeProfilePage />,
       },
     ],
   },

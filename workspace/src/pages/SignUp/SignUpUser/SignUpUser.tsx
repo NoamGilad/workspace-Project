@@ -10,10 +10,20 @@ const SignUpUserPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
   const location = useLocation();
-  const [companyInfo, setCompanyInfo] = useState<{ id: string; name: string }>({
+  const [companyInfo, setCompanyInfo] = useState<{
+    id: string | null;
+    name: string | null;
+  }>({
     id: "",
     name: "",
   });
+
+  const getQueryParameters = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const company = searchParams.get("company");
+    const companyId = searchParams.get("companyId");
+    return { company, companyId };
+  };
 
   useEffect(() => {
     if (!context) {
@@ -21,33 +31,23 @@ const SignUpUserPage: React.FC = () => {
       return;
     }
 
-    const searchParams = new URLSearchParams(location.search);
-    const companyParam = searchParams.get("company");
-
-    if (!companyParam) {
-      console.error("No company in the URL");
-      return;
-    }
-
-    const companyName = searchParams.get("company");
-    const companyId = searchParams.get("companyId");
-
     if (!context.storeDatabase) {
       console.error("No storeDatabase in context");
       return;
     }
 
+    if (!context.email) {
+      console.log("No email");
+      return;
+    }
     const newUserDocRef = doc(context.storeDatabase, "users", context.email);
+
+    const { company, companyId } = getQueryParameters();
 
     const updatedCompanyInfo = {
       id: companyId,
-      name: companyName,
+      name: company,
     };
-
-    if (updatedCompanyInfo) {
-      console.error("No storeDatabase in context");
-      return;
-    }
 
     setCompanyInfo(updatedCompanyInfo);
 
@@ -62,8 +62,6 @@ const SignUpUserPage: React.FC = () => {
     };
 
     updateCompanyInfo();
-
-    return;
   }, [location.search, context]);
 
   if (!context) {
