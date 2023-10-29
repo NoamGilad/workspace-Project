@@ -36,13 +36,13 @@ type AuthContextType = {
   lastName: string;
   setLastName: React.Dispatch<React.SetStateAction<string>>;
   company: {
-    id: string;
-    name: string;
+    id: string | null;
+    name: string | null;
   };
   setCompany: React.Dispatch<
     React.SetStateAction<{
-      id: string;
-      name: string;
+      id: string | null;
+      name: string | null;
     }>
   >;
   isSubmitting: boolean;
@@ -116,7 +116,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [role, setRole] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [company, setCompany] = useState<{ id: string; name: string }>({
+  const [company, setCompany] = useState<{
+    id: string | null;
+    name: string | null;
+  }>({
     id: "",
     name: "",
   });
@@ -217,9 +220,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Signup with link
 
   const actionCodeSettings = {
-    url: `http://localhost:3000/signup-user?company=${encodeURIComponent(
-      company.name
-    )}&companyId=${company.id}`,
+    url: `http://localhost:3000/signup-user?company=${company.name}&companyId=${company.id}`,
 
     handleCodeInApp: true,
 
@@ -269,7 +270,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setLoggedIn(true);
         setIsSubmitting(false);
       } else {
-        console.error("No account logged in.");
+        console.log("No account logged in.");
         setLoggedIn(false);
       }
     });

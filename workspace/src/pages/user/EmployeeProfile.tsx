@@ -18,13 +18,15 @@ const EmployeeProfilePage = () => {
   return (
     <div className={classes.container}>
       <h1 className={classes.h1Welcome}>
-        Welcome {"\n"}
-        {context.nameToCapital(context.firstName, context.lastName)!}
+        Welcome {context.nameToCapital(context.firstName, context.lastName)!}
       </h1>
+      <div>
+        <h2>Company: {context.company.name}</h2>
+        <h2>Role: {context.role}</h2>
+      </div>
       {isRole ? (
         <>
           <div className={classes.cards}>
-            {/* all the components right in this div */}
             <div className={classes.cardContainer}>
               <UserInfo />
             </div>

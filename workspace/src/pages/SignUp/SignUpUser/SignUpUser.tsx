@@ -10,20 +10,15 @@ const SignUpUserPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
   const location = useLocation();
-  const [companyInfo, setCompanyInfo] = useState<{
-    id: string | null;
-    name: string | null;
-  }>({
-    id: "",
-    name: "",
-  });
 
   const getQueryParameters = () => {
     const searchParams = new URLSearchParams(location.search);
-    const company = searchParams.get("company");
+    const companyName = searchParams.get("company");
     const companyId = searchParams.get("companyId");
-    return { company, companyId };
+    return { companyName, companyId };
   };
+
+  const { companyName, companyId } = getQueryParameters();
 
   useEffect(() => {
     if (!context) {
@@ -40,33 +35,12 @@ const SignUpUserPage: React.FC = () => {
       console.log("No email");
       return;
     }
-    const newUserDocRef = doc(context.storeDatabase, "users", context.email);
-
-    const { company, companyId } = getQueryParameters();
-
-    const updatedCompanyInfo = {
-      id: companyId,
-      name: company,
-    };
-
-    setCompanyInfo(updatedCompanyInfo);
-
-    const updateCompanyInfo = async () => {
-      try {
-        await updateDoc(newUserDocRef, {
-          company: updatedCompanyInfo,
-        });
-      } catch (error) {
-        console.error("Error updating user document:", error);
-      }
-    };
-
-    updateCompanyInfo();
   }, [location.search, context]);
 
   if (!context) {
     return <p>No context</p>;
   }
+  //////////////////////////////////////////////////////////////////////////
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +55,8 @@ const SignUpUserPage: React.FC = () => {
       return;
     }
 
+    const { companyName, companyId } = getQueryParameters();
+
     try {
       const registrationSuccess = await context.registerWithEmailAndPassword(
         context.email,
@@ -92,6 +68,17 @@ const SignUpUserPage: React.FC = () => {
       );
 
       if (registrationSuccess) {
+        context.setCompany({
+          id: companyId,
+          name: companyName,
+        });
+
+        const userRef = doc(context.storeDatabase, "users", context.email);
+
+        await updateDoc(userRef, {
+          company: { id: companyId, name: companyName },
+        });
+
         navigate("/user");
       } else {
         window.alert("Registration problem");
@@ -103,6 +90,8 @@ const SignUpUserPage: React.FC = () => {
       context.setIsSubmitting(false);
     }
   };
+
+  //////////////////////////////////////////////////////////////////////////
 
   let samePassword: boolean;
 
@@ -154,7 +143,10 @@ const SignUpUserPage: React.FC = () => {
             placeholder="Enter your password again"
             required
           />
-          <p>Company Name: {context.company.name}</p>
+          <p>
+            Company Name:{" "}
+            {companyName ? companyName : "Company Name Not Available"}
+          </p>
           <button type="submit" disabled={context.isSubmitting}>
             {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
           </button>
