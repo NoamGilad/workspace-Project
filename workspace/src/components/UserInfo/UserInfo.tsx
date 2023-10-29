@@ -73,10 +73,6 @@ const UserInfo = () => {
           <p>{context.nameToCapital(context.firstName, context.lastName)}</p>
         </div>
         <div>
-          <label>Role:</label>
-          <p>{context.role}</p>
-        </div>
-        <div>
           <label>Email:</label>
           <p>{context.email}</p>
         </div>
