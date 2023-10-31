@@ -84,8 +84,25 @@ const ShiftList: React.FC<{
     }
   };
 
+  const totalMonthlyHours = filteredShifts.reduce((acc, cur) => {
+    const shiftDurationInHours = parseFloat(cur.shiftDuration);
+    if (!isNaN(shiftDurationInHours)) {
+      return acc + shiftDurationInHours;
+    } else {
+      console.error(`Invalid shift duration: ${cur.shiftDuration}`);
+      return acc;
+    }
+  }, 0);
+
+  const formatHours = (hours: number) => {
+    return hours.toFixed(2);
+  };
+
+  console.log(totalMonthlyHours);
+
   return (
     <div>
+      <p>Total Monthly Hours: {formatHours(totalMonthlyHours)}</p>
       {sortedShifts.length < 1 ? (
         <p>There are no shifts at this month.</p>
       ) : (
