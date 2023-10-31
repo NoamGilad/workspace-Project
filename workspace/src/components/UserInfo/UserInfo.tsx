@@ -28,11 +28,14 @@ const UserInfo = () => {
   };
 
   const deleteUserHandler = () => {
-    context.handleDeleteUser(
-      context.auth.currentUser?.email?.toString(),
-      context.auth.currentUser?.delete()
-    );
-    navigate("/");
+    if (context.auth.currentUser?.email) {
+      const deleteMethod = context.auth.currentUser.delete();
+      context.handleDeleteUser(
+        { id: context.auth.currentUser.email },
+        deleteMethod
+      );
+      navigate("/");
+    }
   };
 
   return (

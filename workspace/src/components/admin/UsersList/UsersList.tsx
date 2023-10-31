@@ -7,6 +7,7 @@ import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
 import { useNavigate } from "react-router-dom";
+import { deleteUser } from "firebase/auth";
 
 type User = {
   firstName: string;
@@ -75,6 +76,9 @@ const UsersList = () => {
                 <button onClick={() => handleSelectUser(user)}>
                   <img src={ModifyIcon} />
                 </button>
+                <button onClick={(e) => deleteUserHandler(user, e)}>
+                  Delete
+                </button>
               </li>
             </Card>
           ))}
@@ -117,12 +121,12 @@ const UsersList = () => {
     });
   };
 
-  const deleteUserHandler = () => {
-    context?.handleDeleteUser(
-      context.auth.currentUser?.email?.toString(),
-      context.auth.currentUser?.delete()
-    );
-    navigate("/");
+  const deleteUserHandler = (user: User, e: any) => {
+    // const deleteMethod = deleteUser(e.target);
+    // context?.handleDeleteUser(user, deleteMethod);
+    // navigate("/");
+    console.log(user);
+    console.log(e);
   };
 
   return (
@@ -141,7 +145,6 @@ const UsersList = () => {
             updateProfileHandler={updateProfileHandler}
           />
         )}
-      <button>Delete</button>
     </>
   );
 };

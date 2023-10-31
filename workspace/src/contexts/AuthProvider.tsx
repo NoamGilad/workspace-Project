@@ -93,6 +93,13 @@ type AuthContextType = {
   handleDeleteUser: Function;
 };
 
+type User = {
+  firstName: string;
+  lastName: string;
+  role: string;
+  id: string;
+};
+
 export const AuthCtx = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -373,17 +380,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Delete user
 
-  const handleDeleteUser = async (email: string, method: Function) => {
-    const curEmail = email;
+  const handleDeleteUser = async (user: User, deleteMethod: Promise<void>) => {
     if (
       window.confirm("Are you sure you want to delete the user?") &&
-      curEmail
+      user.id
     ) {
-      await method;
-      await deleteDoc(doc(storeDatabase, "users", curEmail));
+      try {
+        await deleteMethod;
+        await deleteDoc(doc(storeDatabase, "users", user.id));
+        console.log("Successfully deleted user");
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
     } else {
-      console.error("ERROR");
-      return;
+      console.error("Deletion canceled.");
     }
   };
 
