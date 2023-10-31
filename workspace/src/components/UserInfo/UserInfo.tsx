@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import Card from "../../UI/Card/Card";
 
 import classes from "./UserInfo.module.css";
 import { useNavigate } from "react-router-dom";
-import { deleteDoc, doc } from "firebase/firestore";
 
 const UserInfo = () => {
   const context = useContext(AuthCtx);
@@ -28,19 +27,12 @@ const UserInfo = () => {
     }
   };
 
-  const handleDeleteUser = async () => {
-    const curEmail = context?.auth?.currentUser?.email?.toString();
-    if (
-      window.confirm("Are you sure you want to delete your user?") &&
-      curEmail
-    ) {
-      await context?.auth?.currentUser?.delete();
-      await deleteDoc(doc(context.storeDatabase, "users", curEmail));
-      navigate("/home");
-    } else {
-      console.error("ERROR");
-      return;
-    }
+  const deleteUserHandler = () => {
+    context.handleDeleteUser(
+      context.auth.currentUser?.email?.toString(),
+      context.auth.currentUser?.delete()
+    );
+    navigate("/");
   };
 
   return (
@@ -80,7 +72,7 @@ const UserInfo = () => {
       <button
         className={classes.deleteButton}
         onClick={() => {
-          handleDeleteUser();
+          deleteUserHandler();
         }}
       >
         Delete user
