@@ -84,25 +84,38 @@ const ShiftList: React.FC<{
     }
   };
 
-  const totalMonthlyHours = filteredShifts.reduce((acc, cur) => {
-    const shiftDurationInHours = parseFloat(cur.shiftDuration);
-    if (!isNaN(shiftDurationInHours)) {
-      return acc + shiftDurationInHours;
+  const totalMonthlyHoursInMinutes = filteredShifts.reduce((acc, cur) => {
+    const durationParts = cur.shiftDuration.split(":");
+
+    if (durationParts.length === 2) {
+      const hours = parseInt(durationParts[0]);
+      const minutes = parseInt(durationParts[1]);
+
+      if (!isNaN(hours) && !isNaN(minutes) && minutes < 60) {
+        const totalMinutes = hours * 60 + minutes;
+        return acc + totalMinutes;
+      } else {
+        console.error(`Invalid shift duration: ${cur.shiftDuration}`);
+        return acc;
+      }
     } else {
-      console.error(`Invalid shift duration: ${cur.shiftDuration}`);
+      console.error(`Invalid shift duration format: ${cur.shiftDuration}`);
       return acc;
     }
   }, 0);
 
-  const formatHours = (hours: number) => {
-    return hours.toFixed(2);
-  };
+  const totalMonthlyHours = `${String(
+    Math.floor(totalMonthlyHoursInMinutes / 60)
+  ).padStart(2, "0")}:${String(totalMonthlyHoursInMinutes % 60).padStart(
+    2,
+    "0"
+  )}`;
 
   console.log(totalMonthlyHours);
 
   return (
     <div>
-      <p>Total Monthly Hours: {formatHours(totalMonthlyHours)}</p>
+      <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
       {sortedShifts.length < 1 ? (
         <p>There are no shifts at this month.</p>
       ) : (

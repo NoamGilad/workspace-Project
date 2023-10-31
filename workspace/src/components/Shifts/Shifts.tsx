@@ -77,7 +77,6 @@ const Shifts = () => {
           />
         </div>
       )}
-      <Salary />
     </Card>
   );
 };
