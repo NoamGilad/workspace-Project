@@ -18,6 +18,7 @@ import {
   setDoc,
   collection,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
@@ -89,6 +90,7 @@ type AuthContextType = {
       id: string;
     } | null>
   >;
+  handleDeleteUser: Function;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -369,9 +371,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   /////////////////////////////////////////////////////////////////////
-  // Store amount per hour
+  // Delete user
 
-  const storeAmountPerHour = () => {};
+  const handleDeleteUser = async (email: string, method: Function) => {
+    const curEmail = email;
+    if (
+      window.confirm("Are you sure you want to delete the user?") &&
+      curEmail
+    ) {
+      await method;
+      await deleteDoc(doc(storeDatabase, "users", curEmail));
+    } else {
+      console.error("ERROR");
+      return;
+    }
+  };
 
   /////////////////////////////////////////////////////////////////////
   // Full name
@@ -442,6 +456,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setTo,
         selectedUser,
         setSelectedUser,
+        handleDeleteUser,
       }}
     >
       {children}

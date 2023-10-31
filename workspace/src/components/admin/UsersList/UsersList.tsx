@@ -6,6 +6,7 @@ import classes from "./UsersList.module.css";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
+import { useNavigate } from "react-router-dom";
 
 type User = {
   firstName: string;
@@ -16,6 +17,7 @@ type User = {
 
 const UsersList = () => {
   const context = useContext(AuthCtx);
+  const navigate = useNavigate();
 
   const [usersList, setUsersList] = useState<any[]>([]);
 
@@ -115,6 +117,14 @@ const UsersList = () => {
     });
   };
 
+  const deleteUserHandler = () => {
+    context?.handleDeleteUser(
+      context.auth.currentUser?.email?.toString(),
+      context.auth.currentUser?.delete()
+    );
+    navigate("/");
+  };
+
   return (
     <>
       <Card className={classes.usersListCard}>
@@ -131,6 +141,7 @@ const UsersList = () => {
             updateProfileHandler={updateProfileHandler}
           />
         )}
+      <button>Delete</button>
     </>
   );
 };
