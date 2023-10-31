@@ -17,7 +17,7 @@ const EditUser: React.FC<{
   if (!context) return <p>No context</p>;
 
   const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
     const updatedFirstName = firstNameRef.current?.value || "";
     const updatedLastName = lastNameRef.current?.value || "";
 
