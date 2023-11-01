@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import Card from "../../../UI/Card/Card";
@@ -6,6 +6,7 @@ import classes from "./UsersList.module.css";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
+import RemoveUser from "../../../assets/RemoveUser.svg";
 import { useNavigate } from "react-router-dom";
 import { deleteUser } from "firebase/auth";
 
@@ -14,6 +15,7 @@ type User = {
   lastName: string;
   role: string;
   id: string;
+  amountPerHour: number;
 };
 
 const UsersList = () => {
@@ -77,7 +79,7 @@ const UsersList = () => {
                   <img src={ModifyIcon} />
                 </button>
                 <button onClick={(e) => deleteUserHandler(user, e)}>
-                  Delete
+                  <img src={RemoveUser} />
                 </button>
               </li>
             </Card>
@@ -100,7 +102,8 @@ const UsersList = () => {
     e: React.FormEvent,
     firstName: string,
     lastName: string,
-    email: string
+    email: string,
+    amountPerHour: number
   ) => {
     e.preventDefault();
 
@@ -111,6 +114,7 @@ const UsersList = () => {
       lastName: lastName,
       role: "Employee",
       id: email,
+      amountPerHour: amountPerHour,
     });
 
     const userRef = doc(context.storeDatabase, "users", email);
@@ -118,15 +122,14 @@ const UsersList = () => {
     await updateDoc(userRef, {
       firstName: firstName,
       lastName: lastName,
+      amountPerHour: amountPerHour,
     });
   };
 
   const deleteUserHandler = (user: User, e: any) => {
-    // const deleteMethod = deleteUser(e.target);
+    // const deleteMethod = deleteUser(user);
     // context?.handleDeleteUser(user, deleteMethod);
     // navigate("/");
-    console.log(user);
-    console.log(e);
   };
 
   return (
