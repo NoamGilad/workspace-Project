@@ -81,6 +81,7 @@ type AuthContextType = {
     lastName: string;
     role: string;
     id: string;
+    amountPerHour: number;
   } | null;
   setSelectedUser: React.Dispatch<
     React.SetStateAction<{
@@ -88,6 +89,7 @@ type AuthContextType = {
       lastName: string;
       role: string;
       id: string;
+      amountPerHour: number;
     } | null>
   >;
   handleDeleteUser: Function;
@@ -98,6 +100,7 @@ type User = {
   lastName: string;
   role: string;
   id: string;
+  amountPerHour: number;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -153,6 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     lastName: string;
     role: string;
     id: string;
+    amountPerHour: number;
   } | null>(null);
 
   /////////////////////////////////////////////////////////////////////

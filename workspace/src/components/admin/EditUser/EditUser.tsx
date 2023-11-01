@@ -13,22 +13,35 @@ const EditUser: React.FC<{
   const context = useContext(AuthCtx);
   const firstNameRef = useRef<HTMLInputElement | null>(null);
   const lastNameRef = useRef<HTMLInputElement | null>(null);
+  const amountPerHourRef = useRef<HTMLInputElement | null>(null);
 
-  if (!context) return <p>No context</p>;
-
+  if (!context) {
+    console.error("No context");
+    return <p>No context</p>;
+  }
   const handleFormSubmit = (e: React.FormEvent) => {
     // e.preventDefault();
     const updatedFirstName = firstNameRef.current?.value || "";
     const updatedLastName = lastNameRef.current?.value || "";
+    const updatedAmountPerHour = amountPerHourRef.current?.value
+      ? +amountPerHourRef.current?.value
+      : 30;
 
     context.setSelectedUser({
       firstName: updatedFirstName,
       lastName: updatedLastName,
       role: "Employee",
       id: props.id,
+      amountPerHour: updatedAmountPerHour,
     });
 
-    props.updateProfileHandler(e, updatedFirstName, updatedLastName, props.id);
+    props.updateProfileHandler(
+      e,
+      updatedFirstName,
+      updatedLastName,
+      props.id,
+      updatedAmountPerHour
+    );
     context.setShowModal(false);
   };
 
@@ -37,9 +50,19 @@ const EditUser: React.FC<{
       <Card className={classes.selectedUser}>
         <form onSubmit={handleFormSubmit}>
           <label>First Name</label>
-          <input ref={firstNameRef} defaultValue={props.firstName} />
+          <input
+            type="text"
+            ref={firstNameRef}
+            defaultValue={props.firstName}
+          />
           <label>Last Name</label>
-          <input ref={lastNameRef} defaultValue={props.lastName} />
+          <input type="text" ref={lastNameRef} defaultValue={props.lastName} />
+          <input
+            type="number"
+            defaultValue="30"
+            min="30"
+            ref={amountPerHourRef}
+          />
           <button type="submit">Update</button>
           <button
             onClick={() => context.setShowModal(false)}
