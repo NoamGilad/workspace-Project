@@ -46,6 +46,8 @@ type AuthContextType = {
       name: string | null;
     }>
   >;
+  amount: number;
+  setAmount: React.Dispatch<React.SetStateAction<number>>;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   registerWithEmailAndPassword: Function;
@@ -135,6 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     id: "",
     name: "",
   });
+  const [amount, setAmount] = useState<number>(30);
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -205,6 +208,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         firstName,
         lastName,
         company,
+        amount,
       });
 
       if (role === "Employer") {
@@ -316,6 +320,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setRole(docSnap.data().role);
       setCompany(docSnap.data().company);
       setList(docSnap.data().workingHours || []);
+      setAmount(docSnap.data().amountPerHour);
       return docSnap.data().role;
     } else {
       console.error("No such document!");
@@ -442,6 +447,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setLastName,
         company,
         setCompany,
+        amount,
+        setAmount,
         isSubmitting,
         setIsSubmitting,
         registerWithEmailAndPassword,
