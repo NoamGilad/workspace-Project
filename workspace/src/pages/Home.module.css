@@ -31,3 +31,21 @@ h1 {
   max-width: 100%;
   white-space: normal;
 }
+
+@media (max-width: 460px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 60px;
+  }
+
+  .homeCard {
+    max-width: 90%;
+  }
+
+  .homeCard p {
+    font-size: 20px;
+  }
+}
