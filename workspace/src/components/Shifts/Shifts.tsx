@@ -5,7 +5,6 @@ import classes from "./Shifts.module.css";
 import ShiftList from "./ShiftsList/ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import ShiftsFilter from "./ShiftsFilter/ShiftsFilter";
-import Salary from "../Salary/Salary";
 
 const Shifts = () => {
   const context = useContext(AuthCtx);
