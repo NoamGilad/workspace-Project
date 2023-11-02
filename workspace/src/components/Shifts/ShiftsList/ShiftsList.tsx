@@ -20,6 +20,11 @@ const ShiftList: React.FC<{
 }> = (props) => {
   const context = useContext(AuthCtx);
 
+  if (!context) {
+    console.error("No context!");
+    return <p>No context!</p>;
+  }
+
   const formatDateWithMonthLetters = (date: Date) => {
     const dateObject = new Date(date || props.selectedDate);
     const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
@@ -111,11 +116,20 @@ const ShiftList: React.FC<{
     "0"
   )}`;
 
+  console.log(totalMonthlyHoursInMinutes);
   console.log(totalMonthlyHours);
 
   return (
     <div>
       <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
+      {context.amount ? (
+        <p>
+          Salary this month:{" "}
+          {Math.floor((totalMonthlyHoursInMinutes / 60) * context.amount)}₪
+        </p>
+      ) : (
+        <p>No amountPerHour</p>
+      )}
       {sortedShifts.length < 1 ? (
         <p>There are no shifts at this month.</p>
       ) : (
