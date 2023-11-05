@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
-import Card from "../../UI/Card/Card";
 
 import classes from "./UserInfo.module.css";
 import { useNavigate } from "react-router-dom";
@@ -39,14 +38,14 @@ const UserInfo = () => {
   };
 
   return (
-    <Card className={classes.userInfoContainer}>
-      <Card className={classes.profilePhotoContainer}>
+    <div className={classes.userInfoContainer}>
+      <div className={classes.profilePhotoContainer}>
         <img
           src={context.profilePictureURL || ""}
           alt="Profile"
           className={classes.profilePhoto}
         />
-      </Card>
+      </div>
       <div className={classes.inputContainer}>
         <label className={classes.fileLabel}>
           Select File
@@ -62,7 +61,6 @@ const UserInfo = () => {
         </button>
       </div>
       <div className={classes.profileInfo}>
-        <h4>User information</h4>
         <div>
           <label>Name:</label>
           <p>{context.nameToCapital(context.firstName, context.lastName)}</p>
@@ -80,7 +78,7 @@ const UserInfo = () => {
       >
         Delete user
       </button>
-    </Card>
+    </div>
   );
 };
 
