@@ -25,16 +25,10 @@ const EmployeeProfilePage = () => {
         <h2>Role: {context.role}</h2>
       </div>
       {isRole ? (
-        <>
-          <div className={classes.cards}>
-            <div className={classes.cardContainer}>
-              <UserInfo />
-            </div>
-            <div className={classes.cardContainer}>
-              <Shifts />
-            </div>
-          </div>
-        </>
+        <div className={classes.cards}>
+          <UserInfo />
+          <Shifts />
+        </div>
       ) : (
         <div>
           <CircleLoader />

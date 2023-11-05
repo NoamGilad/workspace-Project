@@ -21,27 +21,8 @@
 }
 
 @media (max-width: 920px) {
-  .container {
-    padding: 20px;
-  }
-
-  .h1Welcome {
-    font-size: 60px;
-  }
-
   .cards {
+    display: flex;
     flex-direction: column;
-  }
-
-  .cards > .cardContainer {
-    margin-bottom: 20px;
-  }
-
-  .cardContainer {
-    max-width: 90%;
-  }
-
-  .cardContainer h2 {
-    font-size: 24px;
   }
 }
