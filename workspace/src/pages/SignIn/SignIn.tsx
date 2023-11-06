@@ -104,10 +104,10 @@ const SignInPage: React.FC = () => {
         </main>
       </form>
       <label>Forgot your password?</label>
-      <ResetButton onClick={() => context?.setShowModal(true)}>
+      <ResetButton onClick={() => context?.setShowResetModal(true)}>
         Reset password
       </ResetButton>
-      {context?.showModal && (
+      {context?.showResetModal && (
         <ResetPassword onResetPassword={handleResetPassword} />
       )}
       <label>New account? </label>

@@ -1,7 +1,33 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
-import classes from "./WorkingHoursForm.module.css";
-import Card from "../../../UI/Card/Card";
+import styled from "styled-components";
+
+const HoursForm = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  margin: 5px;
+  width: fit-content;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  & input {
+    margin-right: 10px;
+    margin-left: -12px;
+    background-color: peachpuff;
+    /* border: 3px solid black; */
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  & label {
+    font-weight: bold;
+  }
+`;
 
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const context = useContext(AuthCtx);
@@ -70,12 +96,11 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   };
 
   return (
-    <Card className={classes.hoursForm}>
+    <HoursForm>
       <form onSubmit={handleSubmitAddShift}>
         <label>
           Date
           <input
-            className={classes.hoursInput}
             type="date"
             value={date}
             onChange={handleDateChanger}
@@ -88,7 +113,6 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         <label>
           From
           <input
-            className={classes.hoursInput}
             type="time"
             value={from}
             onChange={handleFromChanger}
@@ -99,7 +123,6 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         <label>
           To
           <input
-            className={classes.hoursInput}
             type="time"
             value={to}
             onChange={handleToChanger}
@@ -109,7 +132,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         </label>
         <button type="submit">Add shift</button>
       </form>
-    </Card>
+    </HoursForm>
   );
 };
 

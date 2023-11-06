@@ -1,9 +1,0 @@
-.workingHoursContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  background-color: peachpuff;
-  text-align: center;
-  padding: 20px;
-}

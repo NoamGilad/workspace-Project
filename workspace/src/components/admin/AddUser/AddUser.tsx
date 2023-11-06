@@ -2,8 +2,30 @@ import { sendSignInLinkToEmail } from "firebase/auth";
 import { useContext, useState } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import Modal from "../../../UI/Modal/Modal";
-import Card from "../../../UI/Card/Card";
-import classes from "./AddUser.module.css";
+import styled from "styled-components";
+
+const AddUserContainer = styled.div`
+  width: 92%;
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  padding: 15px;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+`;
+
+const CloseButton = styled.button`
+  background-color: red;
+
+  &:hover {
+    background-color: lightcoral;
+  }
+`;
 
 const AddUser = () => {
   const context = useContext(AuthCtx);
@@ -24,7 +46,7 @@ const AddUser = () => {
 
         window.localStorage.setItem("emailForSignIn", email);
         console.log(email);
-        context.setShowModal(false);
+        context.setShowAddUserModal(false);
         return;
       })
       .catch((error) => {
@@ -36,8 +58,8 @@ const AddUser = () => {
   };
 
   return (
-    <Modal onClose={() => context.setShowModal(false)}>
-      <Card className={classes.addUser}>
+    <Modal onClose={() => context.setShowAddUserModal(false)}>
+      <AddUserContainer>
         <form>
           <label>Email</label>
           <input
@@ -55,8 +77,15 @@ const AddUser = () => {
           >
             Send invitation
           </button>
+          <CloseButton
+            onClick={() => {
+              context.setShowAddUserModal(false);
+            }}
+          >
+            Close
+          </CloseButton>
         </form>
-      </Card>
+      </AddUserContainer>
     </Modal>
   );
 };
