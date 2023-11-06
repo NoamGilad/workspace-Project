@@ -1,9 +1,42 @@
 import { NavLink, useNavigate } from "react-router-dom";
-
 import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
+import styled from "styled-components";
 
-import classes from "./MainNavigation.module.css";
+const Header = styled.header`
+  background-color: lightcoral;
+  padding: 10px 0;
+  text-align: center;
+`;
+
+const List = styled.ul`
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ListItem = styled.li`
+  margin: 0 10px;
+  text-align: center;
+
+  & button {
+    margin: 0px;
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  transition: color 0.2s;
+
+  &.active {
+    font-weight: bold;
+    color: darkblue;
+  }
+`;
 
 const MainNavigation = () => {
   const context = useContext(AuthCtx);
@@ -22,75 +55,42 @@ const MainNavigation = () => {
   };
 
   return (
-    <header className={classes.header}>
+    <Header>
       <nav>
-        <ul className={classes.list}>
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-            >
+        <List>
+          <ListItem>
+            <StyledNavLink to="/" end>
               Home
-            </NavLink>
-          </li>
+            </StyledNavLink>
+          </ListItem>
           {!context.loggedIn && (
-            <li>
-              <NavLink
-                to="/signin"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Sign In
-              </NavLink>
-            </li>
+            <ListItem>
+              <StyledNavLink to="/signin">Sign In</StyledNavLink>
+            </ListItem>
           )}
           {!context.loggedIn && (
-            <li>
-              <NavLink
-                to="/signup-admin"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Sign Up Admin
-              </NavLink>
-            </li>
+            <ListItem>
+              <StyledNavLink to="/signup-admin">Sign Up Admin</StyledNavLink>
+            </ListItem>
           )}
           {context.loggedIn && context.role === "Employee" && (
-            <li>
-              <NavLink
-                to="/user"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Profile
-              </NavLink>
-            </li>
+            <ListItem>
+              <StyledNavLink to="/user">Profile</StyledNavLink>
+            </ListItem>
           )}
           {context.loggedIn && context.role === "Employer" && (
-            <li>
-              <NavLink
-                to="/admin"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Control
-              </NavLink>
-            </li>
+            <ListItem>
+              <StyledNavLink to="/admin">Control</StyledNavLink>
+            </ListItem>
           )}
           {context.loggedIn && (
-            <li>
+            <ListItem>
               <button onClick={onLogoutHandler}>Logout</button>
-            </li>
+            </ListItem>
           )}
-        </ul>
+        </List>
       </nav>
-    </header>
+    </Header>
   );
 };
 

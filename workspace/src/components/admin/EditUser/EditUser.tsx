@@ -1,8 +1,47 @@
-import classes from "./EditUser.module.css";
-import Modal from "../../../UI/Modal/Modal";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext, useRef } from "react";
-import Card from "../../../UI/Card/Card";
+import Modal from "../../../UI/Modal/Modal";
+import styled from "styled-components";
+
+const SelectedUser = styled.div`
+  width: 92%;
+  display: flex;
+  margin: 5px;
+  padding: 15px;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  & div {
+    display: flex;
+    flex-direction: row;
+  }
+
+  & label {
+    text-align: justify;
+    font-size: medium;
+  }
+
+  & input {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 85%;
+    background-color: lightsalmon;
+  }
+`;
+
+const CloseButton = styled.button`
+  background-color: red;
+
+  &:hover {
+    background-color: lightcoral;
+  }
+`;
 
 const EditUser: React.FC<{
   firstName: string;
@@ -42,12 +81,12 @@ const EditUser: React.FC<{
       props.id,
       updatedAmountPerHour
     );
-    context.setShowModal(false);
+    context.setShowEditUserModal(false);
   };
 
   return (
-    <Modal onClose={() => context.setShowModal(false)}>
-      <Card className={classes.selectedUser}>
+    <Modal onClose={() => context.setShowEditUserModal(false)}>
+      <SelectedUser>
         <form onSubmit={handleFormSubmit}>
           <label>First Name</label>
           <input
@@ -57,21 +96,13 @@ const EditUser: React.FC<{
           />
           <label>Last Name</label>
           <input type="text" ref={lastNameRef} defaultValue={props.lastName} />
-          <input
-            type="number"
-            defaultValue="30"
-            min="30"
-            ref={amountPerHourRef}
-          />
+          <input type="number" min="30" ref={amountPerHourRef} />
           <button type="submit">Update</button>
-          <button
-            onClick={() => context.setShowModal(false)}
-            className={classes.closeButton}
-          >
+          <CloseButton onClick={() => context.setShowEditUserModal(false)}>
             Close
-          </button>
+          </CloseButton>
         </form>
-      </Card>
+      </SelectedUser>
     </Modal>
   );
 };

@@ -60,8 +60,6 @@ type AuthContextType = {
   signout: Function;
   loggedIn: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   gettingExistingUserDocData: Function;
   nameToCapital: Function;
   selectedFile: File | null;
@@ -95,6 +93,12 @@ type AuthContextType = {
     } | null>
   >;
   handleDeleteUser: Function;
+  showResetModal: boolean;
+  setShowResetModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showAddUserModal: boolean;
+  setShowAddUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showEditUserModal: boolean;
+  setShowEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type User = {
@@ -142,7 +146,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const [showModal, setShowModal] = useState(false);
+  const [showResetModal, setShowResetModal] = useState<boolean>(false);
+  const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false);
+  const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [profilePictureURL, setProfilePictureURL] = useState<string | null>(
@@ -390,19 +396,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Delete user
 
   const handleDeleteUser = async (user: User, deleteMethod: Promise<void>) => {
-    if (
-      window.confirm("Are you sure you want to delete the user?") &&
-      user.id
-    ) {
+    const check = window.confirm("Are you sure you want to delete the user?");
+    if (check && user.id) {
       try {
         await deleteMethod;
         await deleteDoc(doc(storeDatabase, "users", user.id));
-        console.log("Successfully deleted user");
+        return console.log("Successfully deleted user");
       } catch (error) {
         console.error("Error deleting user:", error);
+        return;
       }
     } else {
       console.error("Deletion canceled.");
+      return;
     }
   };
 
@@ -457,8 +463,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signout,
         loggedIn,
         setLoggedIn,
-        showModal,
-        setShowModal,
         gettingExistingUserDocData,
         nameToCapital,
         selectedFile,
@@ -478,6 +482,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         selectedUser,
         setSelectedUser,
         handleDeleteUser,
+        showResetModal,
+        setShowResetModal,
+        showAddUserModal,
+        setShowAddUserModal,
+        showEditUserModal,
+        setShowEditUserModal,
       }}
     >
       {children}

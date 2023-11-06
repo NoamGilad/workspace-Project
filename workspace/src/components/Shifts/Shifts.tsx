@@ -1,10 +1,23 @@
 import { useContext, useState } from "react";
-import Card from "../../UI/Card/Card";
 import WorkingHoursForm from "./WorkingHoursForm/WorkingHoursForm";
-import classes from "./Shifts.module.css";
 import ShiftList from "./ShiftsList/ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import ShiftsFilter from "./ShiftsFilter/ShiftsFilter";
+import styled from "styled-components";
+
+const ShiftsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: peachpuff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  margin: 5px;
+  width: fit-content;
+`;
 
 const Shifts = () => {
   const context = useContext(AuthCtx);
@@ -53,11 +66,8 @@ const Shifts = () => {
     }
   };
 
-  const fromNumber = +context.from;
-  const toNumber = +context.to;
-
   return (
-    <Card className={classes.workingHoursContainer}>
+    <ShiftsContainer>
       <WorkingHoursForm addEntryMainForm={addEntryHandler} />
       {!context.list || context.list.length < 1 ? (
         <p>No shifts to render</p>
@@ -76,7 +86,7 @@ const Shifts = () => {
           />
         </div>
       )}
-    </Card>
+    </ShiftsContainer>
   );
 };
 

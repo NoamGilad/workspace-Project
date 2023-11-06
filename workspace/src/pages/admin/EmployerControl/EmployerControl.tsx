@@ -19,7 +19,7 @@ const EmployeeControlPage: React.FC = () => {
   if (!context) return <p>No context</p>;
 
   const handleShowAddUser = () => {
-    context.setShowModal(true);
+    context.setShowAddUserModal(true);
   };
 
   return (
@@ -30,7 +30,7 @@ const EmployeeControlPage: React.FC = () => {
         Employer: {context.firstName} {context.lastName}
       </h3>
 
-      {context?.showModal && context?.isSubmitting === false ? (
+      {context?.showAddUserModal && context?.isSubmitting === false ? (
         <AddUser />
       ) : (
         <Button

@@ -1,8 +1,67 @@
 import { useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { AuthCtx } from "../../../contexts/AuthProvider";
-import classes from "./ShiftsList.module.css";
-import Card from "../../../UI/Card/Card";
+import styled from "styled-components";
+
+const ShiftsList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+`;
+
+const ShiftsListCard = styled.div`
+  width: fit-content;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  padding: 10px;
+  margin: 5px;
+  margin-bottom: -15px;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  & button {
+    text-align: center;
+    background-color: red;
+    color: black;
+    margin-bottom: 6px;
+    margin-left: 2px;
+  }
+
+  & button:hover {
+    background-color: lightcoral;
+  }
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CardContentDivText = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  & label {
+    margin: 7px;
+  }
+
+  & p {
+    font-weight: bold;
+    margin: 5px;
+  }
+
+  & div {
+    border-radius: 12px;
+    margin: 5px;
+    background-color: peachpuff;
+    padding: 5px;
+  }
+`;
 
 interface Shift {
   id: string;
@@ -133,12 +192,12 @@ const ShiftList: React.FC<{
       {sortedShifts.length < 1 ? (
         <p>There are no shifts at this month.</p>
       ) : (
-        <ul className={classes.shiftsList}>
+        <ShiftsList>
           {Object.values(filteredShifts).map((shift: any) => (
             <li key={shift.id}>
-              <Card className={classes.shiftsListCard}>
-                <div className={classes.cardContent}>
-                  <div className={classes.cardContentDivText}>
+              <ShiftsListCard>
+                <CardContent>
+                  <CardContentDivText>
                     <div>
                       <label>Date:</label>
                       <p>{formatDateWithMonthLetters(shift.date)}</p>
@@ -155,15 +214,15 @@ const ShiftList: React.FC<{
                       <label>Duration:</label>
                       <p>{shift.shiftDuration}</p>
                     </div>
-                  </div>
+                  </CardContentDivText>
                   <div>
                     <button onClick={() => handleDeleteShift(shift)}>x</button>
                   </div>
-                </div>
-              </Card>
+                </CardContent>
+              </ShiftsListCard>
             </li>
           ))}
-        </ul>
+        </ShiftsList>
       )}
     </div>
   );

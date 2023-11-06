@@ -1,14 +1,76 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
-import Card from "../../../UI/Card/Card";
-import classes from "./UsersList.module.css";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
 import RemoveUser from "../../../assets/RemoveUser.svg";
-import { useNavigate } from "react-router-dom";
-import { deleteUser } from "firebase/auth";
+import styled from "styled-components";
+
+const UsersListCard = styled.div`
+  width: fit-content;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  & h5 {
+    margin: 5px;
+    margin-top: -15px;
+  }
+
+  & ul {
+    display: block;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  & li {
+    text-align: center;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const InnerUserList = styled.div`
+  width: fit-content;
+  margin: 5px;
+  margin-bottom: 15px;
+  padding: 5px;
+  background-color: lightsalmon;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  & div {
+    margin: 0px;
+    padding: 3px;
+  }
+
+  & img {
+    margin-top: 3px;
+    margin-right: 2px;
+  }
+
+  & button {
+    border-radius: 100%;
+    margin-right: 5px;
+  }
+
+  & p {
+    font-weight: bold;
+    margin-top: 2px;
+    margin: 2px 7px 3px 7px;
+  }
+`;
 
 type User = {
   firstName: string;
@@ -20,7 +82,6 @@ type User = {
 
 const UsersList = () => {
   const context = useContext(AuthCtx);
-  const navigate = useNavigate();
 
   const [usersList, setUsersList] = useState<any[]>([]);
 
@@ -63,7 +124,7 @@ const UsersList = () => {
             return user.role === "Employee";
           })
           .map((user: User, index) => (
-            <Card className={classes.InnerUserList}>
+            <InnerUserList>
               <li key={index}>
                 <div>
                   <label>Name</label>
@@ -75,14 +136,14 @@ const UsersList = () => {
                   <label>Email</label>
                   <p>{user.id}</p>
                 </div>
-                <button onClick={() => handleSelectUser(user)}>
+                <button onClick={() => handleEditSelectUser(user)}>
                   <img src={ModifyIcon} />
                 </button>
                 <button onClick={(e) => deleteUserHandler(user, e)}>
                   <img src={RemoveUser} />
                 </button>
               </li>
-            </Card>
+            </InnerUserList>
           ))}
       </ul>
     );
@@ -92,10 +153,10 @@ const UsersList = () => {
     content = <CircleLoader />;
   }
 
-  const handleSelectUser = (user: User) => {
+  const handleEditSelectUser = (user: User) => {
     console.log("Selected user:", user.id);
     context?.setSelectedUser(user);
-    context?.setShowModal(true);
+    context?.setShowEditUserModal(true);
   };
 
   const updateProfileHandler = async (
@@ -134,12 +195,12 @@ const UsersList = () => {
 
   return (
     <>
-      <Card className={classes.usersListCard}>
+      <UsersListCard>
         <h5>Users List</h5>
         {content}
-      </Card>
+      </UsersListCard>
       {context?.selectedUser &&
-        context?.showModal &&
+        context?.showEditUserModal &&
         context?.isSubmitting === false && (
           <EditUser
             firstName={context.selectedUser.firstName}
