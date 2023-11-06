@@ -4,7 +4,23 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
-import classes from "./SignIn.module.css";
+import Container from "../../UI/StyledContainer";
+import styled from "styled-components";
+
+const ResetButton = styled.button`
+  background-color: rgb(122, 122, 122);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: rgb(81, 81, 81);
+  }
+`;
 
 const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
@@ -64,7 +80,7 @@ const SignInPage: React.FC = () => {
   };
 
   return (
-    <div className={classes.container}>
+    <Container>
       <h5>Sign in</h5>
       <form onSubmit={handleLoginSubmit}>
         <main>
@@ -88,18 +104,15 @@ const SignInPage: React.FC = () => {
         </main>
       </form>
       <label>Forgot your password?</label>
-      <button
-        className={classes.resetButton}
-        onClick={() => context?.setShowModal(true)}
-      >
+      <ResetButton onClick={() => context?.setShowModal(true)}>
         Reset password
-      </button>
+      </ResetButton>
       {context?.showModal && (
         <ResetPassword onResetPassword={handleResetPassword} />
       )}
       <label>New account? </label>
       <Link to={"/signup"}>Sign up</Link>
-    </div>
+    </Container>
   );
 };
 

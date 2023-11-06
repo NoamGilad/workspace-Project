@@ -1,9 +1,36 @@
 import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
-import classes from "./EmployeeProfile.module.css";
+import styled from "styled-components";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import UserInfo from "../../components/UserInfo/UserInfo";
 import Shifts from "../../components/Shifts/Shifts";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background-color: lightsalmon;
+  text-align: center;
+
+  & h1 {
+    margin: 0px;
+    margin-bottom: 5px;
+    font-size: 90px;
+  }
+`;
+
+const Cards = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+
+  @media (max-width: 920px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
 
 const EmployeeProfilePage = () => {
   const context = useContext(AuthCtx);
@@ -16,8 +43,8 @@ const EmployeeProfilePage = () => {
   const isRole = context.role;
 
   return (
-    <div className={classes.container}>
-      <h1 className={classes.h1Welcome}>
+    <Container>
+      <h1>
         Welcome {context.nameToCapital(context.firstName, context.lastName)!}
       </h1>
       <div>
@@ -25,16 +52,16 @@ const EmployeeProfilePage = () => {
         <h2>Role: {context.role}</h2>
       </div>
       {isRole ? (
-        <div className={classes.cards}>
+        <Cards>
           <UserInfo />
           <Shifts />
-        </div>
+        </Cards>
       ) : (
         <div>
           <CircleLoader />
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 

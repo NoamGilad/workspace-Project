@@ -1,8 +1,17 @@
 import { useContext } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import UsersList from "../../../components/admin/UsersList/UsersList";
-import classes from "./EmployerControl.module.css";
 import AddUser from "../../../components/admin/AddUser/AddUser";
+import Container from "../../../UI/StyledContainer";
+import styled from "styled-components";
+
+const H1 = styled.h1`
+  margin: 0px;
+`;
+
+const Button = styled.button`
+  margin-bottom: 5px;
+`;
 
 const EmployeeControlPage: React.FC = () => {
   const context = useContext(AuthCtx);
@@ -14,8 +23,8 @@ const EmployeeControlPage: React.FC = () => {
   };
 
   return (
-    <div className={classes.container}>
-      <h1>{context.company.name}</h1>
+    <Container>
+      <H1>{context.company.name}</H1>
       <h2>Admin control page</h2>
       <h3>
         Employer: {context.firstName} {context.lastName}
@@ -24,17 +33,17 @@ const EmployeeControlPage: React.FC = () => {
       {context?.showModal && context?.isSubmitting === false ? (
         <AddUser />
       ) : (
-        <button
+        <Button
           onClick={() => {
             handleShowAddUser();
           }}
         >
           Add employee
-        </button>
+        </Button>
       )}
 
       <UsersList />
-    </div>
+    </Container>
   );
 };
 

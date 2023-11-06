@@ -411,7 +411,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   function nameToCapital(firstName: string, lastName: string): string {
     if (firstName.length === 0) {
-      return "No name";
+      return "";
     }
 
     const firstNameFirstLetter = firstName[0].toUpperCase();
