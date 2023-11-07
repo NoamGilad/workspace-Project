@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   min-height: 100vh;
   background-color: lightsalmon;
   text-align: center;
@@ -17,7 +17,19 @@ const Container = styled.div`
   & h1 {
     margin: 0px;
     margin-bottom: 5px;
-    font-size: 90px;
+    font-size: 70px;
+  }
+
+  @media (max-width: 850px) {
+    & h1 {
+      font-size: 50px;
+    }
+  }
+
+  @media (max-width: 650px) {
+    & h1 {
+      font-size: 40px;
+    }
   }
 `;
 

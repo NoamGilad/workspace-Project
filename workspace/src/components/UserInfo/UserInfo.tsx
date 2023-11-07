@@ -15,11 +15,21 @@ const UserInfoContainer = styled.div`
   border: 3;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
 
   & p {
     font-weight: bold;
     margin-top: 2px;
     margin: 2px 7px 3px 7px;
+  }
+
+  @media (max-width: 920px) {
+    display: flex;
+    flex-direction: row;
+
+    & div {
+      flex-direction: row;
+    }
   }
 `;
 
@@ -59,6 +69,18 @@ const InputContainer = styled.div`
   & input {
     display: none;
   }
+
+  @media (max-width: 920px) {
+    & button {
+      margin: 5px;
+    }
+    & label {
+      margin: 5px;
+    }
+    & input {
+      margin: 5px;
+    }
+  }
 `;
 
 const ProfileInfo = styled.div`
@@ -69,6 +91,14 @@ const ProfileInfo = styled.div`
     border-radius: 12px;
     margin: 5px;
     background-color: rgb(255, 255, 255);
+  }
+
+  @media (max-width: 920px) {
+    flex-direction: row;
+
+    & div {
+      margin-right: 15px;
+    }
   }
 `;
 
@@ -113,7 +143,7 @@ const UserInfo = () => {
     }
   };
 
-  return (
+  let content = (
     <UserInfoContainer>
       <ProfilePhotoContainer>
         <img src={context.profilePictureURL || ""} alt="Profile" />
@@ -144,6 +174,46 @@ const UserInfo = () => {
       </DeleteButton>
     </UserInfoContainer>
   );
+
+  if (window.innerWidth < 920) {
+    content = (
+      <UserInfoContainer>
+        <ProfilePhotoContainer>
+          <img src={context.profilePictureURL || ""} alt="Profile" />
+        </ProfilePhotoContainer>
+        <div>
+          <ProfileInfo>
+            <div>
+              <label>Name:</label>
+              <p>
+                {context.nameToCapital(context.firstName, context.lastName)}
+              </p>
+            </div>
+            <div>
+              <label>Email:</label>
+              <p>{context.email}</p>
+            </div>
+          </ProfileInfo>
+          <InputContainer>
+            <label>
+              Select File
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+            </label>
+            <button onClick={handleUpload}>Upload Photo</button>
+            <DeleteButton
+              onClick={() => {
+                deleteUserHandler();
+              }}
+            >
+              Delete user
+            </DeleteButton>
+          </InputContainer>
+        </div>
+      </UserInfoContainer>
+    );
+  }
+
+  return <>{content}</>;
 };
 
 export default UserInfo;

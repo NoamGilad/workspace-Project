@@ -4,11 +4,10 @@ import { AuthCtx } from "../../../contexts/AuthProvider";
 import styled from "styled-components";
 
 const ShiftsList = styled.ul`
+  display: grid;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-template-columns: 1fr;
 `;
 
 const ShiftsListCard = styled.div`

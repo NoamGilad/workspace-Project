@@ -70,6 +70,18 @@ const InnerUserList = styled.div`
     margin-top: 2px;
     margin: 2px 7px 3px 7px;
   }
+
+  @media (max-width: 500px) {
+    & p {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    & p {
+      font-size: 10px;
+    }
+  }
 `;
 
 type User = {
@@ -124,8 +136,8 @@ const UsersList = () => {
             return user.role === "Employee";
           })
           .map((user: User, index) => (
-            <InnerUserList>
-              <li key={index}>
+            <InnerUserList key={index}>
+              <li>
                 <div>
                   <label>Name</label>
                   <p>

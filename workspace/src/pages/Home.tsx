@@ -17,6 +17,18 @@ const Container = styled.div`
     margin-top: 20px;
     margin-bottom: 100px;
   }
+
+  @media (max-width: 500px) {
+    & h1 {
+      font-size: 70px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    & h1 {
+      font-size: 50px;
+    }
+  }
 `;
 
 const HomeCard = styled.div`

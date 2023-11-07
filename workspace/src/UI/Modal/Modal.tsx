@@ -9,7 +9,7 @@ const BackDrop: React.FC<{ onClose: any }> = (props) => {
 const ModalOverlay: React.FC<{ children: React.ReactNode }> = (props) => {
   return (
     <div className={classes.modal}>
-      <div className={classes.content}>{props.children}</div>
+      <div>{props.children}</div>
     </div>
   );
 };

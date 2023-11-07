@@ -1,6 +1,15 @@
 import { useContext, useState } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
 import Modal from "../UI/Modal/Modal";
+import styled from "styled-components";
+
+const CloseButton = styled.button`
+  background-color: red;
+
+  &:hover {
+    background-color: lightcoral;
+  }
+`;
 
 interface ResetPasswordProps {
   onResetPassword: () => void;
@@ -23,8 +32,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
         placeholder="Enter your Email"
         required
       />
-      <button onClick={props.onResetPassword}>Reset password</button>
-      <button onClick={() => context.setShowResetModal(false)}>Close</button>
+      <button onClick={props.onResetPassword}>Reset</button>
+      <CloseButton onClick={() => context.setShowResetModal(false)}>
+        Close
+      </CloseButton>
     </Modal>
   );
 };
