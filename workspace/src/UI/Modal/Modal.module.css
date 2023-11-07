@@ -5,14 +5,17 @@
   width: 100%;
   height: 100vh;
   z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.75);
 }
 
 .modal {
   position: fixed;
-  top: 20vh;
-  left: 5%;
-  width: 60%;
+  top: 30%;
+  left: 32.5%;
+  width: auto;
   background-color: lightsalmon;
   padding: 40px;
   border-radius: 14px;
@@ -35,10 +38,45 @@
   margin-right: 10px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1000px) {
+  .modal label {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 790px) {
   .modal {
-    width: 40rem;
-    left: calc(50% - 20rem);
+    width: auto;
+  }
+
+  .modal label {
+    font-size: 20px;
+  }
+
+  .modal p {
+    font-size: 15px;
+  }
+
+  .modal button {
+    width: 60px;
+    height: 25px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 630px) {
+    .modal {
+      width: auto;
+      /* top: 30%;
+      left: 10%; */
+    }
+
+    .modal label {
+      font-size: 15px;
+    }
+
+    .modal p {
+      font-size: 12px;
+    }
   }
 }
 

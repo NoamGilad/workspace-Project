@@ -8,15 +8,19 @@ import styled from "styled-components";
 const ShiftsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  width: fit-content;
+  hight: fit-content;
+  margin: 0 auto;
   align-items: flex-start;
   background-color: peachpuff;
   text-align: center;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-  margin: 5px;
-  width: fit-content;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 const Shifts = () => {
