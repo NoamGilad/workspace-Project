@@ -174,9 +174,6 @@ const ShiftList: React.FC<{
     "0"
   )}`;
 
-  console.log(totalMonthlyHoursInMinutes);
-  console.log(totalMonthlyHours);
-
   return (
     <div>
       <p>Total Monthly Hours: {totalMonthlyHours} hours</p>

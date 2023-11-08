@@ -11,6 +11,7 @@ const HoursForm = styled.div`
   text-align: center;
   background-color: rgb(255, 255, 255);
   margin: 5px;
+  margin-right: 15px;
   width: fit-content;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
@@ -19,7 +20,6 @@ const HoursForm = styled.div`
     margin-right: 10px;
     margin-left: -12px;
     background-color: peachpuff;
-    /* border: 3px solid black; */
     border-radius: 12px;
     text-align: center;
   }
@@ -29,6 +29,35 @@ const HoursForm = styled.div`
   }
 
   @media (max-width: 700px) {
+    margin: 0 auto;
+    margin-bottom: 10px;
+
+    & div {
+      display: flex;
+      flex-direction: row;
+    }
+
+    & input {
+      width: 45vw;
+      margin: 0 auto;
+    }
+
+    & button {
+      width: 50vw;
+    }
+  }
+`;
+
+const TimeInputs = styled.div`
+  & input {
+    width: 20vw;
+    margin: 0 auto;
+    margin-left: 5px;
+    margin-bottom: 5px;
+  }
+
+  & label {
+    margin-top: 0px;
   }
 `;
 
@@ -142,19 +171,19 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
     content = (
       <HoursForm>
         <form onSubmit={handleSubmitAddShift}>
-          <div>
-            <label>
-              Date
-              <input
-                type="date"
-                value={date}
-                onChange={handleDateChanger}
-                placeholder="Select a date."
-                min="2020-01-01"
-                max={today}
-                required
-              />
-            </label>
+          <label>
+            Date
+            <input
+              type="date"
+              value={date}
+              onChange={handleDateChanger}
+              placeholder="Select a date."
+              min="2020-01-01"
+              max={today}
+              required
+            />
+          </label>
+          <TimeInputs>
             <label>
               From
               <input
@@ -175,7 +204,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
                 required
               />
             </label>
-          </div>
+          </TimeInputs>
           <button type="submit">Add shift</button>
         </form>
       </HoursForm>
