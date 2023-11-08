@@ -48,6 +48,24 @@ const HomeCard = styled.div`
     max-width: 100%;
     white-space: normal;
   }
+
+  @media (max-width: 800px) {
+    & p {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    & p {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    & p {
+      font-size: 12px;
+    }
+  }
 `;
 
 const HomePage = () => {

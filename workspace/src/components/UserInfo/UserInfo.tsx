@@ -76,6 +76,7 @@ const InputContainer = styled.div`
     }
     & label {
       margin: 5px;
+      padding: 2px 15px;
     }
     & input {
       margin: 5px;
@@ -86,6 +87,7 @@ const InputContainer = styled.div`
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   & div {
     border-radius: 12px;
@@ -95,11 +97,7 @@ const ProfileInfo = styled.div`
 
   @media (max-width: 920px) {
     flex-direction: row;
-
-    & div {
-      margin-right: 15px;
-    }
-  }
+    margin-right: 0 auto;
 `;
 
 const DeleteButton = styled.button`
@@ -108,6 +106,10 @@ const DeleteButton = styled.button`
   &:hover {
     background-color: lightcoral;
   }
+`;
+
+const InfoAndActions = styled.div`
+  padding: 10px;
 `;
 
 const UserInfo = () => {
@@ -178,10 +180,12 @@ const UserInfo = () => {
   if (window.innerWidth < 920) {
     content = (
       <UserInfoContainer>
-        <ProfilePhotoContainer>
-          <img src={context.profilePictureURL || ""} alt="Profile" />
-        </ProfilePhotoContainer>
         <div>
+          <ProfilePhotoContainer>
+            <img src={context.profilePictureURL || ""} alt="Profile" />
+          </ProfilePhotoContainer>
+        </div>
+        <InfoAndActions>
           <ProfileInfo>
             <div>
               <label>Name:</label>
@@ -208,7 +212,7 @@ const UserInfo = () => {
               Delete user
             </DeleteButton>
           </InputContainer>
-        </div>
+        </InfoAndActions>
       </UserInfoContainer>
     );
   }

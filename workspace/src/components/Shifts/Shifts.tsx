@@ -10,7 +10,7 @@ const ShiftsContainer = styled.div`
   flex-direction: row;
   width: fit-content;
   hight: fit-content;
-  margin: 0 auto;
+  margin-left: 15px;
   align-items: flex-start;
   background-color: peachpuff;
   text-align: center;
@@ -19,7 +19,13 @@ const ShiftsContainer = styled.div`
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
   @media (max-width: 700px) {
+    width: min-content;
     flex-direction: column;
+  }
+
+  @media (max-width: 920px) {
+    margin: 0 auto;
+    margin-top: 15px;
   }
 `;
 
