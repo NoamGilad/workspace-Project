@@ -98,6 +98,7 @@ const ProfileInfo = styled.div`
   @media (max-width: 920px) {
     flex-direction: row;
     margin-right: 0 auto;
+  }
 `;
 
 const DeleteButton = styled.button`

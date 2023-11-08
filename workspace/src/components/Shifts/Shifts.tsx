@@ -4,12 +4,13 @@ import ShiftList from "./ShiftsList/ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import ShiftsFilter from "./ShiftsFilter/ShiftsFilter";
 import styled from "styled-components";
+import { useDimensions } from "../../hooks/useDimensions";
 
 const ShiftsContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: fit-content;
-  hight: fit-content;
+  height: fit-content;
   margin-left: 15px;
   margin-bottom: 15px;
   align-items: flex-start;

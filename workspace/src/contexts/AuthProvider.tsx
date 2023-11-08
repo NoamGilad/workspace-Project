@@ -55,7 +55,6 @@ type AuthContextType = {
   actionCodeSettings: {
     url: string;
     handleCodeInApp: boolean;
-    // dynamicLinkDomain: string;
   };
   signout: Function;
   loggedIn: boolean;
