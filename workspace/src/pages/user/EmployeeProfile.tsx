@@ -13,6 +13,7 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: lightsalmon;
   text-align: center;
+  margin: 0 auto;
 
   & h1 {
     margin: 0px;
