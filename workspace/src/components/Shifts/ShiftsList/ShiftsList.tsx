@@ -15,8 +15,7 @@ const ShiftsListCard = styled.div`
   background-color: rgb(255, 255, 255);
   color: black;
   padding: 10px;
-  margin: 5px;
-  margin-bottom: -15px;
+  margin: 0px;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
@@ -44,6 +43,7 @@ const CardContentDivText = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  margin: 0px;
 
   & label {
     margin: 7px;

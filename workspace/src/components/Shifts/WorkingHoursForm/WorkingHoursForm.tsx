@@ -27,6 +27,9 @@ const HoursForm = styled.div`
   & label {
     font-weight: bold;
   }
+
+  @media (max-width: 700px) {
+  }
 `;
 
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
@@ -95,7 +98,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
     return;
   };
 
-  return (
+  let content = (
     <HoursForm>
       <form onSubmit={handleSubmitAddShift}>
         <label>
@@ -134,6 +137,52 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
       </form>
     </HoursForm>
   );
+
+  if (window.innerWidth < 700) {
+    content = (
+      <HoursForm>
+        <form onSubmit={handleSubmitAddShift}>
+          <div>
+            <label>
+              Date
+              <input
+                type="date"
+                value={date}
+                onChange={handleDateChanger}
+                placeholder="Select a date."
+                min="2020-01-01"
+                max={today}
+                required
+              />
+            </label>
+            <label>
+              From
+              <input
+                type="time"
+                value={from}
+                onChange={handleFromChanger}
+                placeholder="Select an hour."
+                required
+              />
+            </label>
+            <label>
+              To
+              <input
+                type="time"
+                value={to}
+                onChange={handleToChanger}
+                placeholder="Select an hour."
+                required
+              />
+            </label>
+          </div>
+          <button type="submit">Add shift</button>
+        </form>
+      </HoursForm>
+    );
+  }
+
+  return <>{content}</>;
 };
 
 export default WorkingHoursForm;
