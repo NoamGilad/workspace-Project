@@ -7,9 +7,7 @@ const HoursForm = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
   background-color: rgb(255, 255, 255);
   margin: 5px;
   margin-right: 15px;
@@ -17,7 +15,7 @@ const HoursForm = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  & input {
+  input {
     margin-right: 10px;
     margin-left: -12px;
     background-color: peachpuff;
@@ -25,53 +23,38 @@ const HoursForm = styled.div`
     text-align: center;
   }
 
-  & label {
+  label {
     font-weight: bold;
   }
 
   @media (max-width: 700px) {
     margin: 0 auto;
     margin-bottom: 10px;
+    width: 80%;
+    padding: 10px;
 
-    & div {
-      display: flex;
-      flex-direction: row;
-    }
-
-    & input {
-      width: 45vw;
+    input {
+      width: 90%;
       margin: 0 auto;
+      padding: 5px;
     }
 
-    & button {
-      width: 50vw;
+    button {
+      width: 90%;
     }
-  }
-`;
-
-const TimeInputs = styled.div`
-  & input {
-    width: 20vw;
-    margin: 0 auto;
-    margin-left: 5px;
-    margin-bottom: 5px;
-  }
-
-  & label {
-    margin-top: 0px;
   }
 `;
 
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const context = useContext(AuthCtx);
-  const Dimensions = useContext(DimensionsCtx);
+  const dimensions = useContext(DimensionsCtx);
 
   if (!context) {
     console.error("No context!");
     return <p>No context!</p>;
   }
 
-  if (!Dimensions) {
+  if (!dimensions) {
     console.error("No Dimensions!");
     return <p>No Dimensions!</p>;
   }
@@ -136,88 +119,43 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   };
 
   return (
-    <>
-      {!Dimensions.isMobile && (
-        <HoursForm>
-          <form onSubmit={handleSubmitAddShift}>
-            <label>
-              Date
-              <input
-                type="date"
-                value={date}
-                onChange={handleDateChanger}
-                placeholder="Select a date."
-                min="2020-01-01"
-                max={today}
-                required
-              />
-            </label>
-            <label>
-              From
-              <input
-                type="time"
-                value={from}
-                onChange={handleFromChanger}
-                placeholder="Select an hour."
-                required
-              />
-            </label>
-            <label>
-              To
-              <input
-                type="time"
-                value={to}
-                onChange={handleToChanger}
-                placeholder="Select an hour."
-                required
-              />
-            </label>
-            <button type="submit">Add shift</button>
-          </form>
-        </HoursForm>
-      )}
-      {Dimensions.isMobile && (
-        <HoursForm>
-          <form onSubmit={handleSubmitAddShift}>
-            <label>
-              Date
-              <input
-                type="date"
-                value={date}
-                onChange={handleDateChanger}
-                placeholder="Select a date."
-                min="2020-01-01"
-                max={today}
-                required
-              />
-            </label>
-            <TimeInputs>
-              <label>
-                From
-                <input
-                  type="time"
-                  value={from}
-                  onChange={handleFromChanger}
-                  placeholder="Select an hour."
-                  required
-                />
-              </label>
-              <label>
-                To
-                <input
-                  type="time"
-                  value={to}
-                  onChange={handleToChanger}
-                  placeholder="Select an hour."
-                  required
-                />
-              </label>
-            </TimeInputs>
-            <button type="submit">Add shift</button>
-          </form>
-        </HoursForm>
-      )}
-    </>
+    <HoursForm>
+      <form onSubmit={handleSubmitAddShift}>
+        <label>
+          Date
+          <input
+            type="date"
+            value={date}
+            onChange={handleDateChanger}
+            placeholder="Select a date."
+            min="2020-01-01"
+            max={today}
+            required
+          />
+        </label>
+        <label>
+          From
+          <input
+            type="time"
+            value={from}
+            onChange={handleFromChanger}
+            placeholder="Select an hour."
+            required
+          />
+        </label>
+        <label>
+          To
+          <input
+            type="time"
+            value={to}
+            onChange={handleToChanger}
+            placeholder="Select an hour."
+            required
+          />
+        </label>
+        <button type="submit">Add shift</button>
+      </form>
+    </HoursForm>
   );
 };
 

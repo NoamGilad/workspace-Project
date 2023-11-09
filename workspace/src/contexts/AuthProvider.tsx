@@ -46,8 +46,8 @@ type AuthContextType = {
       name: string | null;
     }>
   >;
-  amount: number;
-  setAmount: React.Dispatch<React.SetStateAction<number>>;
+  amountPerHour: number;
+  setAmountPerHour: React.Dispatch<React.SetStateAction<number>>;
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   registerWithEmailAndPassword: Function;
@@ -106,6 +106,7 @@ type User = {
   role: string;
   id: string;
   amountPerHour: number;
+  photoUrl: string;
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -140,7 +141,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     id: "",
     name: "",
   });
-  const [amount, setAmount] = useState<number>(30);
+  const [amountPerHour, setAmountPerHour] = useState<number>(30);
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -213,7 +214,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         firstName,
         lastName,
         company,
-        amount,
+        amountPerHour,
       });
 
       if (role === "Employer") {
@@ -291,6 +292,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         await gettingExistingUserDocData(user?.email);
         setLoggedIn(true);
         setIsSubmitting(false);
+
+        if (auth.currentUser?.photoURL) {
+          setProfilePictureURL(auth.currentUser?.photoURL);
+        }
+
+        if (!auth.currentUser?.photoURL) {
+          console.log("No photo url");
+          return;
+        }
       } else {
         console.log("No account logged in.");
         setLoggedIn(false);
@@ -325,7 +335,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setRole(docSnap.data().role);
       setCompany(docSnap.data().company);
       setList(docSnap.data().workingHours || []);
-      setAmount(docSnap.data().amountPerHour);
+      setAmountPerHour(docSnap.data().amountPerHour);
       return docSnap.data().role;
     } else {
       console.error("No such document!");
@@ -356,22 +366,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       setProfilePictureURL(downloadURL);
+
+      const thisUserDocRef = doc(storeDatabase, "users", email);
+
+      await updateDoc(thisUserDocRef, {
+        photoUrl: downloadURL,
+      });
     } catch (error) {
       console.error("Error uploading profile picture:", error);
       throw error;
     }
   };
-
-  useEffect(() => {
-    if (auth.currentUser?.photoURL) {
-      setProfilePictureURL(auth.currentUser?.photoURL);
-    }
-
-    if (!auth.currentUser?.photoURL) {
-      console.log("No photo url");
-      return;
-    }
-  }, [auth.currentUser]);
 
   /////////////////////////////////////////////////////////////////////
   // Store working hours
@@ -396,7 +401,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleDeleteUser = async (user: User, deleteMethod: Promise<void>) => {
     const check = window.confirm("Are you sure you want to delete the user?");
-    if (check && user.id) {
+    if (user.id && check) {
       try {
         await deleteMethod;
         await deleteDoc(doc(storeDatabase, "users", user.id));
@@ -405,10 +410,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error deleting user:", error);
         return;
       }
-    } else {
-      console.error("Deletion canceled.");
-      return;
     }
+    if (user.id && !check) {
+      return console.error("Deletion canceled.");
+    }
+    return;
   };
 
   /////////////////////////////////////////////////////////////////////
@@ -452,8 +458,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setLastName,
         company,
         setCompany,
-        amount,
-        setAmount,
+        amountPerHour,
+        setAmountPerHour,
         isSubmitting,
         setIsSubmitting,
         registerWithEmailAndPassword,

@@ -19,15 +19,15 @@ const ShiftsContainer = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  @media (max-width: 700px) {
-    width: min-content;
-    flex-direction: column;
-  }
-
-  @media (max-width: 920px) {
+  @media (max-width: 940px) {
     margin: 0 auto;
     margin-top: 15px;
     margin-bottom: 15px;
+  }
+
+  @media (max-width: 700px) {
+    width: min-content;
+    flex-direction: column;
   }
 `;
 

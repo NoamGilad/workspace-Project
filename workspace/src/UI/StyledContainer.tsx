@@ -10,8 +10,9 @@ const Container = styled.div`
   text-align: center;
 
   & input {
-    display: block;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: auto;
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
