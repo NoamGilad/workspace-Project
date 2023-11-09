@@ -4,7 +4,6 @@ import ShiftList from "./ShiftsList/ShiftsList";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import ShiftsFilter from "./ShiftsFilter/ShiftsFilter";
 import styled from "styled-components";
-import { useDimensions } from "../../hooks/useDimensions";
 
 const ShiftsContainer = styled.div`
   display: flex;

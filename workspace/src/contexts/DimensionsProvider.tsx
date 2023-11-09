@@ -21,13 +21,14 @@ export const DimensionsProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsMobile(false);
       setIsTablet(false);
     }
-
-    useEffect(() => {
-      handleResize();
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
   };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <DimensionsCtx.Provider value={{ isMobile, isTablet }}>
