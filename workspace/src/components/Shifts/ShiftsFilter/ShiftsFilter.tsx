@@ -114,6 +114,16 @@ const ShiftsFilterControl = styled.div`
       width: 100px;
     }
   }
+
+  @media (max-width: 320px) {
+    div {
+      width: fit-content;
+
+      select {
+        width: fit-content;
+      }
+    }
+  }
 `;
 
 const ShiftsFilter: React.FC<{

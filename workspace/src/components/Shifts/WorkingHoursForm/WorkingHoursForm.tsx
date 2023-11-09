@@ -15,7 +15,7 @@ const HoursForm = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  & input {
+  input {
     margin-right: 10px;
     margin-left: -12px;
     background-color: peachpuff;
@@ -23,7 +23,7 @@ const HoursForm = styled.div`
     text-align: center;
   }
 
-  & label {
+  label {
     font-weight: bold;
   }
 
@@ -32,12 +32,25 @@ const HoursForm = styled.div`
     margin-bottom: 10px;
     width: 80%;
 
-    & input {
+    input {
       width: 90%;
       margin: 0 auto;
     }
 
-    & button {
+    button {
+      width: 90%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    padding: 5px;
+
+    input {
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    button {
       width: 90%;
     }
   }

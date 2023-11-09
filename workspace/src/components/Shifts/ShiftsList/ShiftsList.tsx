@@ -30,6 +30,10 @@ const ShiftsListCard = styled.div`
   & button:hover {
     background-color: lightcoral;
   }
+
+  @media (max-width: 320px) {
+    padding: 5px;
+  }
 `;
 
 const CardContent = styled.div`
@@ -104,6 +108,24 @@ const CardContent = styled.div`
       }
     }
   }
+
+  @media (max-width: 340px) {
+    div {
+      margin: -6px;
+
+      label {
+        font-size: 8px;
+      }
+
+      p {
+        font-size: 7px;
+      }
+
+      button {
+        font-size: 8px;
+      }
+    }
+  }
 `;
 
 const CardContentDivText = styled.div`
@@ -113,21 +135,31 @@ const CardContentDivText = styled.div`
   align-items: center;
   margin: 0px;
 
-  & label {
+  label {
     margin: 7px;
   }
 
-  & p {
+  p {
     font-weight: bold;
     margin: 5px;
   }
 
-  & div {
+  div {
     border-radius: 12px;
     margin: 5px;
     background-color: peachpuff;
     padding: 5px;
   }
+
+  @media (max-width: 320px) {
+    div {
+      padding: 0px;
+    }
+  }
+`;
+
+const Sum = styled.p`
+  font-size: 10px;
 `;
 
 interface Shift {
@@ -244,17 +276,17 @@ const ShiftList: React.FC<{
 
   return (
     <div>
-      <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
+      <Sum>Total Monthly Hours: {totalMonthlyHours} hours</Sum>
       {context.amount ? (
-        <p>
+        <Sum>
           Salary this month:{" "}
           {Math.floor((totalMonthlyHoursInMinutes / 60) * context.amount)}₪
-        </p>
+        </Sum>
       ) : (
-        <p>No amountPerHour</p>
+        <Sum>No amountPerHour</Sum>
       )}
       {sortedShifts.length < 1 ? (
-        <p>There are no shifts at this month.</p>
+        <Sum>There are no shifts at this month.</Sum>
       ) : (
         <ShiftsList>
           {Object.values(filteredShifts).map((shift: any) => (

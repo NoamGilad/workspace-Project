@@ -60,6 +60,10 @@ const UserInfoContainer = styled.div`
       }
     }
   }
+
+  @media (max-width: 320px) {
+    padding: 5px 0px 0px 0px;
+  }
 `;
 
 const ProfilePhotoContainer = styled.div`
@@ -129,6 +133,16 @@ const InputContainer = styled.div`
         padding: 5px 10px;
       }
     }
+
+    @media (max-width: 320px) {
+      button {
+        margin: 2px;
+      }
+
+      label {
+        margin: 2px;
+      }
+    }
   }
 `;
 
@@ -159,6 +173,10 @@ const DeleteButton = styled.button`
 
 const InfoAndActions = styled.div`
   padding: 10px;
+
+  @media (max-width: 320px) {
+    padding: 5px;
+  }
 `;
 
 const UserInfo = () => {
