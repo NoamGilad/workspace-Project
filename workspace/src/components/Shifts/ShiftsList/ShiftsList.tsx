@@ -36,6 +36,74 @@ const CardContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 500px) {
+    div {
+      label {
+        font-size: 13px;
+      }
+
+      p {
+        font-size: 12px;
+      }
+
+      button {
+        font-size: 13px;
+      }
+    }
+  }
+
+  @media (max-width: 440px) {
+    div {
+      label {
+        font-size: 11px;
+      }
+
+      p {
+        font-size: 10px;
+      }
+
+      button {
+        font-size: 11px;
+      }
+    }
+  }
+
+  @media (max-width: 390px) {
+    div {
+      margin: -6px;
+
+      label {
+        font-size: 10px;
+      }
+
+      p {
+        font-size: 9px;
+      }
+
+      button {
+        font-size: 10px;
+      }
+    }
+  }
+
+  @media (max-width: 360px) {
+    div {
+      margin: -6px;
+
+      label {
+        font-size: 9px;
+      }
+
+      p {
+        font-size: 8px;
+      }
+
+      button {
+        font-size: 9px;
+      }
+    }
+  }
 `;
 
 const CardContentDivText = styled.div`

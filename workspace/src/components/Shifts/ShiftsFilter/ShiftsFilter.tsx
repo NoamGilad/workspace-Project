@@ -24,10 +24,13 @@ const ShiftsFilterContainer = styled.div`
     font: inherit;
     padding: 1px;
     font-weight: bold;
-    /* border: 3px solid black; */
     border-radius: 12px;
     margin: 0%;
     background-color: peachpuff;
+  }
+
+  @media (max-width: 390px) {
+    margin: 0 auto;
   }
 `;
 
@@ -50,6 +53,66 @@ const ShiftsFilterControl = styled.div`
   & label {
     margin: auto;
     margin-bottom: 3px;
+  }
+
+  @media (max-width: 500px) {
+    div {
+      margin: 0%;
+      width: 174px;
+    }
+
+    label {
+      font-size: 13px;
+    }
+
+    select {
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 440px) {
+    div {
+      margin: 0%;
+      width: 153px;
+    }
+
+    label {
+      font-size: 11px;
+    }
+
+    select {
+      font-size: 11px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    div {
+      width: 135.5px;
+    }
+
+    label {
+      font-size: 10px;
+    }
+
+    select {
+      font-size: 10px;
+      width: 100px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    div {
+      width: 125px;
+    }
+
+    label {
+      font-size: 9px;
+    }
+
+    select {
+      font-size: 9px;
+      width: 100px;
+    }
   }
 `;
 

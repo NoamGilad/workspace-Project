@@ -15,21 +15,31 @@ const Container = styled.div`
   text-align: center;
   margin: 0 auto;
 
-  & h1 {
+  h1 {
     margin: 0px;
     margin-bottom: 5px;
     font-size: 70px;
   }
 
   @media (max-width: 850px) {
-    & h1 {
+    h1 {
       font-size: 50px;
     }
   }
 
   @media (max-width: 650px) {
-    & h1 {
+    h1 {
       font-size: 40px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    h1 {
+      font-size: 20px;
+    }
+
+    h2 {
+      font-size: 15px;
     }
   }
 `;
@@ -39,7 +49,7 @@ const Cards = styled.div`
   flex-direction: row;
   flex: 1;
 
-  @media (max-width: 920px) {
+  @media (max-width: 940px) {
     display: flex;
     flex-direction: column;
   }
@@ -60,15 +70,17 @@ const EmployeeProfilePage = () => {
       <h1>
         Welcome {context.nameToCapital(context.firstName, context.lastName)!}
       </h1>
-      <div>
-        <h2>Company: {context.company.name}</h2>
-        <h2>Role: {context.role}</h2>
-      </div>
       {isRole ? (
-        <Cards>
-          <UserInfo />
-          <Shifts />
-        </Cards>
+        <>
+          <div>
+            <h2>Company: {context.company.name}</h2>
+            <h2>Role: {context.role}</h2>
+          </div>
+          <Cards>
+            <UserInfo />
+            <Shifts />
+          </Cards>
+        </>
       ) : (
         <div>
           <CircleLoader />

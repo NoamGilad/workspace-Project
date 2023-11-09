@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { DimensionsCtx } from "../../contexts/DimensionsProvider";
 
 const UserInfoContainer = styled.div`
   width: fit-content;
@@ -17,18 +18,46 @@ const UserInfoContainer = styled.div`
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
   margin: 0 auto;
 
-  & p {
+  p {
     font-weight: bold;
     margin-top: 2px;
     margin: 2px 7px 3px 7px;
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 940px) {
     display: flex;
     flex-direction: row;
 
-    & div {
+    div {
       flex-direction: row;
+    }
+
+    @media (max-width: 570px) {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0px 5px 0px;
+
+      div {
+        margin: auto;
+      }
+
+      label {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      div {
+        margin: 0 auto;
+      }
+
+      label {
+        font-size: 10px;
+      }
+
+      p {
+        font-size: 10px;
+      }
     }
   }
 `;
@@ -70,7 +99,7 @@ const InputContainer = styled.div`
     display: none;
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 940px) {
     & button {
       margin: 5px;
     }
@@ -80,6 +109,25 @@ const InputContainer = styled.div`
     }
     & input {
       margin: 5px;
+    }
+
+    @media (max-width: 570px) {
+      justify-content: center;
+
+      p {
+        font-size: 10px;
+      }
+
+      button {
+        width: fit-content;
+        font-size: 10px;
+      }
+
+      label {
+        align-self: center;
+        font-size: 10px;
+        padding: 5px 10px;
+      }
     }
   }
 `;
@@ -95,7 +143,7 @@ const ProfileInfo = styled.div`
     background-color: rgb(255, 255, 255);
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 940px) {
     flex-direction: row;
     margin-right: 0 auto;
   }
@@ -115,6 +163,7 @@ const InfoAndActions = styled.div`
 
 const UserInfo = () => {
   const context = useContext(AuthCtx);
+  const dimensions = useContext(DimensionsCtx);
   const navigate = useNavigate();
 
   if (!context) return <p>No context</p>;
@@ -146,79 +195,39 @@ const UserInfo = () => {
     }
   };
 
-  let content = (
+  return (
     <UserInfoContainer>
-      <ProfilePhotoContainer>
-        <img src={context.profilePictureURL || ""} alt="Profile" />
-      </ProfilePhotoContainer>
-      <InputContainer>
-        <label>
-          Select File
+      <div>
+        <ProfilePhotoContainer>
+          <img src={context.profilePictureURL || ""} alt="Profile" />
+        </ProfilePhotoContainer>
+      </div>
+      <InfoAndActions>
+        <ProfileInfo>
+          <div>
+            <label>Name:</label>
+            <p>{context.nameToCapital(context.firstName, context.lastName)}</p>
+          </div>
+          <div>
+            <label>Email:</label>
+            <p>{context.email}</p>
+          </div>
+        </ProfileInfo>
+        <InputContainer>
+          <label>Select File</label>
           <input type="file" accept="image/*" onChange={handleFileChange} />
-        </label>
-        <button onClick={handleUpload}>Upload Photo</button>
-      </InputContainer>
-      <ProfileInfo>
-        <div>
-          <label>Name:</label>
-          <p>{context.nameToCapital(context.firstName, context.lastName)}</p>
-        </div>
-        <div>
-          <label>Email:</label>
-          <p>{context.email}</p>
-        </div>
-      </ProfileInfo>
-      <DeleteButton
-        onClick={() => {
-          deleteUserHandler();
-        }}
-      >
-        Delete user
-      </DeleteButton>
+          <button onClick={handleUpload}>Upload Photo</button>
+          <DeleteButton
+            onClick={() => {
+              deleteUserHandler();
+            }}
+          >
+            Delete user
+          </DeleteButton>
+        </InputContainer>
+      </InfoAndActions>
     </UserInfoContainer>
   );
-
-  if (window.innerWidth < 920) {
-    content = (
-      <UserInfoContainer>
-        <div>
-          <ProfilePhotoContainer>
-            <img src={context.profilePictureURL || ""} alt="Profile" />
-          </ProfilePhotoContainer>
-        </div>
-        <InfoAndActions>
-          <ProfileInfo>
-            <div>
-              <label>Name:</label>
-              <p>
-                {context.nameToCapital(context.firstName, context.lastName)}
-              </p>
-            </div>
-            <div>
-              <label>Email:</label>
-              <p>{context.email}</p>
-            </div>
-          </ProfileInfo>
-          <InputContainer>
-            <label>
-              Select File
-              <input type="file" accept="image/*" onChange={handleFileChange} />
-            </label>
-            <button onClick={handleUpload}>Upload Photo</button>
-            <DeleteButton
-              onClick={() => {
-                deleteUserHandler();
-              }}
-            >
-              Delete user
-            </DeleteButton>
-          </InputContainer>
-        </InfoAndActions>
-      </UserInfoContainer>
-    );
-  }
-
-  return <>{content}</>;
 };
 
 export default UserInfo;
