@@ -27,17 +27,23 @@ const SignInPage: React.FC = () => {
 
   const navigate = useNavigate();
 
+  if (!context) {
+    console.error("No context!");
+    return <p>No context</p>;
+  }
+
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!context) {
+      console.error("No context!");
       return <p>No context</p>;
     }
 
     try {
       const curRole = await context.login();
 
-      if (context.auth?.currentUser === null) return;
+      if (context.auth.currentUser === null) return;
 
       if (curRole === "Employee") {
         navigate("/user");
@@ -57,11 +63,11 @@ const SignInPage: React.FC = () => {
   };
 
   const handleResetPassword = () => {
-    if (!context?.auth || context.auth === null) {
+    if (!context.auth || context.auth === null) {
       console.log("No auth");
       return;
     }
-    if (!context?.email || context.email === null) {
+    if (!context.email || context.email === null) {
       console.log("No email");
       window.alert("Please enter your email.");
       return;
@@ -87,31 +93,29 @@ const SignInPage: React.FC = () => {
           <label>Email</label>
           <input
             type="email"
-            onChange={(e) => context?.setEmail(e.target.value)}
+            onChange={(e) => context.setEmail(e.target.value)}
             placeholder="Enter your Email"
             required
           />
           <label>Password</label>
           <input
             type="password"
-            onChange={(e) => context?.setPassword(e.target.value)}
+            onChange={(e) => context.setPassword(e.target.value)}
             placeholder="Enter your password"
             required
           />
-          <button type="submit" disabled={context?.isSubmitting}>
-            {context?.isSubmitting ? <CircleLoader /> : "Login"}
+          <button type="submit" disabled={context.isSubmitting}>
+            {context.isSubmitting ? <CircleLoader /> : "Login"}
           </button>
         </main>
       </form>
       <label>Forgot your password?</label>
-      <ResetButton onClick={() => context?.setShowResetModal(true)}>
+      <ResetButton onClick={() => context.setShowResetModal(true)}>
         Reset password
       </ResetButton>
-      {context?.showResetModal && (
+      {context.showResetModal && (
         <ResetPassword onResetPassword={handleResetPassword} />
       )}
-      <label>New account? </label>
-      <Link to={"/signup"}>Sign up</Link>
     </Container>
   );
 };

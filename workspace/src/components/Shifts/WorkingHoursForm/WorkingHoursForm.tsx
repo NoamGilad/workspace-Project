@@ -31,23 +31,12 @@ const HoursForm = styled.div`
     margin: 0 auto;
     margin-bottom: 10px;
     width: 80%;
+    padding: 10px;
 
     input {
       width: 90%;
       margin: 0 auto;
-    }
-
-    button {
-      width: 90%;
-    }
-  }
-
-  @media (max-width: 700px) {
-    padding: 5px;
-
-    input {
-      width: 90%;
-      margin: 0 auto;
+      padding: 5px;
     }
 
     button {

@@ -159,7 +159,9 @@ const CardContentDivText = styled.div`
 `;
 
 const Sum = styled.p`
-  font-size: 10px;
+  @media (max-width: 340px) {
+    font-size: 10px;
+  }
 `;
 
 interface Shift {
@@ -277,10 +279,13 @@ const ShiftList: React.FC<{
   return (
     <div>
       <Sum>Total Monthly Hours: {totalMonthlyHours} hours</Sum>
-      {context.amount ? (
+      {context.amountPerHour ? (
         <Sum>
           Salary this month:{" "}
-          {Math.floor((totalMonthlyHoursInMinutes / 60) * context.amount)}₪
+          {Math.floor(
+            (totalMonthlyHoursInMinutes / 60) * context.amountPerHour
+          )}
+          ₪
         </Sum>
       ) : (
         <Sum>No amountPerHour</Sum>

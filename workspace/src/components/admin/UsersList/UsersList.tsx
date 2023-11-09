@@ -6,6 +6,7 @@ import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
 import RemoveUser from "../../../assets/RemoveUser.svg";
 import styled from "styled-components";
+import { DeleteButton } from "../../UserInfo/UserInfo";
 
 const UsersListCard = styled.div`
   width: fit-content;
@@ -84,12 +85,30 @@ const InnerUserList = styled.div`
   }
 `;
 
+const ProfilePhotoContainer = styled.div`
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+  border-style: none;
+  background-color: rgb(255, 255, 255);
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+`;
+
 type User = {
   firstName: string;
   lastName: string;
   role: string;
   id: string;
   amountPerHour: number;
+  photoUrl: string;
 };
 
 const UsersList = () => {
@@ -133,11 +152,18 @@ const UsersList = () => {
       <ul>
         {usersList
           .filter((user) => {
-            return user.role === "Employee";
+            return (
+              user.role === "Employee" && user.company.id === context.company.id
+            );
           })
           .map((user: User, index) => (
             <InnerUserList key={index}>
               <li>
+                {user.photoUrl && (
+                  <ProfilePhotoContainer>
+                    <img src={user.photoUrl} />
+                  </ProfilePhotoContainer>
+                )}
                 <div>
                   <label>Name</label>
                   <p>
@@ -148,12 +174,16 @@ const UsersList = () => {
                   <label>Email</label>
                   <p>{user.id}</p>
                 </div>
+                <div>
+                  <label>Amount per hour</label>
+                  <p>{user.amountPerHour}</p>
+                </div>
                 <button onClick={() => handleEditSelectUser(user)}>
                   <img src={ModifyIcon} />
                 </button>
-                <button onClick={(e) => deleteUserHandler(user, e)}>
+                <DeleteButton onClick={(e) => deleteUserHandler(user, e)}>
                   <img src={RemoveUser} />
-                </button>
+                </DeleteButton>
               </li>
             </InnerUserList>
           ))}
@@ -169,6 +199,8 @@ const UsersList = () => {
     console.log("Selected user:", user.id);
     context?.setSelectedUser(user);
     context?.setShowEditUserModal(true);
+
+    console.log(user);
   };
 
   const updateProfileHandler = async (
