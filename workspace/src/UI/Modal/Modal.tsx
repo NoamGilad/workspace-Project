@@ -9,14 +9,14 @@ const BackDrop: React.FC<{ onClose: any }> = (props) => {
 const ModalOverlay: React.FC<{ children: React.ReactNode }> = (props) => {
   return (
     <div className={classes.modal}>
-      <div>{props.children}</div>
+      <div className={classes["modal-content"]}>{props.children}</div>
     </div>
   );
 };
 
 const portalElement = document.getElementById("overlays");
 
-const Modal: React.FC<{ children: React.ReactNode; onClose: any }> = (
+const Modal: React.FC<{ children: React.ReactNode; onClose: Function }> = (
   props
 ) => {
   if (!portalElement) {
@@ -24,7 +24,7 @@ const Modal: React.FC<{ children: React.ReactNode; onClose: any }> = (
   }
 
   return (
-    <div>
+    <>
       {ReactDOM.createPortal(
         <BackDrop onClose={props.onClose} />,
         portalElement
@@ -33,7 +33,7 @@ const Modal: React.FC<{ children: React.ReactNode; onClose: any }> = (
         <ModalOverlay>{props.children}</ModalOverlay>,
         portalElement
       )}
-    </div>
+    </>
   );
 };
 

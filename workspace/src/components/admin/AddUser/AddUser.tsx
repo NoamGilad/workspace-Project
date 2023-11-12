@@ -4,22 +4,54 @@ import { AuthCtx } from "../../../contexts/AuthProvider";
 import Modal from "../../../UI/Modal/Modal";
 import styled from "styled-components";
 
-const AddUserContainer = styled.div`
-  width: 92%;
+export const ModalContainer = styled.div`
+  width: fit-content;
   display: flex;
   flex-direction: column;
-  margin: 5px;
+  /* margin: 0px; */
   padding: 15px;
-  background-color: rgb(255, 255, 255);
-  text-align: center;
-  padding: 20px;
-  justify-content: center;
+  padding-left: 100px;
+  padding-right: 100px;
   align-items: center;
   border-radius: 12px;
+  background-color: rgb(255, 255, 255);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  input {
+    width: auto;
+  }
+
+  label {
+    font-size: 20px;
+  }
+
+  @media (max-width: 520px) {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  @media (max-width: 450px) {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 390px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @media (max-width: 330px) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 `;
 
-const CloseButton = styled.button`
+export const ButtonDiv = styled.div`
+  width: fit-content;
+  margin: 0 auto;
+`;
+
+export const CloseButton = styled.button`
   background-color: red;
 
   &:hover {
@@ -32,7 +64,10 @@ const AddUser = () => {
 
   const [toEmail, setToEmail] = useState<string>("");
 
-  if (!context) return <p>No context</p>;
+  if (!context) {
+    console.error("No context!");
+    return <p>No context</p>;
+  }
 
   const handleAddEmployee = (email: string, e: React.FormEvent) => {
     e.preventDefault();
@@ -57,9 +92,14 @@ const AddUser = () => {
       });
   };
 
+  const closeModal = () => {
+    context.setShowAddUserModal(false);
+    console.log("clicked", context.showAddUserModal);
+  };
+
   return (
-    <Modal onClose={() => context.setShowAddUserModal(false)}>
-      <AddUserContainer>
+    <Modal onClose={closeModal}>
+      <ModalContainer>
         <form>
           <label>Email</label>
           <input
@@ -70,22 +110,24 @@ const AddUser = () => {
             }}
             required
           />
-          <button
-            onClick={(e) => {
-              handleAddEmployee(toEmail, e);
-            }}
-          >
-            Send invitation
-          </button>
-          <CloseButton
-            onClick={() => {
-              context.setShowAddUserModal(false);
-            }}
-          >
-            Close
-          </CloseButton>
+          <ButtonDiv>
+            <button
+              onClick={(e) => {
+                handleAddEmployee(toEmail, e);
+              }}
+            >
+              Send invitation
+            </button>
+            <CloseButton
+              onClick={() => {
+                context.setShowAddUserModal(false);
+              }}
+            >
+              Close
+            </CloseButton>
+          </ButtonDiv>
         </form>
-      </AddUserContainer>
+      </ModalContainer>
     </Modal>
   );
 };

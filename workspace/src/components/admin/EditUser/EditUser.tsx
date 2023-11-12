@@ -1,47 +1,7 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext, useRef } from "react";
 import Modal from "../../../UI/Modal/Modal";
-import styled from "styled-components";
-
-const SelectedUser = styled.div`
-  width: 92%;
-  display: flex;
-  margin: 5px;
-  padding: 15px;
-  flex-direction: column;
-  background-color: rgb(255, 255, 255);
-  text-align: center;
-  padding: 20px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-
-  & div {
-    display: flex;
-    flex-direction: row;
-  }
-
-  & label {
-    text-align: justify;
-    font-size: medium;
-  }
-
-  & input {
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 85%;
-    background-color: lightsalmon;
-  }
-`;
-
-const CloseButton = styled.button`
-  background-color: red;
-
-  &:hover {
-    background-color: lightcoral;
-  }
-`;
+import { ButtonDiv, CloseButton, ModalContainer } from "../AddUser/AddUser";
 
 const EditUser: React.FC<{
   firstName: string;
@@ -86,7 +46,7 @@ const EditUser: React.FC<{
 
   return (
     <Modal onClose={() => context.setShowEditUserModal(false)}>
-      <SelectedUser>
+      <ModalContainer>
         <form onSubmit={handleFormSubmit}>
           <label>First Name</label>
           <input
@@ -96,13 +56,16 @@ const EditUser: React.FC<{
           />
           <label>Last Name</label>
           <input type="text" ref={lastNameRef} defaultValue={props.lastName} />
+          <label>Hourly wage</label>
           <input type="number" min="30" ref={amountPerHourRef} />
-          <button type="submit">Update</button>
-          <CloseButton onClick={() => context.setShowEditUserModal(false)}>
-            Close
-          </CloseButton>
+          <ButtonDiv>
+            <button type="submit">Update</button>
+            <CloseButton onClick={() => context.setShowEditUserModal(false)}>
+              Close
+            </CloseButton>
+          </ButtonDiv>
         </form>
-      </SelectedUser>
+      </ModalContainer>
     </Modal>
   );
 };

@@ -11,10 +11,10 @@ export const DimensionsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isTablet, setIsTablet] = useState<boolean>(false);
 
   const handleResize = () => {
-    if (window.innerWidth <= 570) {
+    if (window.innerWidth <= 720) {
       setIsMobile(true);
       setIsTablet(false);
-    } else if (window.innerWidth > 570 && window.innerWidth < 1024) {
+    } else if (window.innerWidth > 720 && window.innerWidth < 1024) {
       setIsMobile(false);
       setIsTablet(true);
     } else if (window.innerWidth > 1024) {
