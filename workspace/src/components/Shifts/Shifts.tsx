@@ -36,7 +36,9 @@ const Shifts = () => {
 
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [filteredYear, setFilteredYear] = useState<string>("2023");
-  const [filteredMonth, setFilteredMonth] = useState<string>("01");
+
+  const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
+  const [filteredMonth, setFilteredMonth] = useState<string>(currentMonth);
 
   if (!context) {
     return <p>No context!</p>;

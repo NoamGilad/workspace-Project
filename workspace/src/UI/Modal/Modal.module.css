@@ -12,16 +12,37 @@
 }
 
 .modal {
+  width: fit-content;
   position: fixed;
-  top: 30%;
-  left: 32.5%;
-  width: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+}
+
+.modal-content {
+  width: fit-content;
   background-color: lightsalmon;
   padding: 40px;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  z-index: 30;
   animation: slide-down 300ms ease-out forwards;
+}
+
+@media (max-width: 390px) {
+  .modal-content {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 390px) {
+  .modal-content {
+    padding: 20px;
+  }
 }
 
 .modal input {
@@ -36,48 +57,6 @@
 
 .modal button {
   margin-right: 10px;
-}
-
-@media (max-width: 1000px) {
-  .modal label {
-    font-size: 25px;
-  }
-}
-
-@media (max-width: 790px) {
-  .modal {
-    width: auto;
-  }
-
-  .modal label {
-    font-size: 20px;
-  }
-
-  .modal p {
-    font-size: 15px;
-  }
-
-  .modal button {
-    width: 60px;
-    height: 25px;
-    font-size: 14px;
-  }
-
-  @media (max-width: 630px) {
-    .modal {
-      width: auto;
-      /* top: 30%;
-      left: 10%; */
-    }
-
-    .modal label {
-      font-size: 15px;
-    }
-
-    .modal p {
-      font-size: 12px;
-    }
-  }
 }
 
 @keyframes slide-down {

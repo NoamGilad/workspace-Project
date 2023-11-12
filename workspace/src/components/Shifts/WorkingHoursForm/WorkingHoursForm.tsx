@@ -94,11 +94,6 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
 
     const totalShiftTime = `${hours}:${minutes}`;
 
-    console.log("Date:", fromDate);
-    console.log("From Time:", fromTime);
-    console.log("To Time:", toTime);
-    console.log("Duration (hours:minutes):", totalShiftTime);
-
     if (!date || !from || !to) return;
 
     const shiftDate = new Date(date);

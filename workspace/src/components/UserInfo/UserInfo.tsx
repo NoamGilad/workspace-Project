@@ -106,11 +106,15 @@ const InputContainer = styled.div`
   @media (max-width: 940px) {
     & button {
       margin: 5px;
+      width: fit-content;
     }
+
     & label {
       margin: 5px;
       padding: 2px 15px;
+      width: fit-content;
     }
+
     & input {
       margin: 5px;
     }
@@ -165,9 +169,14 @@ const ProfileInfo = styled.div`
 
 export const DeleteButton = styled.button`
   background-color: red;
+  width: 100%;
 
   &:hover {
     background-color: lightcoral;
+  }
+
+  img {
+    width: 100%;
   }
 `;
 
@@ -181,7 +190,6 @@ const InfoAndActions = styled.div`
 
 const UserInfo = () => {
   const context = useContext(AuthCtx);
-  const dimensions = useContext(DimensionsCtx);
   const navigate = useNavigate();
 
   if (!context) return <p>No context</p>;

@@ -75,7 +75,7 @@ const EmployeeProfilePage = () => {
           <div>
             <h2>Company: {context.company.name}</h2>
             <h2>Role: {context.role}</h2>
-            <h2>Amoint per hour: {context.amountPerHour}</h2>
+            <h2>Amount per hour: {context.amountPerHour}</h2>
           </div>
           <Cards>
             <UserInfo />
