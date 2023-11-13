@@ -28,6 +28,11 @@ export const Input = styled.input<{ valid: boolean }>`
     props.valid ? "white" : "#FFCDD2"} !important;
 `;
 
+interface MyFormValues {
+  email: string;
+  password: string;
+}
+
 const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
 

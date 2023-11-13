@@ -190,7 +190,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [lastNameValid, setLastNameValid] = useState(true);
   const [companyValid, setCompanyValid] = useState(true);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   /////////////////////////////////////////////////////////////////////
   // Validation
@@ -335,6 +335,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         console.log("No account logged in.");
         setLoggedIn(false);
       }
+
+      setLoading(false);
     });
   }, []);
 
