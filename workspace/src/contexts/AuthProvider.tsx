@@ -98,6 +98,20 @@ type AuthContextType = {
   setShowAddUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   showEditUserModal: boolean;
   setShowEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  emailValid: boolean;
+  setEmailValid: React.Dispatch<React.SetStateAction<boolean>>;
+  passwordValid: boolean;
+  setPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
+  confirmPasswordValid: boolean;
+  setConfirmPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
+  firstNameValid: boolean;
+  setFirstNameValid: React.Dispatch<React.SetStateAction<boolean>>;
+  lastNameValid: boolean;
+  setLastNameValid: React.Dispatch<React.SetStateAction<boolean>>;
+  companyValid: boolean;
+  setCompanyValid: React.Dispatch<React.SetStateAction<boolean>>;
+  emailCheck: boolean;
+  passwordCheck: boolean;
 };
 
 type User = {
@@ -167,6 +181,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     id: string;
     amountPerHour: number;
   } | null>(null);
+
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
+  const [confirmPasswordValid, setConfirmPasswordValid] = useState(true);
+  const [firstNameValid, setFirstNameValid] = useState(true);
+  const [lastNameValid, setLastNameValid] = useState(true);
+  const [companyValid, setCompanyValid] = useState(true);
+
+  /////////////////////////////////////////////////////////////////////
+  // Validation
+
+  const emailCheck = email.includes("@");
+  const passwordCheck = password.length >= 6;
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -399,11 +426,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // Delete user
 
-  const handleDeleteUser = async (user: User, deleteMethod: Promise<void>) => {
-    const check = window.confirm("Are you sure you want to delete the user?");
-    if (user.id && check) {
+  const handleDeleteUser = async (user: User) => {
+    if (user.id && auth.currentUser !== null) {
       try {
-        await deleteMethod;
+        await auth.currentUser.delete();
         await deleteDoc(doc(storeDatabase, "users", user.id));
         return console.log("Successfully deleted user");
       } catch (error) {
@@ -411,9 +437,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
     }
-    if (user.id && !check) {
-      return console.error("Deletion canceled.");
-    }
+
     return;
   };
 
@@ -493,6 +517,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowAddUserModal,
         showEditUserModal,
         setShowEditUserModal,
+        emailValid,
+        setEmailValid,
+        passwordValid,
+        setPasswordValid,
+        confirmPasswordValid,
+        setConfirmPasswordValid,
+        firstNameValid,
+        setFirstNameValid,
+        lastNameValid,
+        setLastNameValid,
+        companyValid,
+        setCompanyValid,
+        emailCheck,
+        passwordCheck,
       }}
     >
       {children}
