@@ -8,6 +8,8 @@ import EmployeeProfilePage from "./pages/user/EmployeeProfile";
 import EmployeeControlPage from "./pages/admin/EmployerControl/EmployerControl";
 import SignUpAdminPage from "./pages/SignUp/SignUpAdmin/SignUpAdmin";
 import SignUpUserPage from "./pages/SignUp/SignUpUser/SignUpUser";
+import AdminOnly from "./auth/AdminOnly";
+import UserOnly from "./auth/UserOnly";
 
 const router = createBrowserRouter([
   {
@@ -37,11 +39,19 @@ const router = createBrowserRouter([
       },
       {
         path: "admin",
-        element: <EmployeeControlPage />,
+        element: (
+          <AdminOnly>
+            <EmployeeControlPage />,
+          </AdminOnly>
+        ),
       },
       {
         path: "user",
-        element: <EmployeeProfilePage />,
+        element: (
+          <UserOnly>
+            <EmployeeProfilePage />,
+          </UserOnly>
+        ),
       },
     ],
   },
