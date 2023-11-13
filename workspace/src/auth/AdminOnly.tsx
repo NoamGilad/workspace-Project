@@ -6,10 +6,11 @@ const AdminOnly: React.FC<{ children: React.ReactNode }> = (props) => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
 
-  if (!context || context.role !== "Employer" || !context.loggedIn) {
-    navigate("/");
-    return null;
-  }
+  if (!context?.loading)
+    if (!context || context.role !== "Employer" || !context.loggedIn) {
+      navigate("/");
+      return null;
+    }
 
   return props.children;
 };
