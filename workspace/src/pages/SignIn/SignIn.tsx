@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
@@ -20,6 +20,12 @@ const ResetButton = styled.button`
   &:hover {
     background-color: rgb(81, 81, 81);
   }
+`;
+
+export const Input = styled.input<{ valid: boolean }>`
+  border: 1px solid ${(props) => (props.valid ? "#ccc" : "red")} !important;
+  background-color: ${(props) =>
+    props.valid ? "white" : "#FFCDD2"} !important;
 `;
 
 const SignInPage: React.FC = () => {
@@ -91,16 +97,28 @@ const SignInPage: React.FC = () => {
       <form onSubmit={handleLoginSubmit}>
         <main>
           <label>Email</label>
-          <input
+          <Input
             type="email"
-            onChange={(e) => context.setEmail(e.target.value)}
+            onChange={(e) => {
+              context.setEmail(e.target.value);
+              context.setEmailValid(true);
+            }}
+            onFocus={() => context.setEmailValid(true)}
+            onBlur={() => context.setEmailValid(context.emailCheck)}
+            valid={context.emailValid}
             placeholder="Enter your Email"
             required
           />
           <label>Password</label>
-          <input
+          <Input
             type="password"
-            onChange={(e) => context.setPassword(e.target.value)}
+            onChange={(e) => {
+              context.setPassword(e.target.value);
+              context.setPasswordValid(true);
+            }}
+            onFocus={() => context.setPasswordValid(true)}
+            onBlur={() => context.setPasswordValid(context.passwordCheck)}
+            valid={context.passwordValid}
             placeholder="Enter your password"
             required
           />

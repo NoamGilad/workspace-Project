@@ -211,13 +211,14 @@ const UserInfo = () => {
   };
 
   const deleteUserHandler = () => {
-    if (context.auth.currentUser?.email) {
-      const deleteMethod = context.auth.currentUser.delete();
-      context.handleDeleteUser(
-        { id: context.auth.currentUser.email },
-        deleteMethod
-      );
+    const check = window.confirm("Are you sure you want to delete the user?");
+
+    if (context.auth.currentUser?.email && check) {
+      context.handleDeleteUser({ id: context.auth.currentUser.email });
       navigate("/");
+    } else {
+      console.log("Deletion cancelled.");
+      return;
     }
   };
 

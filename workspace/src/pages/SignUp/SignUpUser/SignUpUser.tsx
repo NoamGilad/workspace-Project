@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import Container from "../../../UI/StyledContainer";
+import { Input } from "../../SignIn/SignIn";
 
 const SignUpUserPage: React.FC = () => {
   const context = useContext(AuthCtx);
@@ -107,37 +108,52 @@ const SignUpUserPage: React.FC = () => {
       <h5>Sign up</h5>
       <form onSubmit={handleSignupSubmit}>
         <label>First name</label>
-        <input
+        <Input
           type="text"
           onChange={(e) => context.setFirstName(e.target.value)}
+          onFocus={() => context.setFirstNameValid(true)}
+          onBlur={() => context.setFirstNameValid(!!context.firstName)}
+          valid={context.firstNameValid}
           placeholder="Enter your first name"
           required
         />
         <label>Last name</label>
-        <input
+        <Input
           type="text"
           onChange={(e) => context.setLastName(e.target.value)}
+          onFocus={() => context.setLastNameValid(true)}
+          onBlur={() => context.setLastNameValid(!!context.lastName)}
+          valid={context.lastNameValid}
           placeholder="Enter your last name"
           required
         />
         <label>Email</label>
-        <input
+        <Input
           type="email"
           onChange={(e) => context.setEmail(e.target.value)}
+          onFocus={() => context.setEmailValid(true)}
+          onBlur={() => context.setEmailValid(context.emailCheck)}
+          valid={context.emailValid}
           placeholder="Enter your Email"
           required
         />
         <label>Password</label>
-        <input
+        <Input
           type="password"
           onChange={(e) => context.setPassword(e.target.value)}
+          onFocus={() => context.setPasswordValid(true)}
+          onBlur={() => context.setPasswordValid(context.passwordCheck)}
+          valid={context.passwordValid}
           placeholder="Enter your password"
           required
         />
         <label>Confirm Password</label>
-        <input
+        <Input
           type="password"
           onChange={(e) => handleConfirmPassword(e.target.value)}
+          onFocus={() => context.setConfirmPasswordValid(true)}
+          onBlur={() => context.setConfirmPasswordValid(context.passwordCheck)}
+          valid={context.confirmPasswordValid}
           placeholder="Enter your password again"
           required
         />
