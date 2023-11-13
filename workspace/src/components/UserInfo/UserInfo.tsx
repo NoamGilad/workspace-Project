@@ -194,13 +194,11 @@ const UserInfo = () => {
 
   if (!context) return <p>No context</p>;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
       context.setSelectedFile(e.target.files[0]);
     }
-  };
 
-  const handleUpload = async () => {
     if (context.selectedFile) {
       try {
         await context.uploadProfilePicture(context.selectedFile);
@@ -245,7 +243,6 @@ const UserInfo = () => {
             Select File
             <input type="file" accept="image/*" onChange={handleFileChange} />
           </label>
-          <button onClick={handleUpload}>Upload Photo</button>
           <DeleteButton
             onClick={() => {
               deleteUserHandler();

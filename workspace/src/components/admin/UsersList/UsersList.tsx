@@ -18,8 +18,6 @@ const UsersListCard = styled.div`
   text-align: center;
   padding: 20px;
   padding-bottom: 5px;
-  justify-content: center;
-  align-items: center;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
@@ -83,7 +81,7 @@ const UsersListCard = styled.div`
 
 const InnerUserList = styled.div`
   width: fit-content;
-  margin: 5px;
+  margin: 0 auto;
   margin-bottom: 15px;
   padding: 5px;
   background-color: lightsalmon;
@@ -309,9 +307,7 @@ const UsersList = () => {
                 )}
                 <div>
                   <label>Name</label>
-                  <p>
-                    {user.firstName} {user.lastName}
-                  </p>
+                  <p>{context.nameToCapital(user.firstName, user.lastName)}</p>
                 </div>
                 <div>
                   <label>Email</label>

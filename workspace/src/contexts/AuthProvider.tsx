@@ -112,6 +112,7 @@ type AuthContextType = {
   setCompanyValid: React.Dispatch<React.SetStateAction<boolean>>;
   emailCheck: boolean;
   passwordCheck: boolean;
+  loading: boolean;
 };
 
 type User = {
@@ -188,6 +189,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [firstNameValid, setFirstNameValid] = useState(true);
   const [lastNameValid, setLastNameValid] = useState(true);
   const [companyValid, setCompanyValid] = useState(true);
+
+  const [loading, setLoading] = useState(false);
 
   /////////////////////////////////////////////////////////////////////
   // Validation
@@ -531,6 +534,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setCompanyValid,
         emailCheck,
         passwordCheck,
+        loading,
       }}
     >
       {children}
