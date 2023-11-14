@@ -254,16 +254,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
       }
 
-      setLoggedIn(true);
-      setIsSubmitting(false);
-
       return true;
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
         window.alert("Email is already in use!");
       }
 
+      setLoggedIn(true);
+      setIsSubmitting(false);
+
       console.error(error.code);
+      console.error(error.message);
       setIsSubmitting(false);
       return false;
     }
@@ -283,7 +284,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /////////////////////////////////////////////////////////////////////
   // LOGIN
 
-  const login = async () => {
+  const login = async (email: string, password: string) => {
     setIsSubmitting(true);
 
     return await signInWithEmailAndPassword(auth, email, password)

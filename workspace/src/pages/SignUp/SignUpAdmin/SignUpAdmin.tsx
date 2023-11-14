@@ -1,6 +1,7 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Formik, Field, Form, FormikHelpers } from "formik";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
 import Container from "../../../UI/StyledContainer";
@@ -14,9 +15,13 @@ const SignUpAdminPage: React.FC = () => {
     return <p>No context</p>;
   }
 
-  const handleSignupSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSignupSubmit = async (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    company: { id: string; name: string }
+  ) => {
     if (!context) {
       window.alert("No context!");
       return;
@@ -29,12 +34,12 @@ const SignUpAdminPage: React.FC = () => {
 
     try {
       const registrationSuccess = await context.registerWithEmailAndPassword(
-        context.email,
-        context.password,
+        email,
+        password,
         "Employer",
-        context.firstName,
-        context.lastName,
-        context.company
+        firstName,
+        lastName,
+        company
       );
 
       if (registrationSuccess) {
@@ -52,8 +57,8 @@ const SignUpAdminPage: React.FC = () => {
 
   let samePassword: boolean;
 
-  const handleConfirmPassword = (value: string) => {
-    if (value === context.password) {
+  const handleConfirmPassword = (password: string, repassword: string) => {
+    if (password === repassword) {
       samePassword = true;
     } else {
       samePassword = false;
@@ -63,76 +68,84 @@ const SignUpAdminPage: React.FC = () => {
   return (
     <Container>
       <h5>Sign up</h5>
-      <form onSubmit={handleSignupSubmit}>
-        <label>First name</label>
-        <Input
-          type="text"
-          onChange={(e) => context.setFirstName(e.target.value)}
-          onFocus={() => context.setFirstNameValid(true)}
-          onBlur={() => context.setFirstNameValid(!!context.firstName)}
-          valid={context.firstNameValid}
-          placeholder="Enter your first name"
-          required
-        />
-        <label>Last name</label>
-        <Input
-          type="text"
-          onChange={(e) => context.setLastName(e.target.value)}
-          onFocus={() => context.setLastNameValid(true)}
-          onBlur={() => context.setLastNameValid(!!context.lastName)}
-          valid={context.lastNameValid}
-          placeholder="Enter your last name"
-          required
-        />
-        <label>Company name</label>
-        <Input
-          type="text"
-          onChange={(e) =>
-            context.setCompany({
-              id: Math.random().toString(),
-              name: e.target.value,
-            })
-          }
-          onFocus={() => context.setCompanyValid(true)}
-          onBlur={() => context.setCompanyValid(!!context.company)}
-          valid={context.companyValid}
-          placeholder="Enter the company name"
-          required
-        />
-        <label>Email</label>
-        <Input
-          type="email"
-          onChange={(e) => context.setEmail(e.target.value)}
-          onFocus={() => context.setEmailValid(true)}
-          onBlur={() => context.setEmailValid(context.emailCheck)}
-          valid={context.emailValid}
-          placeholder="Enter your Email"
-          required
-        />
-        <label>Password</label>
-        <Input
-          type="password"
-          onChange={(e) => context.setPassword(e.target.value)}
-          onFocus={() => context.setPasswordValid(true)}
-          onBlur={() => context.setPasswordValid(context.passwordCheck)}
-          valid={context.passwordValid}
-          placeholder="Enter your password"
-          required
-        />
-        <label>Confirm Password</label>
-        <Input
-          type="password"
-          onChange={(e) => handleConfirmPassword(e.target.value)}
-          onFocus={() => context.setConfirmPasswordValid(true)}
-          onBlur={() => context.setConfirmPasswordValid(context.passwordCheck)}
-          valid={context.confirmPasswordValid}
-          placeholder="Enter your password again"
-          required
-        />
-        <button type="submit" disabled={context.isSubmitting}>
-          {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
-        </button>
-      </form>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+          repassword: "",
+          firstName: "",
+          lastName: "",
+          company: { id: Math.random().toString(), name: "" },
+        }}
+        onSubmit={(
+          values: Values,
+          { setSubmitting }: FormikHelpers<Values>
+        ) => {
+          handleSignupSubmit(
+            values.email,
+            values.password,
+            values.firstName,
+            values.lastName,
+            values.company
+          );
+          handleConfirmPassword(values.password, values.repassword);
+          setSubmitting(false);
+        }}
+      >
+        <Form>
+          <label>First name</label>
+          <Field
+            id="firstName"
+            name="firstName"
+            placeholder="place your first name here"
+            type="text"
+            required
+          />
+          <label>Last name</label>
+          <Field
+            id="lastName"
+            name="lastName"
+            placeholder="place your last name here"
+            type="text"
+            required
+          />
+          <label>Company name</label>
+          <Field
+            id="company.name"
+            name="company.name"
+            placeholder="place the company name here"
+            type="text"
+            required
+          />
+          <label>Email</label>
+          <Field
+            id="email"
+            name="email"
+            placeholder="place your Email here"
+            type="email"
+            required
+          />
+          <label>Password</label>
+          <Field
+            id="password"
+            name="password"
+            placeholder="place your password here"
+            type="password"
+            required
+          />
+          <label>Confirm Password</label>
+          <Field
+            id="repassword"
+            name="repassword"
+            placeholder="place your password again"
+            type="password"
+            required
+          />
+          <button type="submit" disabled={context.isSubmitting}>
+            {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
+          </button>
+        </Form>
+      </Formik>
       <label>Already an account? </label>
       <Link to={"/signin"}>Sign in</Link>
     </Container>
