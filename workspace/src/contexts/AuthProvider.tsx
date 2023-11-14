@@ -314,6 +314,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // onAuthStateChanged
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
       console.log("auth.currentUser:", auth.currentUser);
 
       if (user && auth.currentUser !== null) {
