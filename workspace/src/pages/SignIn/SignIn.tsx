@@ -6,6 +6,7 @@ import ResetPassword from "../../components/ResetPassword";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import Container from "../../UI/StyledContainer";
 import styled from "styled-components";
+import { Formik, Field, Form, FormikHelpers } from "formik";
 
 const ResetButton = styled.button`
   background-color: rgb(122, 122, 122);
@@ -28,7 +29,7 @@ export const Input = styled.input<{ valid: boolean }>`
     props.valid ? "white" : "#FFCDD2"} !important;
 `;
 
-interface MyFormValues {
+interface Values {
   email: string;
   password: string;
 }
@@ -43,16 +44,14 @@ const SignInPage: React.FC = () => {
     return <p>No context</p>;
   }
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleLoginSubmit = async (email: string, password: string) => {
     if (!context) {
       console.error("No context!");
       return <p>No context</p>;
     }
 
     try {
-      const curRole = await context.login();
+      const curRole = await context.login(email, password);
 
       if (context.auth.currentUser === null) return;
 
@@ -99,39 +98,41 @@ const SignInPage: React.FC = () => {
   return (
     <Container>
       <h5>Sign in</h5>
-      <form onSubmit={handleLoginSubmit}>
-        <main>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        onSubmit={(
+          values: Values,
+          { setSubmitting }: FormikHelpers<Values>
+        ) => {
+          handleLoginSubmit(values.email, values.password);
+          setSubmitting(false);
+        }}
+      >
+        <Form>
           <label>Email</label>
-          <Input
+          <Field
+            id="email"
+            name="email"
+            placeholder="place your Email here"
             type="email"
-            onChange={(e) => {
-              context.setEmail(e.target.value);
-              context.setEmailValid(true);
-            }}
-            onFocus={() => context.setEmailValid(true)}
-            onBlur={() => context.setEmailValid(context.emailCheck)}
-            valid={context.emailValid}
-            placeholder="Enter your Email"
             required
           />
           <label>Password</label>
-          <Input
+          <Field
+            id="password"
+            name="password"
             type="password"
-            onChange={(e) => {
-              context.setPassword(e.target.value);
-              context.setPasswordValid(true);
-            }}
-            onFocus={() => context.setPasswordValid(true)}
-            onBlur={() => context.setPasswordValid(context.passwordCheck)}
-            valid={context.passwordValid}
             placeholder="Enter your password"
             required
           />
           <button type="submit" disabled={context.isSubmitting}>
             {context.isSubmitting ? <CircleLoader /> : "Login"}
           </button>
-        </main>
-      </form>
+        </Form>
+      </Formik>
       <label>Forgot your password?</label>
       <ResetButton onClick={() => context.setShowResetModal(true)}>
         Reset password
