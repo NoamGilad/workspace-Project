@@ -5,7 +5,15 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
 import Container from "../../../UI/StyledContainer";
-import { Input } from "../../SignIn/SignIn";
+
+interface Values {
+  email: string;
+  password: string;
+  repassword: string;
+  firstName: string;
+  lastName: string;
+  company: { id: string; name: string };
+}
 
 const SignUpAdminPage: React.FC = () => {
   const context = useContext(AuthCtx);
