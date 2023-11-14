@@ -59,11 +59,6 @@ const SignUpUserPage: React.FC = () => {
       return;
     }
 
-    if (!samePassword) {
-      window.alert("Password do not match.");
-      return;
-    }
-
     const { companyName, companyId } = getQueryParameters();
 
     try {
@@ -123,14 +118,19 @@ const SignUpUserPage: React.FC = () => {
           values: Values,
           { setSubmitting }: FormikHelpers<Values>
         ) => {
-          handleSignupSubmit(
-            values.email,
-            values.password,
-            values.firstName,
-            values.lastName,
-            values.company
-          );
           handleConfirmPassword(values.password, values.repassword);
+
+          if (samePassword) {
+            handleSignupSubmit(
+              values.email,
+              values.password,
+              values.firstName,
+              values.lastName,
+              values.company
+            );
+          } else {
+            window.alert("Password do not match.");
+          }
           setSubmitting(false);
         }}
       >

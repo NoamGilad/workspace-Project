@@ -98,18 +98,6 @@ type AuthContextType = {
   setShowAddUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   showEditUserModal: boolean;
   setShowEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
-  emailValid: boolean;
-  setEmailValid: React.Dispatch<React.SetStateAction<boolean>>;
-  passwordValid: boolean;
-  setPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
-  confirmPasswordValid: boolean;
-  setConfirmPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
-  firstNameValid: boolean;
-  setFirstNameValid: React.Dispatch<React.SetStateAction<boolean>>;
-  lastNameValid: boolean;
-  setLastNameValid: React.Dispatch<React.SetStateAction<boolean>>;
-  companyValid: boolean;
-  setCompanyValid: React.Dispatch<React.SetStateAction<boolean>>;
   emailCheck: boolean;
   passwordCheck: boolean;
   loading: boolean;
@@ -182,13 +170,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     id: string;
     amountPerHour: number;
   } | null>(null);
-
-  const [emailValid, setEmailValid] = useState(true);
-  const [passwordValid, setPasswordValid] = useState(true);
-  const [confirmPasswordValid, setConfirmPasswordValid] = useState(true);
-  const [firstNameValid, setFirstNameValid] = useState(true);
-  const [lastNameValid, setLastNameValid] = useState(true);
-  const [companyValid, setCompanyValid] = useState(true);
 
   const [loading, setLoading] = useState(true);
 
@@ -524,18 +505,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowAddUserModal,
         showEditUserModal,
         setShowEditUserModal,
-        emailValid,
-        setEmailValid,
-        passwordValid,
-        setPasswordValid,
-        confirmPasswordValid,
-        setConfirmPasswordValid,
-        firstNameValid,
-        setFirstNameValid,
-        lastNameValid,
-        setLastNameValid,
-        companyValid,
-        setCompanyValid,
         emailCheck,
         passwordCheck,
         loading,

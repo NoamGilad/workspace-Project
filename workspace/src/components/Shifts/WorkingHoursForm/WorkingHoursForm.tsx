@@ -1,7 +1,8 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
-import styled from "styled-components";
+import { Formik, Field, Form, FormikHelpers, useFormik } from "formik";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
+import styled from "styled-components";
 
 const HoursForm = styled.div`
   padding: 20px;
@@ -45,6 +46,12 @@ const HoursForm = styled.div`
   }
 `;
 
+interface Values {
+  date: string;
+  from: string;
+  to: string;
+}
+
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const context = useContext(AuthCtx);
   const dimensions = useContext(DimensionsCtx);
@@ -59,25 +66,9 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
     return <p>No Dimensions!</p>;
   }
 
-  const { date, setDate, from, setFrom, to, setTo } = context;
-
   const today = new Date().toISOString().split("T")[0];
 
-  const handleDateChanger = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
-  };
-
-  const handleFromChanger = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFrom(e.target.value);
-  };
-
-  const handleToChanger = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTo(e.target.value);
-  };
-
-  const handleSubmitAddShift = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmitAddShift = (date: string, from: string, to: string) => {
     const fromDate = new Date(date);
     const fromTime = new Date(`${date}T${from}`);
     const toTime = new Date(`${date}T${to}`);
@@ -105,51 +96,58 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
       totalShiftTime,
     };
     props.addEntryMainForm(date, from, to, totalShiftTime);
-
-    setDate("");
-    setFrom("");
-    setTo("");
-
     return;
   };
 
+  const formik = useFormik({
+    initialValues: {
+      date: "",
+      from: "",
+      to: "",
+    },
+    onSubmit: (values: Values, { setSubmitting, resetForm }) => {
+      handleSubmitAddShift(values.date, values.from, values.to);
+      setSubmitting(false);
+      resetForm();
+    },
+  });
+
   return (
     <HoursForm>
-      <form onSubmit={handleSubmitAddShift}>
-        <label>
-          Date
-          <input
-            type="date"
-            value={date}
-            onChange={handleDateChanger}
-            placeholder="Select a date."
-            min="2020-01-01"
-            max={today}
-            required
-          />
-        </label>
-        <label>
-          From
-          <input
-            type="time"
-            value={from}
-            onChange={handleFromChanger}
-            placeholder="Select an hour."
-            required
-          />
-        </label>
-        <label>
-          To
-          <input
-            type="time"
-            value={to}
-            onChange={handleToChanger}
-            placeholder="Select an hour."
-            required
-          />
-        </label>
-        <button type="submit">Add shift</button>
-      </form>
+      <Formik {...formik}>
+        <Form>
+          <label>
+            Date
+            <Field
+              id="date"
+              name="date"
+              placeholder="Select a date"
+              type="date"
+              max={today}
+              required
+            />
+          </label>
+          <label>
+            From
+            <Field
+              type="time"
+              name="from"
+              placeholder="Select an hour"
+              required
+            />
+          </label>
+          <label>
+            To
+            <Field
+              type="time"
+              name="to"
+              placeholder="Select an hour"
+              required
+            />
+          </label>
+          <button type="submit">Add shift</button>
+        </Form>
+      </Formik>
     </HoursForm>
   );
 };
