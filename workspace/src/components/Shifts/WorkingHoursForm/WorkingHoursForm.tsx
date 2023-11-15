@@ -99,22 +99,20 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
     return;
   };
 
-  const formik = useFormik({
-    initialValues: {
-      date: "",
-      from: "",
-      to: "",
-    },
-    onSubmit: (values: Values, { setSubmitting, resetForm }) => {
-      handleSubmitAddShift(values.date, values.from, values.to);
-      setSubmitting(false);
-      resetForm();
-    },
-  });
-
   return (
     <HoursForm>
-      <Formik {...formik}>
+      <Formik
+        initialValues={{
+          date: "",
+          from: "",
+          to: "",
+        }}
+        onSubmit={(values: Values, { setSubmitting, resetForm }) => {
+          handleSubmitAddShift(values.date, values.from, values.to);
+          setSubmitting(false);
+          resetForm();
+        }}
+      >
         <Form>
           <label>
             Date

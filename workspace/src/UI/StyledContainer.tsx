@@ -14,12 +14,13 @@ const Container = styled.div`
     flex-direction: column;
     width: auto;
     padding: 10px;
+    margin: 0 auto;
     margin-top: 5px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
     background-color: white;
-    margin-bottom: 10px;
   }
 `;
 

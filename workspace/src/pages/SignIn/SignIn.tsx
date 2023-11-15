@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
+import { Formik, Form, FormikHelpers, Field } from "formik";
+import * as Yup from "yup";
+import { Input, ErrP } from "../../UI/StyledValidation";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
-import Container from "../../UI/StyledContainer";
 import styled from "styled-components";
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import Container from "../../UI/StyledContainer";
 
 const ResetButton = styled.button`
   background-color: rgb(122, 122, 122);
@@ -21,12 +23,6 @@ const ResetButton = styled.button`
   &:hover {
     background-color: rgb(81, 81, 81);
   }
-`;
-
-export const Input = styled.input<{ valid: boolean }>`
-  border: 1px solid ${(props) => (props.valid ? "#ccc" : "red")} !important;
-  background-color: ${(props) =>
-    props.valid ? "white" : "#FFCDD2"} !important;
 `;
 
 interface Values {
@@ -95,6 +91,14 @@ const SignInPage: React.FC = () => {
       });
   };
 
+  const SigninSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Required"),
+    password: Yup.string()
+      .required("No password provided.")
+      .min(6, "Password is too short- 6 chars minimum.")
+      .matches(/\d/, "Password must contain at least one number."),
+  });
+
   return (
     <Container>
       <h5>Sign in</h5>
@@ -103,6 +107,7 @@ const SignInPage: React.FC = () => {
           email: "",
           password: "",
         }}
+        validationSchema={SigninSchema}
         onSubmit={(
           values: Values,
           { setSubmitting }: FormikHelpers<Values>
@@ -111,27 +116,31 @@ const SignInPage: React.FC = () => {
           setSubmitting(false);
         }}
       >
-        <Form>
-          <label>Email</label>
-          <Field
-            id="email"
-            name="email"
-            placeholder="place your Email here"
-            type="email"
-            required
-          />
-          <label>Password</label>
-          <Field
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            required
-          />
-          <button type="submit" disabled={context.isSubmitting}>
-            {context.isSubmitting ? <CircleLoader /> : "Login"}
-          </button>
-        </Form>
+        {({ errors, touched }) => (
+          <Form>
+            <label>Email</label>
+            <Field
+              id="email"
+              name="email"
+              placeholder="place your Email here"
+              type="email"
+            />
+            {errors.email && touched.email ? <ErrP>{errors.email}</ErrP> : null}
+            <label>Password</label>
+            <Field
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+            />
+            {errors.password && touched.password ? (
+              <ErrP>{errors.password}</ErrP>
+            ) : null}
+            <button type="submit" disabled={context.isSubmitting}>
+              {context.isSubmitting ? <CircleLoader /> : "Login"}
+            </button>
+          </Form>
+        )}
       </Formik>
       <label>Forgot your password?</label>
       <ResetButton onClick={() => context.setShowResetModal(true)}>
