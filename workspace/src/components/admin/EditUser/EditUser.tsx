@@ -1,7 +1,11 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext, useRef } from "react";
 import Modal from "../../../UI/Modal/Modal";
-import { ButtonDiv, CloseButton, ModalContainer } from "../AddUser/AddUser";
+import {
+  ButtonDiv,
+  CloseButton,
+  ModalContainer,
+} from "../../admin/AddUser/AddUser";
 
 const EditUser: React.FC<{
   firstName: string;

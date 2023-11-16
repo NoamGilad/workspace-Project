@@ -12,7 +12,7 @@ const ShiftsList = styled.ul`
 
 const ShiftsListCard = styled.div`
   width: fit-content;
-  background-color: rgb(255, 255, 255);
+  background-color: #263238;
   color: black;
   padding: 10px;
   margin: 0px;
@@ -28,7 +28,7 @@ const ShiftsListCard = styled.div`
   }
 
   & button:hover {
-    background-color: lightcoral;
+    background-color: #263238;
   }
 
   @media (max-width: 320px) {
@@ -147,7 +147,7 @@ const CardContentDivText = styled.div`
   div {
     border-radius: 12px;
     margin: 5px;
-    background-color: peachpuff;
+    background-color: #263238;
     padding: 5px;
   }
 

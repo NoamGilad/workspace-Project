@@ -8,12 +8,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  background-color: lightsalmon;
+  background-color: #37474f;
   text-align: center;
 
   & h1 {
     font-size: 100px;
-    color: #333;
     margin-top: 20px;
     margin-bottom: 100px;
   }
@@ -35,7 +34,7 @@ const HomeCard = styled.div`
   max-width: 65%;
   max-height: 100%;
   overflow: hidden;
-  background-color: rgb(255, 255, 255);
+  background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
@@ -70,13 +69,6 @@ const HomeCard = styled.div`
 
 const HomePage = () => {
   const context = useContext(AuthCtx);
-
-  useEffect(() => {
-    console.log("isSubmitting changed to:", context?.isSubmitting);
-    console.log("isLoggedIn changed to:", context?.loggedIn);
-
-    // Rest of your useEffect logic
-  }, [context?.isSubmitting, context?.loggedIn]);
 
   return (
     <Container>

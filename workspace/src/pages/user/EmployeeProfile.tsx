@@ -11,7 +11,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: lightsalmon;
+  background-color: #37474f;
   text-align: center;
   margin: 0 auto;
 
@@ -19,6 +19,11 @@ const Container = styled.div`
     margin: 0px;
     margin-bottom: 5px;
     font-size: 70px;
+  }
+
+  p,
+  label {
+    color: #263238;
   }
 
   @media (max-width: 850px) {

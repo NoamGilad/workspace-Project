@@ -4,7 +4,7 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 import styled from "styled-components";
 
 const Header = styled.header`
-  background-color: lightcoral;
+  background-color: #263238;
   padding: 10px 0;
   text-align: center;
 `;
@@ -28,13 +28,13 @@ const ListItem = styled.li`
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color: #333;
+  color: #b0bec5;
   font-size: 16px;
   transition: color 0.2s;
 
   &.active {
     font-weight: bold;
-    color: darkblue;
+    color: #607d8b;
   }
 `;
 

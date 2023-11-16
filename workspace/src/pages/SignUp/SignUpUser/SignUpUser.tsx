@@ -2,7 +2,7 @@ import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import Container from "../../../UI/StyledContainer";
@@ -91,21 +91,6 @@ const SignUpUserPage: React.FC = () => {
     }
   };
 
-  //////////////////////////////////////////////////////////////////////////
-
-  let samePassword: boolean;
-
-  const handleConfirmPassword = (
-    password: string,
-    passwordConfirmation: string
-  ) => {
-    if (password === passwordConfirmation) {
-      samePassword = true;
-    } else {
-      samePassword = false;
-    }
-  };
-
   const SignupSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, "Too Short!")
@@ -156,50 +141,57 @@ const SignUpUserPage: React.FC = () => {
         {({ errors, touched }) => (
           <Form>
             <label>First name</label>
-            <Field
+            <Input
               id="firstName"
               name="firstName"
               placeholder="place your first name here"
               type="text"
+              $errors={errors.firstName && touched.firstName}
             />
             {errors.firstName && touched.firstName ? (
               <ErrP>{errors.firstName}</ErrP>
             ) : null}
             <label>Last name</label>
-            <Field
+            <Input
               id="lastName"
               name="lastName"
               placeholder="place your last name here"
               type="text"
+              $errors={errors.lastName && touched.lastName}
             />
             {errors.lastName && touched.lastName ? (
               <ErrP>{errors.lastName}</ErrP>
             ) : null}
             <label>Email</label>
-            <Field
+            <Input
               id="email"
               name="email"
               placeholder="place your Email here"
               type="email"
+              $errors={errors.email && touched.email}
             />
             {errors.email && touched.email ? <ErrP>{errors.email}</ErrP> : null}
             <label>Password</label>
-            <Field
+            <Input
               id="password"
               name="password"
               placeholder="place your password here"
               type="password"
+              $errors={errors.password && touched.password}
             />
             {errors.password && touched.password ? (
               <ErrP>{errors.password}</ErrP>
             ) : null}
             <label>Confirm Password</label>
-            <Field
+            <Input
               id="passwordConfirmation"
               name="passwordConfirmation"
               placeholder="place your password again"
               type="password"
-            />{" "}
+              $errors={
+                errors.passwordConfirmation && touched.passwordConfirmation
+              }
+            />
             {errors.passwordConfirmation && touched.passwordConfirmation ? (
               <ErrP>{errors.passwordConfirmation}</ErrP>
             ) : null}

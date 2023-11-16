@@ -5,7 +5,7 @@ const ShiftsFilterContainer = styled.div`
   width: fit-content;
   color: white;
   padding: 10px;
-  background-color: rgb(255, 255, 255);
+  background-color: #37474f;
   margin-bottom: -4px;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
@@ -16,6 +16,8 @@ const ShiftsFilterContainer = styled.div`
     font-weight: bolder;
     margin-bottom: 8px;
     margin-right: 94.5px;
+    font-weight: bold;
+    color: #e3f2fd;
   }
 
   & select {
@@ -26,7 +28,6 @@ const ShiftsFilterContainer = styled.div`
     font-weight: bold;
     border-radius: 12px;
     margin: 0%;
-    background-color: peachpuff;
   }
 
   @media (max-width: 390px) {

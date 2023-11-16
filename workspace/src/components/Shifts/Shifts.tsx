@@ -13,7 +13,7 @@ const ShiftsContainer = styled.div`
   margin-left: 15px;
   margin-bottom: 15px;
   align-items: flex-start;
-  background-color: peachpuff;
+  background-color: #263238;
   text-align: center;
   padding: 20px;
   border-radius: 12px;
@@ -83,23 +83,23 @@ const Shifts = () => {
   return (
     <ShiftsContainer>
       <WorkingHoursForm addEntryMainForm={addEntryHandler} />
-      {!context.list || context.list.length < 1 ? (
-        <p>No shifts to render</p>
-      ) : (
-        <div>
-          <ShiftsFilter
-            onChangeFilter={filterChangeHandler}
-            selectedYear={filteredYear}
-            selectedMonth={filteredMonth}
-          />
+      <div>
+        <ShiftsFilter
+          onChangeFilter={filterChangeHandler}
+          selectedYear={filteredYear}
+          selectedMonth={filteredMonth}
+        />
+        {!context.list || context.list.length < 1 ? (
+          <p>No shifts to render</p>
+        ) : (
           <ShiftList
             shifts={context.list}
             selectedDate={selectedDate}
             filteredYear={filteredYear}
             filteredMonth={filteredMonth}
           />
-        </div>
-      )}
+        )}
+      </div>
     </ShiftsContainer>
   );
 };

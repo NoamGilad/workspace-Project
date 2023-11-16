@@ -4,9 +4,7 @@ import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
-import RemoveUser from "../../../assets/RemoveUser.svg";
 import styled from "styled-components";
-import { DeleteButton } from "../../UserInfo/UserInfo";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 
 const UsersListCard = styled.div`
@@ -14,7 +12,7 @@ const UsersListCard = styled.div`
   margin: 5px;
   display: flex;
   flex-direction: column;
-  background-color: rgb(255, 255, 255);
+  background-color: #263238;
   text-align: center;
   padding: 20px;
   padding-bottom: 5px;
@@ -83,8 +81,8 @@ const InnerUserList = styled.div`
   width: fit-content;
   margin: 0 auto;
   margin-bottom: 15px;
-  padding: 5px;
-  background-color: lightsalmon;
+  padding: 15px;
+  background-color: #37474f;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
@@ -117,8 +115,8 @@ const ProfilePhotoContainer = styled.div`
   height: 120px;
   overflow: hidden;
   border-radius: 50%;
-  border-style: none;
-  background-color: rgb(255, 255, 255);
+  border: 2px solid #e3f2fd;
+  background-color: #263238;
 
   img {
     width: 100%;

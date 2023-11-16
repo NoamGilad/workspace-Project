@@ -24,11 +24,13 @@ const EmployeeControlPage: React.FC = () => {
 
   return (
     <Container>
-      <H1>{context.company.name}</H1>
-      <h2>Admin control page</h2>
-      <h3>
-        Employer: {context.firstName} {context.lastName}
-      </h3>
+      <div>
+        <H1>{context.company.name}</H1>
+        <h2>Admin control page</h2>
+        <h3>
+          Employer: {context.firstName} {context.lastName}
+        </h3>
+      </div>
 
       {context?.showAddUserModal && context?.isSubmitting === false ? (
         <AddUser />

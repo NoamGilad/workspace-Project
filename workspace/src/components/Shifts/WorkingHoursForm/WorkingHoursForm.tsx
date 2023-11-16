@@ -1,6 +1,6 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
-import { Formik, Field, Form, FormikHelpers, useFormik } from "formik";
+import { Formik, Form, Field } from "formik";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 import styled from "styled-components";
 
@@ -9,7 +9,7 @@ const HoursForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgb(255, 255, 255);
+  background-color: #37474f;
   margin: 5px;
   margin-right: 15px;
   width: fit-content;
@@ -19,13 +19,14 @@ const HoursForm = styled.div`
   input {
     margin-right: 10px;
     margin-left: -12px;
-    background-color: peachpuff;
+    background-color: #e3f2fd;
     border-radius: 12px;
     text-align: center;
   }
 
   label {
     font-weight: bold;
+    color: #e3f2fd;
   }
 
   @media (max-width: 700px) {
@@ -122,26 +123,15 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
               placeholder="Select a date"
               type="date"
               max={today}
-              required
             />
           </label>
           <label>
             From
-            <Field
-              type="time"
-              name="from"
-              placeholder="Select an hour"
-              required
-            />
+            <Field type="time" name="from" placeholder="Select an hour" />
           </label>
           <label>
             To
-            <Field
-              type="time"
-              name="to"
-              placeholder="Select an hour"
-              required
-            />
+            <Field type="time" name="to" placeholder="Select an hour" />
           </label>
           <button type="submit">Add shift</button>
         </Form>
