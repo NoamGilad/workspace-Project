@@ -13,11 +13,9 @@ p {
   color: #e3f2fd;
 }
 
-h1 {
-  color: #e3f2fd;
-}
-
-h2 {
+h1,
+h2,
+h3 {
   color: #e3f2fd;
 }
 
