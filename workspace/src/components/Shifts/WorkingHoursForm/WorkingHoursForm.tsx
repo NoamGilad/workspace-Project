@@ -1,8 +1,9 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
-import { Formik, Field, Form, FormikHelpers, useFormik } from "formik";
+import { Formik, Form, Field } from "formik";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 import styled from "styled-components";
+import { Input } from "../../../UI/StyledValidation";
 
 const HoursForm = styled.div`
   padding: 20px;
@@ -122,26 +123,15 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
               placeholder="Select a date"
               type="date"
               max={today}
-              required
             />
           </label>
           <label>
             From
-            <Field
-              type="time"
-              name="from"
-              placeholder="Select an hour"
-              required
-            />
+            <Field type="time" name="from" placeholder="Select an hour" />
           </label>
           <label>
             To
-            <Field
-              type="time"
-              name="to"
-              placeholder="Select an hour"
-              required
-            />
+            <Field type="time" name="to" placeholder="Select an hour" />
           </label>
           <button type="submit">Add shift</button>
         </Form>

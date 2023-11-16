@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
-import { Formik, Form, FormikHelpers, Field } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Input, ErrP } from "../../UI/StyledValidation";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
@@ -119,19 +119,21 @@ const SignInPage: React.FC = () => {
         {({ errors, touched }) => (
           <Form>
             <label>Email</label>
-            <Field
+            <Input
               id="email"
               name="email"
-              placeholder="place your Email here"
+              placeholder="Enter your Email here"
               type="email"
+              $errors={errors.email && touched.email}
             />
             {errors.email && touched.email ? <ErrP>{errors.email}</ErrP> : null}
             <label>Password</label>
-            <Field
+            <Input
               id="password"
               name="password"
-              type="password"
               placeholder="Enter your password"
+              type="password"
+              $errors={errors.password && touched.password}
             />
             {errors.password && touched.password ? (
               <ErrP>{errors.password}</ErrP>

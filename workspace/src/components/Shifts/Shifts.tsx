@@ -83,23 +83,23 @@ const Shifts = () => {
   return (
     <ShiftsContainer>
       <WorkingHoursForm addEntryMainForm={addEntryHandler} />
-      {!context.list || context.list.length < 1 ? (
-        <p>No shifts to render</p>
-      ) : (
-        <div>
-          <ShiftsFilter
-            onChangeFilter={filterChangeHandler}
-            selectedYear={filteredYear}
-            selectedMonth={filteredMonth}
-          />
+      <div>
+        <ShiftsFilter
+          onChangeFilter={filterChangeHandler}
+          selectedYear={filteredYear}
+          selectedMonth={filteredMonth}
+        />
+        {!context.list || context.list.length < 1 ? (
+          <p>No shifts to render</p>
+        ) : (
           <ShiftList
             shifts={context.list}
             selectedDate={selectedDate}
             filteredYear={filteredYear}
             filteredMonth={filteredMonth}
           />
-        </div>
-      )}
+        )}
+      </div>
     </ShiftsContainer>
   );
 };

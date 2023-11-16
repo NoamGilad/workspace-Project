@@ -71,13 +71,6 @@ const HomeCard = styled.div`
 const HomePage = () => {
   const context = useContext(AuthCtx);
 
-  useEffect(() => {
-    console.log("isSubmitting changed to:", context?.isSubmitting);
-    console.log("isLoggedIn changed to:", context?.loggedIn);
-
-    // Rest of your useEffect logic
-  }, [context?.isSubmitting, context?.loggedIn]);
-
   return (
     <Container>
       <h1>WorkEase</h1>

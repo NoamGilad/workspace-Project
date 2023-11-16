@@ -4,9 +4,7 @@ import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
-import RemoveUser from "../../../assets/RemoveUser.svg";
 import styled from "styled-components";
-import { DeleteButton } from "../../UserInfo/UserInfo";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 
 const UsersListCard = styled.div`
@@ -83,7 +81,7 @@ const InnerUserList = styled.div`
   width: fit-content;
   margin: 0 auto;
   margin-bottom: 15px;
-  padding: 5px;
+  padding: 15px;
   background-color: lightsalmon;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);

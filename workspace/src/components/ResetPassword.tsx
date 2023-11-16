@@ -5,7 +5,7 @@ import {
   ButtonDiv,
   CloseButton,
   ModalContainer,
-} from "./admin/AddUser/AddUser";
+} from "../components/admin/AddUser/AddUser";
 
 interface ResetPasswordProps {
   onResetPassword: () => void;

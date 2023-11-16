@@ -1,7 +1,7 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
@@ -69,7 +69,9 @@ const SignUpAdminPage: React.FC = () => {
       .min(2, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
-    company: Yup.string().required("Required"),
+    company: Yup.object().shape({
+      name: Yup.string().required("Company name is required"),
+    }),
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .required("No password provided.")
@@ -112,59 +114,67 @@ const SignUpAdminPage: React.FC = () => {
         {({ errors, touched }) => (
           <Form>
             <label>First name</label>
-            <Field
+            <Input
               id="firstName"
               name="firstName"
               placeholder="place your first name here"
               type="text"
+              $errors={errors.firstName && touched.firstName}
             />
             {errors.firstName && touched.firstName ? (
               <ErrP>{errors.firstName}</ErrP>
             ) : null}
             <label>Last name</label>
-            <Field
+            <Input
               id="lastName"
               name="lastName"
               placeholder="place your last name here"
               type="text"
+              $errors={errors.lastName && touched.lastName}
             />
             {errors.lastName && touched.lastName ? (
               <ErrP>{errors.lastName}</ErrP>
             ) : null}
             <label>Company name</label>
-            <Field
+            <Input
               id="company.name"
               name="company.name"
               placeholder="place company name here"
               type="text"
+              $errors={errors.company && touched.company}
             />
             {errors.company && touched.company ? (
               <ErrP>{errors.company.name}</ErrP>
             ) : null}
             <label>Email</label>
-            <Field
+            <Input
               id="email"
               name="email"
               placeholder="place your Email here"
               type="email"
+              $errors={errors.email && touched.email}
             />
             {errors.email && touched.email ? <ErrP>{errors.email}</ErrP> : null}
             <label>Password</label>
-            <Field
+            <Input
               id="password"
               name="password"
               placeholder="place your password here"
               type="password"
+              $errors={errors.password && touched.password}
             />
             {errors.password && touched.password ? (
               <ErrP>{errors.password}</ErrP>
             ) : null}
             <label>Confirm Password</label>
-            <Field
+            <Input
               id="passwordConfirmation"
               name="passwordConfirmation"
               placeholder="place your password again"
               type="password"
+              $errors={
+                errors.passwordConfirmation && touched.passwordConfirmation
+              }
             />
             {errors.passwordConfirmation && touched.passwordConfirmation ? (
               <ErrP>{errors.passwordConfirmation}</ErrP>
