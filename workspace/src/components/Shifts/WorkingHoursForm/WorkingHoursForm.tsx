@@ -3,14 +3,13 @@ import { useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 import styled from "styled-components";
-import { Input } from "../../../UI/StyledValidation";
 
 const HoursForm = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgb(255, 255, 255);
+  background-color: #37474f;
   margin: 5px;
   margin-right: 15px;
   width: fit-content;
@@ -20,13 +19,14 @@ const HoursForm = styled.div`
   input {
     margin-right: 10px;
     margin-left: -12px;
-    background-color: peachpuff;
+    background-color: #e3f2fd;
     border-radius: 12px;
     text-align: center;
   }
 
   label {
     font-weight: bold;
+    color: #e3f2fd;
   }
 
   @media (max-width: 700px) {

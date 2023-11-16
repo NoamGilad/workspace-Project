@@ -13,7 +13,7 @@ const ShiftsContainer = styled.div`
   margin-left: 15px;
   margin-bottom: 15px;
   align-items: flex-start;
-  background-color: peachpuff;
+  background-color: #263238;
   text-align: center;
   padding: 20px;
   border-radius: 12px;

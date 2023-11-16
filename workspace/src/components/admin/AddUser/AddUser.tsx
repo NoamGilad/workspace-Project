@@ -14,7 +14,7 @@ export const ModalContainer = styled.div`
   padding-right: 100px;
   align-items: center;
   border-radius: 12px;
-  background-color: rgb(255, 255, 255);
+  background-color: #263238;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
   input {
@@ -55,7 +55,7 @@ export const CloseButton = styled.button`
   background-color: red;
 
   &:hover {
-    background-color: lightcoral;
+    background-color: #263238;
   }
 `;
 

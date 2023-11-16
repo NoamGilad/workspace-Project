@@ -6,7 +6,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  background-color: lightsalmon;
+  background-color: #37474f;
   text-align: center;
 `;
 

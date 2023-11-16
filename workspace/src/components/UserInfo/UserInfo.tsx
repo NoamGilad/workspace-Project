@@ -10,7 +10,7 @@ const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: peachpuff;
+  background-color: #263238;
   text-align: center;
   padding: 20px;
   border: 3;
@@ -71,8 +71,7 @@ const ProfilePhotoContainer = styled.div`
   height: 120px;
   overflow: hidden;
   border-radius: 50%;
-  border-style: none;
-  background-color: rgb(255, 255, 255);
+  border: 2px solid #e3f2fd;
   padding: 0px;
 
   & img {
@@ -158,7 +157,7 @@ const ProfileInfo = styled.div`
   & div {
     border-radius: 12px;
     margin: 5px;
-    background-color: rgb(255, 255, 255);
+    background-color: #e3f2fd;
   }
 
   @media (max-width: 940px) {
@@ -172,7 +171,7 @@ export const DeleteButton = styled.button`
   width: 100%;
 
   &:hover {
-    background-color: lightcoral;
+    background-color: #854242;
   }
 
   img {

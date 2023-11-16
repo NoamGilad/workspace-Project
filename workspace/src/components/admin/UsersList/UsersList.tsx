@@ -12,7 +12,7 @@ const UsersListCard = styled.div`
   margin: 5px;
   display: flex;
   flex-direction: column;
-  background-color: rgb(255, 255, 255);
+  background-color: #263238;
   text-align: center;
   padding: 20px;
   padding-bottom: 5px;
@@ -82,7 +82,7 @@ const InnerUserList = styled.div`
   margin: 0 auto;
   margin-bottom: 15px;
   padding: 15px;
-  background-color: lightsalmon;
+  background-color: #37474f;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
@@ -115,8 +115,8 @@ const ProfilePhotoContainer = styled.div`
   height: 120px;
   overflow: hidden;
   border-radius: 50%;
-  border-style: none;
-  background-color: rgb(255, 255, 255);
+  border: 2px solid #e3f2fd;
+  background-color: #263238;
 
   img {
     width: 100%;
