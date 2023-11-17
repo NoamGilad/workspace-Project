@@ -238,10 +238,8 @@ const UserInfo = () => {
           </div>
         </ProfileInfo>
         <InputContainer>
-          <label>
-            Select File
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-          </label>
+          <label>Select File</label>
+          <input type="file" accept="image/*" onChange={handleFileChange} />
           <DeleteButton
             onClick={() => {
               deleteUserHandler();

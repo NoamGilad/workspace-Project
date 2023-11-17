@@ -221,7 +221,7 @@ const ButtonDiv = styled.div`
 
   button {
     width: 13%;
-    margin: 0 auto;
+    margin-bottom: -10px;
   }
 
   img {
