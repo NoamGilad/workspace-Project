@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import UserInfo from "../../components/UserInfo/UserInfo";
 import Shifts from "../../components/Shifts/Shifts";
+import WorkingHoursChart from "../../components/charts/WorkingHoursChart";
 
 const Container = styled.div`
   display: flex;
@@ -85,6 +86,7 @@ const EmployeeProfilePage = () => {
           <Cards>
             <UserInfo />
             <Shifts />
+            <WorkingHoursChart />
           </Cards>
         </>
       ) : (
