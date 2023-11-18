@@ -10,10 +10,12 @@
     "@types/node": "20.8.2",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "chart.js": "^4.4.0",
     "firebase": "^10.3.0",
     "firebase-admin": "^11.11.0",
     "formik": "^2.4.5",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
     "react-scripts": "^5.0.1",
@@ -46,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/eslint": "^8.44.7",
     "@types/faker": "^6.6.9",
     "faker": "^6.6.6",
     "typescript": "^5.2.2"

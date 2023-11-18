@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "typeRoots": ["./typings", "./node_modules/@types/"]
+    "typeRoots": ["./typings", "./node_modules/@types/"],
+    "types": ["node", "eslint"]
   },
 
   "include": ["src"]
