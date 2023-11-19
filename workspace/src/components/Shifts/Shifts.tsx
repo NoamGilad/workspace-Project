@@ -42,6 +42,7 @@ const Shifts = () => {
   const [filteredYear, setFilteredYear] = useState<string>("2023");
 
   const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
+
   const [filteredMonth, setFilteredMonth] = useState<string>(currentMonth);
 
   if (!context) {

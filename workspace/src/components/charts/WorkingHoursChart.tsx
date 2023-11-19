@@ -2,6 +2,9 @@ import { Bar } from "react-chartjs-2";
 import faker from "faker";
 import { Chart, CategoryScale, LinearScale, Legend } from "chart.js/auto";
 import styled from "styled-components";
+import { useContext } from "react";
+import { AuthCtx } from "../../contexts/AuthProvider";
+import { Shift } from "../Shifts/ShiftsList/ShiftsList";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -15,15 +18,52 @@ const ChartWrapper = styled.div`
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 `;
 
-const WorkingHoursChart: React.FC<{ workingHoursData: any }> = (props) => {
-  const labels = props.workingHoursData.map((entry: any) => entry.date);
+const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
+  const context = useContext(AuthCtx);
+
+  if (!context) {
+    console.error("No context!");
+    return <p>No context!</p>;
+  }
+
+  const calculateWorkingHoursByMonth = (monthIndex: number) => {
+    const filteredShifts = context.list.filter((shift: Shift) => {
+      const shiftYear = new Date(shift.date).getFullYear().toString();
+      const shiftMonth = new Date(shift.date).getMonth() + 1;
+      return shiftYear === props.year && shiftMonth === monthIndex + 1;
+    });
+
+    const totalMinutes = filteredShifts.reduce(
+      (acc: number, shift: Shift) =>
+        acc + parseInt(shift.shiftDuration.split(":")[1]),
+      0
+    );
+
+    console.log(Math.floor(totalMinutes / 60));
+    return Math.floor(totalMinutes / 60);
+  };
+
+  const labels = [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+  ];
 
   const data = {
     labels: labels,
     datasets: [
       {
         label: "Working hours",
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 300 })),
+        data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
         backgroundColor: "#e3f2fd",
       },
     ],

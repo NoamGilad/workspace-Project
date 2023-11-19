@@ -172,7 +172,7 @@ const Sum = styled.p`
   }
 `;
 
-interface Shift {
+export interface Shift {
   id: string;
   date: Date;
   from: string;
