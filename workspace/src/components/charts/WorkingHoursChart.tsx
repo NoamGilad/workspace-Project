@@ -26,6 +26,11 @@ const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
     return <p>No context!</p>;
   }
 
+  const timeStringToMinutes = (timeString: string): number => {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+
   const calculateWorkingHoursByMonth = (monthIndex: number) => {
     const filteredShifts = context.list.filter((shift: Shift) => {
       const shiftYear = new Date(shift.date).getFullYear().toString();
@@ -35,27 +40,28 @@ const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
 
     const totalMinutes = filteredShifts.reduce(
       (acc: number, shift: Shift) =>
-        acc + parseInt(shift.shiftDuration.split(":")[1]),
+        acc + timeStringToMinutes(shift.shiftDuration),
       0
     );
 
-    console.log(Math.floor(totalMinutes / 60));
-    return Math.floor(totalMinutes / 60);
+    const totalHours = totalMinutes / 60;
+
+    return totalHours.toFixed(2);
   };
 
   const labels = [
-    "01",
-    "02",
-    "03",
-    "04",
-    "05",
-    "06",
-    "07",
-    "08",
-    "09",
-    "10",
-    "11",
-    "12",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const data = {

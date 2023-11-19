@@ -41,10 +41,6 @@ const CardContent = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  p {
-    color: #263238;
-  }
-
   @media (max-width: 500px) {
     div {
       label {
@@ -146,6 +142,7 @@ const CardContentDivText = styled.div`
   p {
     font-weight: bold;
     margin: 5px;
+    color: #263238;
   }
 
   div {
@@ -159,6 +156,12 @@ const CardContentDivText = styled.div`
     div {
       padding: 0px;
     }
+  }
+`;
+
+const SumDiv = styled.div`
+  p {
+    color: #e3f2fd;
   }
 `;
 
@@ -286,18 +289,20 @@ const ShiftList: React.FC<{
 
   return (
     <div>
-      <Sum>Total Monthly Hours: {totalMonthlyHours} hours</Sum>
-      {context.amountPerHour ? (
-        <Sum>
-          Salary this month:{" "}
-          {Math.floor(
-            (totalMonthlyHoursInMinutes / 60) * context.amountPerHour
-          )}
-          ₪
-        </Sum>
-      ) : (
-        <Sum>No amountPerHour</Sum>
-      )}
+      <SumDiv>
+        <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
+        {context.amountPerHour ? (
+          <p>
+            Salary this month:{" "}
+            {Math.floor(
+              (totalMonthlyHoursInMinutes / 60) * context.amountPerHour
+            )}
+            ₪
+          </p>
+        ) : (
+          <p>No amountPerHour</p>
+        )}
+      </SumDiv>
       {sortedShifts.length < 1 ? (
         <Sum>There are no shifts at this month.</Sum>
       ) : (
