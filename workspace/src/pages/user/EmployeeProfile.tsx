@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import styled from "styled-components";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";

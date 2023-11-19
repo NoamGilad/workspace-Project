@@ -3,10 +3,9 @@ import styled from "styled-components";
 const ShiftsFilterContainer = styled.div`
   margin: 5px;
   width: fit-content;
-  color: white;
+  color: #e3f2fd;
   padding: 10px;
   background-color: #37474f;
-  margin-bottom: -4px;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 

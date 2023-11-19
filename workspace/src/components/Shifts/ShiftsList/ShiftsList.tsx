@@ -3,6 +3,12 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import styled from "styled-components";
 
+const MainDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const ShiftsList = styled.ul`
   display: grid;
   list-style-type: none;
@@ -160,14 +166,15 @@ const CardContentDivText = styled.div`
 `;
 
 const SumDiv = styled.div`
-  p {
-    color: #e3f2fd;
-  }
-`;
+  width: fit-content;
+  padding: 5px;
+  margin: 15px;
+  background-color: #e3f2fd;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-const Sum = styled.p`
   p {
-    color: #e3f2fd;
+    font-weight: bold;
   }
 
   @media (max-width: 340px) {
@@ -288,7 +295,7 @@ const ShiftList: React.FC<{
   )}`;
 
   return (
-    <div>
+    <MainDiv>
       <SumDiv>
         <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
         {context.amountPerHour ? (
@@ -304,7 +311,7 @@ const ShiftList: React.FC<{
         )}
       </SumDiv>
       {sortedShifts.length < 1 ? (
-        <Sum>There are no shifts at this month.</Sum>
+        <SumDiv>There are no shifts at this month.</SumDiv>
       ) : (
         <ShiftsList>
           {Object.values(filteredShifts).map((shift: any) => (
@@ -338,7 +345,7 @@ const ShiftList: React.FC<{
           ))}
         </ShiftsList>
       )}
-    </div>
+    </MainDiv>
   );
 };
 

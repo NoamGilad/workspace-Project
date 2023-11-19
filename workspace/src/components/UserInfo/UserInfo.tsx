@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -74,7 +74,7 @@ const ProfilePhotoContainer = styled.div`
   border: 2px solid #e3f2fd;
   padding: 0px;
 
-  & img {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -87,34 +87,37 @@ const InputContainer = styled.div`
   flex-direction: column;
   margin-bottom: 5px;
 
-  & label {
-    background-color: rgb(122, 122, 122);
+  label {
+    background-color: #22759f;
     color: #fff;
-    border-radius: 15px;
-    padding: 2px 4px;
+    border-radius: 20px;
+    padding: 4px 8px;
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
     font-weight: bold;
   }
+  label:hover {
+    background-color: #0056b3;
+  }
 
-  & input {
+  input {
     display: none;
   }
 
   @media (max-width: 940px) {
-    & button {
+    button {
       margin: 5px;
       width: fit-content;
     }
 
-    & label {
+    label {
       margin: 5px;
       padding: 2px 15px;
       width: fit-content;
     }
 
-    & input {
+    input {
       margin: 5px;
     }
 
@@ -154,7 +157,7 @@ const ProfileInfo = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  & div {
+  div {
     border-radius: 12px;
     margin: 5px;
     background-color: #e3f2fd;
@@ -195,12 +198,11 @@ const UserInfo = () => {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      context.setSelectedFile(e.target.files[0]);
-    }
+      const selectedFile = e.target.files[0];
+      context.setSelectedFile(selectedFile);
 
-    if (context.selectedFile) {
       try {
-        await context.uploadProfilePicture(context.selectedFile);
+        await context.uploadProfilePicture(selectedFile);
       } catch (error) {
         console.error("Error uploading profile picture:", error);
       }
@@ -238,8 +240,10 @@ const UserInfo = () => {
           </div>
         </ProfileInfo>
         <InputContainer>
-          <label>Select File</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <label>
+            Select photo
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+          </label>
           <DeleteButton
             onClick={() => {
               deleteUserHandler();

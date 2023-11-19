@@ -1,8 +1,7 @@
 import { Bar } from "react-chartjs-2";
-import faker from "faker";
 import { Chart, CategoryScale, LinearScale, Legend } from "chart.js/auto";
 import styled from "styled-components";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { Shift } from "../Shifts/ShiftsList/ShiftsList";
 
@@ -11,14 +10,29 @@ Chart.register(CategoryScale, LinearScale, Legend);
 const ChartWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40%;
-  background-color: #263238;
+  align-items: center;
+  width: 50%;
   padding: 15px;
+  margin: 15px;
+  background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+
+  @media (max-width: 700px) {
+    width: 60vw;
+  }
 `;
 
-const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
+const SelectYear = styled.select`
+  width: fit-content;
+  text-align: center;
+`;
+
+const WorkingHoursChart: React.FC<{
+  year: string;
+  title: string;
+  selectedYear: string;
+}> = (props) => {
   const context = useContext(AuthCtx);
 
   if (!context) {
@@ -47,6 +61,10 @@ const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
     const totalHours = totalMinutes / 60;
 
     return totalHours.toFixed(2);
+  };
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    context.setSelectedYearChart(e.target.value);
   };
 
   const labels = [
@@ -88,7 +106,7 @@ const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
       },
       title: {
         display: true,
-        text: "Working hours by month",
+        text: `Working hours by month: ${props.title}`,
         font: {
           size: 18,
           weight: "bold",
@@ -139,7 +157,17 @@ const WorkingHoursChart: React.FC<{ year: string }> = (props) => {
 
   return (
     <ChartWrapper>
-      <Bar data={data} options={options} />;
+      <SelectYear
+        name="selectedYear"
+        value={props.selectedYear}
+        onChange={handleYearChange}
+      >
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+      </SelectYear>
+      <Bar data={data} options={options} />
     </ChartWrapper>
   );
 };
