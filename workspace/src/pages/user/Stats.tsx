@@ -2,10 +2,12 @@ import Container from "../../UI/StyledContainer";
 import WorkingHoursChart from "../../components/charts/WorkingHoursChart";
 
 const StatsPage = () => {
+  const currentYear = new Date().getFullYear().toString();
+
   return (
     <Container>
       <h1>Stats</h1>
-      {/* <WorkingHoursChart /> */}
+      <WorkingHoursChart year={currentYear} />
     </Container>
   );
 };

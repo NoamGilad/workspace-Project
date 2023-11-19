@@ -19,6 +19,10 @@ const ShiftsContainer = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
+  p {
+    color: #e3f2fd;
+  }
+
   @media (max-width: 940px) {
     margin: 0 auto;
     margin-top: 15px;
@@ -38,6 +42,7 @@ const Shifts = () => {
   const [filteredYear, setFilteredYear] = useState<string>("2023");
 
   const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
+
   const [filteredMonth, setFilteredMonth] = useState<string>(currentMonth);
 
   if (!context) {
