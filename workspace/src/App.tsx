@@ -10,6 +10,8 @@ import SignUpAdminPage from "./pages/SignUp/SignUpAdmin/SignUpAdmin";
 import SignUpUserPage from "./pages/SignUp/SignUpUser/SignUpUser";
 import AdminOnly from "./auth/AdminOnly";
 import UserOnly from "./auth/UserOnly";
+import { Stats } from "fs";
+import StatsPage from "./pages/user/Stats";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
         element: (
           <UserOnly>
             <EmployeeProfilePage />,
+          </UserOnly>
+        ),
+      },
+      {
+        path: "user/stats",
+        element: (
+          <UserOnly>
+            <StatsPage />,
           </UserOnly>
         ),
       },

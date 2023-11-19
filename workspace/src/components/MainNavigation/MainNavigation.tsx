@@ -74,9 +74,16 @@ const MainNavigation = () => {
             </ListItem>
           )}
           {context.loggedIn && context.role === "Employee" && (
-            <ListItem>
-              <StyledNavLink to="/user">Profile</StyledNavLink>
-            </ListItem>
+            <>
+              <ListItem>
+                <StyledNavLink to="/user" end>
+                  Profile
+                </StyledNavLink>
+              </ListItem>
+              <ListItem>
+                <StyledNavLink to="/user/stats">Stats</StyledNavLink>
+              </ListItem>
+            </>
           )}
           {context.loggedIn && context.role === "Employer" && (
             <ListItem>
