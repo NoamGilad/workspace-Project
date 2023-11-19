@@ -10,7 +10,7 @@ body {
 p {
   align-self: center;
   white-space: nowrap;
-  color: #e3f2fd;
+  /* color: #e3f2fd; */
 }
 
 h1,
