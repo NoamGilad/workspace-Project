@@ -11,20 +11,20 @@ const Container = styled.div`
   background-color: #37474f;
   text-align: center;
 
-  & h1 {
+  h1 {
     font-size: 100px;
     margin-top: 20px;
     margin-bottom: 100px;
   }
 
   @media (max-width: 500px) {
-    & h1 {
+    h1 {
       font-size: 70px;
     }
   }
 
   @media (max-width: 350px) {
-    & h1 {
+    h1 {
       font-size: 50px;
     }
   }
@@ -38,7 +38,7 @@ const HomeCard = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  & p {
+  p {
     display: flex;
     flex-direction: column;
     font-size: 25px;
@@ -49,19 +49,19 @@ const HomeCard = styled.div`
   }
 
   @media (max-width: 800px) {
-    & p {
+    p {
       font-size: 20px;
     }
   }
 
   @media (max-width: 500px) {
-    & p {
+    p {
       font-size: 15px;
     }
   }
 
   @media (max-width: 350px) {
-    & p {
+    p {
       font-size: 12px;
     }
   }

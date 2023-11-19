@@ -101,6 +101,8 @@ type AuthContextType = {
   emailCheck: boolean;
   passwordCheck: boolean;
   loading: boolean;
+  selectedYearChart: string;
+  setSelectedYearChart: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type User = {
@@ -172,6 +174,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   } | null>(null);
 
   const [loading, setLoading] = useState(true);
+
+  const [selectedYearChart, setSelectedYearChart] = useState<string>("2023");
 
   /////////////////////////////////////////////////////////////////////
   // Validation
@@ -508,6 +512,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         emailCheck,
         passwordCheck,
         loading,
+        selectedYearChart,
+        setSelectedYearChart,
       }}
     >
       {children}
