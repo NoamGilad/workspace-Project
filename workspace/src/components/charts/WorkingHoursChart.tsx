@@ -23,6 +23,8 @@ const ChartWrapper = styled.div`
   }
 `;
 
+const ChartBar = styled(Bar)``;
+
 const SelectYear = styled.select`
   width: fit-content;
   text-align: center;
@@ -167,7 +169,7 @@ const WorkingHoursChart: React.FC<{
         <option value="2021">2021</option>
         <option value="2020">2020</option>
       </SelectYear>
-      <Bar data={data} options={options} />
+      <ChartBar data={data} options={options} />
     </ChartWrapper>
   );
 };

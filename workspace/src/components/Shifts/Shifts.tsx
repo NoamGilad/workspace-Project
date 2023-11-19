@@ -20,7 +20,7 @@ const ShiftsContainer = styled.div`
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
   p {
-    color: #e3f2fd;
+    color: #263238;
   }
 
   @media (max-width: 940px) {

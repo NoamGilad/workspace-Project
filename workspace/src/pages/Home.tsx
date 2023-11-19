@@ -46,6 +46,7 @@ const HomeCard = styled.div`
     box-sizing: border-box;
     max-width: 100%;
     white-space: normal;
+    color: #e3f2fd;
   }
 
   @media (max-width: 800px) {
