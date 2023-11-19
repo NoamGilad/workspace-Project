@@ -12,14 +12,14 @@ const ShiftsList = styled.ul`
 
 const ShiftsListCard = styled.div`
   width: fit-content;
-  background-color: #263238;
+  background-color: #37474f;
   color: black;
   padding: 10px;
   margin: 0px;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  & button {
+  button {
     text-align: center;
     background-color: red;
     color: black;
@@ -27,7 +27,7 @@ const ShiftsListCard = styled.div`
     margin-left: 2px;
   }
 
-  & button:hover {
+  button:hover {
     background-color: #263238;
   }
 
@@ -40,6 +40,10 @@ const CardContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  p {
+    color: #263238;
+  }
 
   @media (max-width: 500px) {
     div {
@@ -147,7 +151,7 @@ const CardContentDivText = styled.div`
   div {
     border-radius: 12px;
     margin: 5px;
-    background-color: #263238;
+    background-color: #e3f2fd;
     padding: 5px;
   }
 
@@ -159,6 +163,10 @@ const CardContentDivText = styled.div`
 `;
 
 const Sum = styled.p`
+  p {
+    color: #e3f2fd;
+  }
+
   @media (max-width: 340px) {
     font-size: 10px;
   }
