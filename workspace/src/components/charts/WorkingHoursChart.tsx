@@ -12,15 +12,16 @@ const ChartWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50%;
-  height: 700px;
+  width: 80%;
+  height: 450px;
   padding: 15px;
+  padding-bottom: 75px;
   margin: 15px;
   background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  @media (max-width: 1000px) {
+  /* @media (max-width: 1000px) {
     width: 80vw;
   }
 
@@ -34,7 +35,7 @@ const ChartWrapper = styled.div`
 
   @media (max-width: 530px) {
     width: 90vw;
-  }
+  } */
 `;
 
 const SelectYear = styled.select`

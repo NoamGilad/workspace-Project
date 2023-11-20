@@ -34,7 +34,7 @@ const ShiftsListCard = styled.div`
   }
 
   button:hover {
-    background-color: #263238;
+    background-color: #854242;
   }
 
   @media (max-width: 320px) {

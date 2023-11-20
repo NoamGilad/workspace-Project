@@ -107,6 +107,7 @@ const InnerUserList = styled.div`
     font-weight: bold;
     margin-top: 2px;
     margin: 2px 7px 3px 7px;
+    color: #e3f2fd;
   }
 `;
 

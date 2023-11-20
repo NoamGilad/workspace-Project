@@ -145,7 +145,10 @@ const SignInPage: React.FC = () => {
         )}
       </Formik>
       <label>Forgot your password?</label>
-      <ResetButton onClick={() => context.setShowResetModal(true)}>
+      <ResetButton
+        disabled={context.isSubmitting}
+        onClick={() => context.setShowResetModal(true)}
+      >
         Reset password
       </ResetButton>
       {context.showResetModal && (
