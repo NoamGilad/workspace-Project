@@ -1,9 +1,10 @@
-import { Bar } from "react-chartjs-2";
 import { Chart, CategoryScale, LinearScale, Legend } from "chart.js/auto";
+import { Bar } from "react-chartjs-2";
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { Shift } from "../Shifts/ShiftsList/ShiftsList";
+import { DimensionsCtx } from "../../contexts/DimensionsProvider";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -12,22 +13,37 @@ const ChartWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 50%;
+  height: 700px;
   padding: 15px;
   margin: 15px;
   background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  @media (max-width: 700px) {
-    width: 60vw;
+  @media (max-width: 1000px) {
+    width: 80vw;
+  }
+
+  @media (max-width: 600px) {
+    width: 90vw;
+  }
+
+  @media (max-width: 530px) {
+    width: 80%;
+  }
+
+  @media (max-width: 530px) {
+    width: 90vw;
   }
 `;
-
-const ChartBar = styled(Bar)``;
 
 const SelectYear = styled.select`
   width: fit-content;
   text-align: center;
+
+  @media (max-width: 430px) {
+    font-size: 13px;
+  }
 `;
 
 const WorkingHoursChart: React.FC<{
@@ -36,6 +52,7 @@ const WorkingHoursChart: React.FC<{
   selectedYear: string;
 }> = (props) => {
   const context = useContext(AuthCtx);
+  const dimension = useContext(DimensionsCtx);
 
   if (!context) {
     console.error("No context!");
@@ -91,12 +108,26 @@ const WorkingHoursChart: React.FC<{
         label: "Working hours",
         data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
         backgroundColor: "#e3f2fd",
+        barPercentage: 1,
+      },
+    ],
+  };
+
+  const dataMobile = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Working hours",
+        data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
+        backgroundColor: "#e3f2fd",
+        barPercentage: 0.5,
       },
     ],
   };
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top" as const,
@@ -135,7 +166,6 @@ const WorkingHoursChart: React.FC<{
           display: false,
         },
         barPercentage: 0.8,
-        categoryPercentage: 0.8,
       },
       y: {
         beginAtZero: true,
@@ -144,6 +174,67 @@ const WorkingHoursChart: React.FC<{
           text: "Hours",
           font: {
             size: 16,
+          },
+          color: "#e3f2fd",
+        },
+        ticks: {
+          color: "#e3f2fd",
+        },
+        grid: {
+          color: "#e3f2fd",
+        },
+      },
+    },
+  };
+
+  const optionsMobile = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+        labels: {
+          font: {
+            size: 12,
+          },
+        },
+      },
+      title: {
+        display: true,
+        text: `Working hours by month: ${props.title}`,
+        font: {
+          size: 15,
+          weight: "bold",
+        },
+        color: "#e3f2fd",
+      },
+    },
+    scales: {
+      x: {
+        type: "category" as const,
+        labels: labels,
+        title: {
+          display: true,
+          text: "Months",
+          font: {
+            size: 14,
+          },
+          color: "#e3f2fd",
+        },
+        ticks: {
+          color: "#e3f2fd",
+        },
+        grid: {
+          display: false,
+        },
+        barPercentage: 0.8,
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Hours",
+          font: {
+            size: 14,
           },
           color: "#e3f2fd",
         },
@@ -169,7 +260,10 @@ const WorkingHoursChart: React.FC<{
         <option value="2021">2021</option>
         <option value="2020">2020</option>
       </SelectYear>
-      <ChartBar data={data} options={options} />
+      <Bar
+        data={!dimension?.isMobile ? data : dataMobile}
+        options={!dimension?.isMobile ? options : optionsMobile}
+      />
     </ChartWrapper>
   );
 };
