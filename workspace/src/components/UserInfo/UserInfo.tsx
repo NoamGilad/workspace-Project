@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
 import styled from "styled-components";
 import { DimensionsCtx } from "../../contexts/DimensionsProvider";
 
@@ -89,7 +89,7 @@ const InputContainer = styled.div`
 
   label {
     background-color: #22759f;
-    color: #fff;
+    color: #e3f2fd !important;
     border-radius: 20px;
     padding: 4px 8px;
     cursor: pointer;

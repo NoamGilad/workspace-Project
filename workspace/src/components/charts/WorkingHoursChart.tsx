@@ -113,22 +113,6 @@ const WorkingHoursChart: React.FC<{
         backgroundColor: "#e3f2fd",
         barPercentage: 1,
       },
-      {
-        label: "Extra hours 125%",
-        data: labels.map((_, index) =>
-          calculateExtraWorkingHoursByMonth(index)
-        ),
-        backgroundColor: "red",
-        barPercentage: 1,
-      },
-      {
-        label: "Extra hours 150%",
-        data: labels.map((_, index) =>
-          calculateExtraWorkingHoursByMonth(index)
-        ),
-        backgroundColor: "darkred", // You can choose a different color
-        barPercentage: 1,
-      },
     ],
   };
 
@@ -140,22 +124,6 @@ const WorkingHoursChart: React.FC<{
         data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
         backgroundColor: "#e3f2fd",
         barPercentage: 0.5,
-      },
-      {
-        label: "Extra hours 125%",
-        data: labels.map((_, index) =>
-          calculateExtraWorkingHoursByMonth(index)
-        ),
-        backgroundColor: "red",
-        barPercentage: 0.5,
-      },
-      {
-        label: "Extra hours 150%",
-        data: labels.map((_, index) =>
-          calculateExtraWorkingHoursByMonth(index)
-        ),
-        backgroundColor: "darkred", // You can choose a different color
-        barPercentage: 1,
       },
     ],
   };

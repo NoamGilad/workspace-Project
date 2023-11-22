@@ -26,7 +26,7 @@ const HoursForm = styled.div`
 
   label {
     font-weight: bold;
-    color: #e3f2fd;
+    color: #e3f2fd !important;
   }
 
   @media (max-width: 700px) {
