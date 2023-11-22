@@ -21,6 +21,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { Shift } from "../components/Shifts/ShiftsList/ShiftsList";
 
 type AuthContextType = {
   firebaseConfig: any;
@@ -98,11 +99,15 @@ type AuthContextType = {
   setShowAddUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   showEditUserModal: boolean;
   setShowEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
-  emailCheck: boolean;
-  passwordCheck: boolean;
   loading: boolean;
   selectedYearChart: string;
   setSelectedYearChart: React.Dispatch<React.SetStateAction<string>>;
+  normalHours: Shift[];
+  setNormalHours: React.Dispatch<React.SetStateAction<Shift[]>>;
+  extra125Hours: Shift[];
+  setExtra125Hours: React.Dispatch<React.SetStateAction<Shift[]>>;
+  extra150Hours: Shift[];
+  setExtra150Hours: React.Dispatch<React.SetStateAction<Shift[]>>;
 };
 
 type User = {
@@ -159,7 +164,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [profilePictureURL, setProfilePictureURL] = useState<string | null>(
     null
   );
-  const [list, setList] = useState<any[]>([]);
+  const [list, setList] = useState<Shift[]>([]);
+
+  const [normalHours, setNormalHours] = useState<Shift[]>([]);
+  const [extra125Hours, setExtra125Hours] = useState<Shift[]>([]);
+  const [extra150Hours, setExtra150Hours] = useState<Shift[]>([]);
 
   const [date, setDate] = useState<string>("");
   const [from, setFrom] = useState<string>("");
@@ -175,13 +184,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [loading, setLoading] = useState(true);
 
-  const [selectedYearChart, setSelectedYearChart] = useState<string>("2023");
+  const currentYear = new Date().getFullYear().toString();
+  const [selectedYearChart, setSelectedYearChart] =
+    useState<string>(currentYear);
 
   /////////////////////////////////////////////////////////////////////
-  // Validation
-
-  const emailCheck = email.includes("@");
-  const passwordCheck = password.length >= 6;
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -509,11 +516,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowAddUserModal,
         showEditUserModal,
         setShowEditUserModal,
-        emailCheck,
-        passwordCheck,
         loading,
         selectedYearChart,
         setSelectedYearChart,
+        normalHours,
+        setNormalHours,
+        extra125Hours,
+        setExtra125Hours,
+        extra150Hours,
+        setExtra150Hours,
       }}
     >
       {children}

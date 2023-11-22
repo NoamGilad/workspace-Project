@@ -20,22 +20,6 @@ const ChartWrapper = styled.div`
   background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-
-  /* @media (max-width: 1000px) {
-    width: 80vw;
-  }
-
-  @media (max-width: 600px) {
-    width: 90vw;
-  }
-
-  @media (max-width: 530px) {
-    width: 80%;
-  }
-
-  @media (max-width: 530px) {
-    width: 90vw;
-  } */
 `;
 
 const SelectYear = styled.select`
@@ -83,6 +67,24 @@ const WorkingHoursChart: React.FC<{
     return totalHours.toFixed(2);
   };
 
+  const calculateExtraWorkingHoursByMonth = (monthIndex: number) => {
+    const filteredShifts = context.extra125Hours.filter((shift: Shift) => {
+      const shiftYear = new Date(shift.date).getFullYear().toString();
+      const shiftMonth = new Date(shift.date).getMonth() + 1;
+      return shiftYear === props.year && shiftMonth === monthIndex + 1;
+    });
+
+    const totalMinutes = filteredShifts.reduce(
+      (acc: number, shift: Shift) =>
+        acc + timeStringToMinutes(shift.shiftDuration),
+      0
+    );
+
+    const totalExtraHours = totalMinutes / 60;
+
+    return totalExtraHours.toFixed(2);
+  };
+
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     context.setSelectedYearChart(e.target.value);
   };
@@ -111,6 +113,22 @@ const WorkingHoursChart: React.FC<{
         backgroundColor: "#e3f2fd",
         barPercentage: 1,
       },
+      {
+        label: "Extra hours 125%",
+        data: labels.map((_, index) =>
+          calculateExtraWorkingHoursByMonth(index)
+        ),
+        backgroundColor: "red",
+        barPercentage: 1,
+      },
+      {
+        label: "Extra hours 150%",
+        data: labels.map((_, index) =>
+          calculateExtraWorkingHoursByMonth(index)
+        ),
+        backgroundColor: "darkred", // You can choose a different color
+        barPercentage: 1,
+      },
     ],
   };
 
@@ -122,6 +140,22 @@ const WorkingHoursChart: React.FC<{
         data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
         backgroundColor: "#e3f2fd",
         barPercentage: 0.5,
+      },
+      {
+        label: "Extra hours 125%",
+        data: labels.map((_, index) =>
+          calculateExtraWorkingHoursByMonth(index)
+        ),
+        backgroundColor: "red",
+        barPercentage: 0.5,
+      },
+      {
+        label: "Extra hours 150%",
+        data: labels.map((_, index) =>
+          calculateExtraWorkingHoursByMonth(index)
+        ),
+        backgroundColor: "darkred", // You can choose a different color
+        barPercentage: 1,
       },
     ],
   };

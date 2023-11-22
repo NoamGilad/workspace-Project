@@ -11,8 +11,6 @@ const StatsPage = () => {
     return <p>No context!</p>;
   }
 
-  const currentYear = new Date().getFullYear().toString();
-
   return (
     <Container>
       <h1>Stats</h1>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import styled from "styled-components";
@@ -294,18 +294,98 @@ const ShiftList: React.FC<{
     "0"
   )}`;
 
+  const monthlyHours = (hoursType: number) => {
+    const totalMinutes = Math.round(hoursType * 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
+  ////////////////////////////////////////////////////////////////
+  // extra hours
+
+  const extraMin125Arr: number[] = [];
+  const extraMin150Arr: number[] = [];
+
+  const shiftDurationMin = filteredShifts.map((shift: Shift) => {
+    const hoursToMinutes = +shift.shiftDuration.split(":")[0] * 60;
+    const min = +shift.shiftDuration.split(":")[1];
+    const totalMin = hoursToMinutes + min;
+
+    if (totalMin > 480 && totalMin <= 600) {
+      const extraMin125 = totalMin - 480;
+      extraMin125Arr.push(extraMin125);
+    }
+
+    if (totalMin > 600) {
+      const extraMin150 = totalMin - 600;
+      extraMin125Arr.push(120);
+      extraMin150Arr.push(extraMin150);
+    }
+
+    return totalMin;
+  });
+  console.log(extraMin150Arr);
+
+  const extraHours125Arr = extraMin125Arr.map((extra) => {
+    return extra / 60;
+  });
+
+  const extraHours150Arr = extraMin150Arr.map((extra) => {
+    return extra / 60;
+  });
+
+  const totalMonthlyExtraHours125 = extraHours125Arr.reduce(
+    (acc: number, cur: number) => {
+      return acc + cur;
+    },
+    0
+  );
+
+  const totalMonthlyExtraHours150 = +extraHours150Arr
+    .reduce((acc: number, cur: number) => {
+      return acc + cur;
+    }, 0)
+    .toFixed(2);
+
+  const totalMonthlyNormalHours = +(
+    totalMonthlyHoursInMinutes / 60 -
+    totalMonthlyExtraHours125 -
+    totalMonthlyExtraHours150
+  ).toFixed(2);
+
+  const extraPay125 = context.amountPerHour * 1.25;
+  const extraPay150 = context.amountPerHour * 1.5;
+
+  const monthlySalary =
+    totalMonthlyNormalHours * context.amountPerHour +
+    totalMonthlyExtraHours125 * extraPay125 +
+    totalMonthlyExtraHours150 * extraPay150;
+
+  ////////////////////////////////////////////////////////////////
+
   return (
     <MainDiv>
       <SumDiv>
         <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
+        <p>
+          Total Normal Monthly Hours (100%):{" "}
+          {monthlyHours(totalMonthlyNormalHours)} hours
+        </p>
+        <p>
+          Total Monthly Extra Hours (125%):{" "}
+          {monthlyHours(totalMonthlyExtraHours125)} hours
+        </p>
+        <p>
+          Total Monthly Extra Hours (150%):{" "}
+          {monthlyHours(totalMonthlyExtraHours150)} hours
+        </p>
         {context.amountPerHour ? (
-          <p>
-            Salary this month:{" "}
-            {Math.floor(
-              (totalMonthlyHoursInMinutes / 60) * context.amountPerHour
-            )}
-            ₪
-          </p>
+          <p>Salary this month: {monthlySalary}₪</p>
         ) : (
           <p>No amountPerHour</p>
         )}
