@@ -9,17 +9,17 @@ const ShiftsFilterContainer = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  & label {
+  label {
     align-self: center;
     white-space: nowrap;
     font-weight: bolder;
     margin-bottom: 8px;
     margin-right: 94.5px;
     font-weight: bold;
-    color: #e3f2fd;
+    color: #e3f2fd !important;
   }
 
-  & select {
+  select {
     width: 150px;
     align-self: center;
     font: inherit;
@@ -41,7 +41,7 @@ const ShiftsFilterControl = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  & div {
+  div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,7 +50,7 @@ const ShiftsFilterControl = styled.div`
     margin-right: 25px;
   }
 
-  & label {
+  label {
     margin: auto;
     margin-bottom: 3px;
   }

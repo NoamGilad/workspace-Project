@@ -30,6 +30,14 @@ interface Values {
   password: string;
 }
 
+const SigninSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string()
+    .required("No password provided.")
+    .min(6, "Password is too short- 6 chars minimum.")
+    .matches(/\d/, "Password must contain at least one number."),
+});
+
 const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
 
@@ -90,14 +98,6 @@ const SignInPage: React.FC = () => {
         console.log(`Error code:`, errorCode, "Errror message:", errorMessage);
       });
   };
-
-  const SigninSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string()
-      .required("No password provided.")
-      .min(6, "Password is too short- 6 chars minimum.")
-      .matches(/\d/, "Password must contain at least one number."),
-  });
 
   return (
     <Container>
