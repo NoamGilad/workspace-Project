@@ -5,6 +5,10 @@ import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { Shift } from "../Shifts/ShiftsList/ShiftsList";
 import { DimensionsCtx } from "../../contexts/DimensionsProvider";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -20,15 +24,6 @@ const ChartWrapper = styled.div`
   background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-`;
-
-const SelectYear = styled.select`
-  width: fit-content;
-  text-align: center;
-
-  @media (max-width: 430px) {
-    font-size: 13px;
-  }
 `;
 
 const WorkingHoursChart: React.FC<{
@@ -253,16 +248,24 @@ const WorkingHoursChart: React.FC<{
 
   return (
     <ChartWrapper>
-      <SelectYear
-        name="selectedYear"
-        value={props.selectedYear}
-        onChange={handleYearChange}
-      >
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-        <option value="2020">2020</option>
-      </SelectYear>
+      <FormControl sx={{ m: 1, minWidth: 120, color: "#e3f2fd" }}>
+        <InputLabel sx={{ color: "#e3f2fd" }} id="selectYear">
+          Year
+        </InputLabel>
+        <Select
+          sx={{ color: "#e3f2fdc0" }}
+          labelId="selectYear"
+          id="selectYear"
+          value={context.selectedYearChart}
+          label="Year"
+          onChange={(e: any) => handleYearChange(e)}
+        >
+          <MenuItem value="2023">2023</MenuItem>
+          <MenuItem value="2022">2022</MenuItem>
+          <MenuItem value="2021">2021</MenuItem>
+          <MenuItem value="2020">2020</MenuItem>
+        </Select>
+      </FormControl>
       <Bar
         data={!dimension?.isMobile ? data : dataMobile}
         options={!dimension?.isMobile ? options : optionsMobile}

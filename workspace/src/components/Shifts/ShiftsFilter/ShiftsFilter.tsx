@@ -1,32 +1,23 @@
 import styled from "styled-components";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const ShiftsFilterContainer = styled.div`
   margin: 5px;
   width: fit-content;
   color: #e3f2fd;
+  margin: auto;
   padding: 10px;
   background-color: #37474f;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
   label {
-    align-self: center;
-    white-space: nowrap;
-    font-weight: bolder;
-    margin-bottom: 8px;
-    margin-right: 94.5px;
     font-weight: bold;
+    margin: auto;
     color: #e3f2fd !important;
-  }
-
-  select {
-    width: 150px;
-    align-self: center;
-    font: inherit;
-    padding: 1px;
-    font-weight: bold;
-    border-radius: 12px;
-    margin: 0%;
   }
 
   @media (max-width: 390px) {
@@ -51,8 +42,6 @@ const ShiftsFilterControl = styled.div`
   }
 
   label {
-    margin: auto;
-    margin-bottom: 3px;
   }
 
   @media (max-width: 500px) {
@@ -131,48 +120,57 @@ const ShiftsFilter: React.FC<{
   selectedYear: any;
   selectedMonth: string;
 }> = (props) => {
-  const dropdownChangeHandler = (e: any) => {
-    const { name, value } = e.target;
+  const dropdownChangeHandler = (e: any, name: string) => {
+    const { value } = e.target;
     props.onChangeFilter(name, value);
   };
 
   return (
     <ShiftsFilterContainer>
       <ShiftsFilterControl>
-        <div>
-          <label>Filter by year</label>
-          <select
-            name="selectedYear"
+        <FormControl
+          variant="standard"
+          sx={{ m: 1, width: 140, color: "#e3f2fd" }}
+        >
+          <InputLabel id="yearFilter">Filter by year</InputLabel>
+          <Select
+            sx={{ color: "#e3f2fdc0" }}
+            labelId="yearFilter"
+            id="yearFilter"
             value={props.selectedYear}
-            onChange={dropdownChangeHandler}
+            label="Filter by year"
+            onChange={(e: any) => dropdownChangeHandler(e, "selectedYear")}
           >
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-          </select>
-        </div>
-        <div>
-          <label>Filter by month</label>
-          <select
-            name="selectedMonth"
+            <MenuItem value="2023">2023</MenuItem>
+            <MenuItem value="2022">2022</MenuItem>
+            <MenuItem value="2021">2021</MenuItem>
+            <MenuItem value="2020">2020</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl variant="standard" sx={{ m: 1, width: 140 }}>
+          <InputLabel id="monthFilter">Filter by month</InputLabel>
+          <Select
+            sx={{ color: "#e3f2fdc0" }}
+            labelId="monthFilter"
+            id="monthFilter"
             value={props.selectedMonth}
-            onChange={dropdownChangeHandler}
+            onChange={(e: any) => dropdownChangeHandler(e, "selectedMonth")}
+            label="Filter by month"
           >
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-          </select>
-        </div>
+            <MenuItem value="01">January</MenuItem>
+            <MenuItem value="02">February</MenuItem>
+            <MenuItem value="03">March</MenuItem>
+            <MenuItem value="04">April</MenuItem>
+            <MenuItem value="05">May</MenuItem>
+            <MenuItem value="06">June</MenuItem>
+            <MenuItem value="07">July</MenuItem>
+            <MenuItem value="08">August</MenuItem>
+            <MenuItem value="09">September</MenuItem>
+            <MenuItem value="10">October</MenuItem>
+            <MenuItem value="11">November</MenuItem>
+            <MenuItem value="12">December</MenuItem>
+          </Select>
+        </FormControl>
       </ShiftsFilterControl>
     </ShiftsFilterContainer>
   );

@@ -329,7 +329,6 @@ const ShiftList: React.FC<{
 
     return totalMin;
   });
-  console.log(extraMin150Arr);
 
   const extraHours125Arr = extraMin125Arr.map((extra) => {
     return extra / 60;
