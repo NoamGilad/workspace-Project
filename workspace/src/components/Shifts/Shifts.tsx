@@ -60,21 +60,21 @@ const Shifts = () => {
       return;
     }
 
-    const newShift = {
-      date,
-      from,
-      to,
-      shiftDuration: shiftDuration.padEnd(2, "0"),
-      id: Math.random().toString(),
-    };
+    // const newShift = {
+    //   date,
+    //   from,
+    //   to,
+    //   shiftDuration: shiftDuration.padEnd(2, "0"),
+    //   id: Math.random().toString(),
+    // };
 
-    context.setList((prevShiftsList: any) => {
-      return [...prevShiftsList, newShift];
-    });
+    // context.setList((prevShiftsList: any) => {
+    //   return [...prevShiftsList, newShift];
+    // });
 
-    context.storingWorkingHours([...context.list, newShift]);
+    // context.storingWorkingHours([...context.list, newShift]);
 
-    setSelectedDate(date);
+    // setSelectedDate(date);
   };
 
   const filterChangeHandler = (filterName: string, selectedValue: string) => {

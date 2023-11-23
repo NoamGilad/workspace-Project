@@ -22,6 +22,7 @@ import {
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { Shift } from "../components/Shifts/ShiftsList/ShiftsList";
+import { Dayjs } from "dayjs";
 
 type AuthContextType = {
   firebaseConfig: any;
@@ -70,8 +71,8 @@ type AuthContextType = {
   list: any;
   setList: React.Dispatch<React.SetStateAction<any>>;
   storingWorkingHours: Function;
-  date: string;
-  setDate: React.Dispatch<React.SetStateAction<string>>;
+  date: string | Dayjs;
+  setDate: React.Dispatch<React.SetStateAction<string | Dayjs>>;
   from: string;
   setFrom: React.Dispatch<React.SetStateAction<string>>;
   to: string;
@@ -170,7 +171,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [extra125Hours, setExtra125Hours] = useState<Shift[]>([]);
   const [extra150Hours, setExtra150Hours] = useState<Shift[]>([]);
 
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string | Dayjs>("");
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
 
