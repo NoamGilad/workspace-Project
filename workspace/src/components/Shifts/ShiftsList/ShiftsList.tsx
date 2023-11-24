@@ -393,8 +393,8 @@ const ShiftList: React.FC<{
         <SumDiv>There are no shifts at this month.</SumDiv>
       ) : (
         <ShiftsList>
-          {Object.values(filteredShifts).map((shift: any) => (
-            <li key={shift.id}>
+          {Object.values(filteredShifts).map((shift: Shift, index: number) => (
+            <li key={index}>
               <ShiftsListCard>
                 <CardContent>
                   <CardContentDivText>

@@ -8,6 +8,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
+import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 
 const HoursForm = styled.div`
   padding: 20px;
@@ -60,6 +65,8 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedFrom, setSelectedFrom] = useState<string | null>("");
+  const [selectedTo, setSelectedTo] = useState<string | null>("");
 
   if (!context) {
     console.error("No context!");
@@ -121,6 +128,8 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
       context.storingWorkingHours([...context.list, newShift]);
 
       setSelectedDate(date);
+      setSelectedFrom(from);
+      setSelectedTo(to);
 
       props.addEntryMainForm(date, from, to, totalShiftTime);
     }
@@ -150,7 +159,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         <Form>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Field name="date">
-              {({ field, form }: FieldProps<Values>) => (
+              {({ form }: FieldProps<Values>) => (
                 <DatePicker
                   label="Pick a date"
                   format="YYYY-MM-DD"
@@ -164,14 +173,40 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
               )}
             </Field>
           </LocalizationProvider>
-          <label>
-            From
-            <Field type="time" name="from" placeholder="Select an hour" />
-          </label>
-          <label>
-            To
-            <Field type="time" name="to" placeholder="Select an hour" />
-          </label>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Field name="from">
+              {({ form }: FieldProps<Values>) => (
+                <DemoContainer components={["TimePicker", "TimePicker"]}>
+                  <TimePicker
+                    label="From"
+                    value={selectedFrom ? dayjs(selectedFrom) : null}
+                    onChange={(e: Dayjs | null) => {
+                      setSelectedFrom(e?.format("HH:mm") || "");
+                      form.setFieldValue("from", e?.format("HH:mm") || "");
+                    }}
+                    ampm={false}
+                  />
+                </DemoContainer>
+              )}
+            </Field>
+          </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Field name="from">
+              {({ form }: FieldProps<Values>) => (
+                <DemoContainer components={["TimePicker", "TimePicker"]}>
+                  <TimePicker
+                    label="To"
+                    value={selectedTo ? dayjs(selectedTo) : null}
+                    onChange={(e: Dayjs | null) => {
+                      setSelectedTo(e?.format("HH:mm") || "");
+                      form.setFieldValue("to", e?.format("HH:mm") || "");
+                    }}
+                    ampm={false}
+                  />
+                </DemoContainer>
+              )}
+            </Field>
+          </LocalizationProvider>
           <button type="submit">Add shift</button>
         </Form>
       </Formik>
