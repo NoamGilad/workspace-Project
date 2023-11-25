@@ -8,11 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
-import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 
 const HoursForm = styled.div`
   padding: 20px;
@@ -35,7 +31,7 @@ const HoursForm = styled.div`
     color: #e3f2fd !important;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     margin: 0 auto;
     margin-bottom: 10px;
     width: 80%;
@@ -50,6 +46,14 @@ const HoursForm = styled.div`
     button {
       width: 90%;
     }
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: orange;
+
+  &:hover {
+    background-color: #ffa6006a;
   }
 `;
 
@@ -157,26 +161,29 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
         }}
       >
         <Form>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Field name="date">
-              {({ form }: FieldProps<Values>) => (
-                <DatePicker
-                  label="Pick a date"
-                  format="YYYY-MM-DD"
-                  defaultValue={dayjs(today)}
-                  value={selectedDate ? dayjs(selectedDate) : null}
-                  onChange={(e: Dayjs | null) => {
-                    setSelectedDate(e?.format("YYYY-MM-DD") || "");
-                    form.setFieldValue("date", e?.format("YYYY-MM-DD") || "");
-                  }}
-                />
-              )}
-            </Field>
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Field name="from">
-              {({ form }: FieldProps<Values>) => (
-                <DemoContainer components={["TimePicker", "TimePicker"]}>
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Field name="date">
+                {({ form }: FieldProps<Values>) => (
+                  <DatePicker
+                    label="Pick a date"
+                    format="YYYY-MM-DD"
+                    defaultValue={dayjs(today)}
+                    value={selectedDate ? dayjs(selectedDate) : null}
+                    onChange={(e: Dayjs | null) => {
+                      setSelectedDate(e?.format("YYYY-MM-DD") || "");
+                      form.setFieldValue("date", e?.format("YYYY-MM-DD") || "");
+                    }}
+                    sx={{ margin: "5px" }}
+                  />
+                )}
+              </Field>
+            </LocalizationProvider>
+          </div>
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Field name="from">
+                {({ form }: FieldProps<Values>) => (
                   <TimePicker
                     label="From"
                     value={selectedFrom ? dayjs(selectedFrom) : null}
@@ -185,15 +192,16 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
                       form.setFieldValue("from", e?.format("HH:mm") || "");
                     }}
                     ampm={false}
+                    sx={{ margin: "5px" }}
                   />
-                </DemoContainer>
-              )}
-            </Field>
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Field name="from">
-              {({ form }: FieldProps<Values>) => (
-                <DemoContainer components={["TimePicker", "TimePicker"]}>
+                )}
+              </Field>
+            </LocalizationProvider>
+          </div>
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Field name="from">
+                {({ form }: FieldProps<Values>) => (
                   <TimePicker
                     label="To"
                     value={selectedTo ? dayjs(selectedTo) : null}
@@ -202,12 +210,13 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
                       form.setFieldValue("to", e?.format("HH:mm") || "");
                     }}
                     ampm={false}
+                    sx={{ margin: "5px" }}
                   />
-                </DemoContainer>
-              )}
-            </Field>
-          </LocalizationProvider>
-          <button type="submit">Add shift</button>
+                )}
+              </Field>
+            </LocalizationProvider>
+          </div>
+          <SubmitButton type="submit">Add shift</SubmitButton>
         </Form>
       </Formik>
     </HoursForm>

@@ -31,7 +31,6 @@ const EmployeeControlPage: React.FC = () => {
           Employer: {context.firstName} {context.lastName}
         </h3>
       </div>
-
       {context?.showAddUserModal && context?.isSubmitting === false ? (
         <AddUser />
       ) : (

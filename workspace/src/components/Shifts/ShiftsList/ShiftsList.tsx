@@ -1,7 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import styled from "styled-components";
+import { Grid } from "@mui/material";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 
 const MainDiv = styled.div`
   display: flex;
@@ -27,7 +30,7 @@ const ShiftsListCard = styled.div`
 
   button {
     text-align: center;
-    background-color: red;
+    background-color: #ff00008b;
     color: black;
     margin-bottom: 6px;
     margin-left: 2px;
@@ -416,7 +419,11 @@ const ShiftList: React.FC<{
                     </div>
                   </CardContentDivText>
                   <div>
-                    <button onClick={() => handleDeleteShift(shift)}>x</button>
+                    <button onClick={() => handleDeleteShift(shift)}>
+                      <Grid item xs={8}>
+                        <DeleteForeverRoundedIcon />
+                      </Grid>
+                    </button>
                   </div>
                 </CardContent>
               </ShiftsListCard>

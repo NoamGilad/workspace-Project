@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AuthCtx } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-const AdminOnly: React.FC<{ children: React.ReactNode }> = (props) => {
+const AdminUser: React.FC<{ children: React.ReactNode }> = (props) => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
 
@@ -16,4 +16,4 @@ const AdminOnly: React.FC<{ children: React.ReactNode }> = (props) => {
   return props.children;
 };
 
-export default AdminOnly;
+export default AdminUser;

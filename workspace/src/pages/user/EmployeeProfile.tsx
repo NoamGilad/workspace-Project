@@ -54,7 +54,7 @@ const Cards = styled.div`
   flex-direction: row;
   flex: 1;
 
-  @media (max-width: 940px) {
+  @media (max-width: 1050px) {
     display: flex;
     flex-direction: column;
   }
@@ -72,9 +72,7 @@ const EmployeeProfilePage = () => {
 
   return (
     <Container>
-      <h1>
-        Welcome {context.nameToCapital(context.firstName, context.lastName)!}
-      </h1>
+      <h1>{context.nameToCapital(context.firstName, context.lastName)!}</h1>
       {isRole ? (
         <>
           <div>

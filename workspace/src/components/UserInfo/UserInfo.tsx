@@ -24,7 +24,7 @@ const UserInfoContainer = styled.div`
     margin: 2px 7px 3px 7px;
   }
 
-  @media (max-width: 940px) {
+  @media (max-width: 1050px) {
     display: flex;
     flex-direction: row;
 
@@ -105,7 +105,7 @@ const InputContainer = styled.div`
     display: none;
   }
 
-  @media (max-width: 940px) {
+  @media (max-width: 1050px) {
     button {
       margin: 5px;
       width: fit-content;
@@ -163,7 +163,7 @@ const ProfileInfo = styled.div`
     background-color: #e3f2fd;
   }
 
-  @media (max-width: 940px) {
+  @media (max-width: 1050px) {
     flex-direction: row;
     margin-right: 0 auto;
   }
