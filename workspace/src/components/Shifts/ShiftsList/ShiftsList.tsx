@@ -1,10 +1,14 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import styled from "styled-components";
 import { Grid } from "@mui/material";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const MainDiv = styled.div`
   display: flex;
@@ -14,9 +18,8 @@ const MainDiv = styled.div`
 
 const ShiftsList = styled.ul`
   display: grid;
-  list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: -10px;
 `;
 
 const ShiftsListCard = styled.div`
@@ -28,20 +31,21 @@ const ShiftsListCard = styled.div`
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 
-  button {
-    text-align: center;
-    background-color: #ff00008b;
-    color: black;
-    margin-bottom: 6px;
-    margin-left: 2px;
-  }
-
-  button:hover {
-    background-color: #854242;
-  }
-
   @media (max-width: 320px) {
     padding: 5px;
+  }
+`;
+
+const DeleteShiftButton = styled.button`
+  text-align: center;
+  background-color: #ff00008b;
+  color: black;
+  margin: auto;
+  padding: 5px;
+  padding-top: 8px;
+
+  &:hover {
+    background-color: #854242;
   }
 `;
 
@@ -171,7 +175,8 @@ const CardContentDivText = styled.div`
 const SumDiv = styled.div`
   width: fit-content;
   padding: 5px;
-  margin: 15px;
+  margin: 10px;
+  margin-top: 15px;
   background-color: #e3f2fd;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
@@ -183,6 +188,10 @@ const SumDiv = styled.div`
   @media (max-width: 340px) {
     font-size: 10px;
   }
+`;
+
+const StyledListItemText = styled(ListItemText)`
+  width: 100vw;
 `;
 
 export interface Shift {
@@ -201,10 +210,20 @@ const ShiftList: React.FC<{
 }> = (props) => {
   const context = useContext(AuthCtx);
 
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
   if (!context) {
     console.error("No context!");
     return <p>No context!</p>;
   }
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
+  };
 
   const formatDateWithMonthLetters = (date: Date) => {
     const dateObject = new Date(date || props.selectedDate);
@@ -235,6 +254,10 @@ const ShiftList: React.FC<{
 
     return dayA - dayB;
   });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentShifts = sortedShifts.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleDeleteShift = async (shift: any) => {
     if (!context) {
@@ -395,6 +418,47 @@ const ShiftList: React.FC<{
       {sortedShifts.length < 1 ? (
         <SumDiv>There are no shifts at this month.</SumDiv>
       ) : (
+        Object.values(filteredShifts).map((shift: Shift, index: number) => (
+          <ShiftsList>
+            <List key={index} sx={{ width: "100%", maxWidth: 360 }}>
+              <ListItem
+                sx={{
+                  border: "2px solid",
+                  borderRadius: "12px",
+                  backgroundColor: "#e3f2fd",
+                }}
+              >
+                <StyledListItemText
+                  primary={shift.date.toString()}
+                  secondary={
+                    <div>
+                      {`${shift.from} - ${shift.to}`} <br />
+                      {`Shift duration: ${shift.shiftDuration}`}
+                    </div>
+                  }
+                />
+                <DeleteShiftButton onClick={() => handleDeleteShift(shift)}>
+                  <Grid item xs={8}>
+                    <DeleteForeverRoundedIcon />
+                  </Grid>
+                </DeleteShiftButton>
+              </ListItem>
+            </List>
+          </ShiftsList>
+        ))
+      )}
+      <Stack spacing={2}>
+        <Pagination
+          count={Math.ceil(sortedShifts.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          showFirstButton
+          showLastButton
+        />
+      </Stack>
+      {sortedShifts.length < 1 ? (
+        <SumDiv>There are no shifts at this month.</SumDiv>
+      ) : (
         <ShiftsList>
           {Object.values(filteredShifts).map((shift: Shift, index: number) => (
             <li key={index}>
@@ -419,11 +483,11 @@ const ShiftList: React.FC<{
                     </div>
                   </CardContentDivText>
                   <div>
-                    <button onClick={() => handleDeleteShift(shift)}>
+                    <DeleteShiftButton onClick={() => handleDeleteShift(shift)}>
                       <Grid item xs={8}>
                         <DeleteForeverRoundedIcon />
                       </Grid>
-                    </button>
+                    </DeleteShiftButton>
                   </div>
                 </CardContent>
               </ShiftsListCard>
