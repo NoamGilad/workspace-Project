@@ -22,7 +22,7 @@ const ListItem = styled.li`
   margin: 0 10px;
   text-align: center;
 
-  & button {
+  button {
     margin: 0px;
   }
 `;
@@ -36,6 +36,14 @@ const StyledNavLink = styled(NavLink)`
   &.active {
     font-weight: bold;
     color: #607d8b;
+  }
+`;
+
+const LogoutButton = styled.button`
+  background-color: #ff00008b;
+
+  &:hover {
+    background-color: #854242;
   }
 `;
 
@@ -93,7 +101,7 @@ const MainNavigation = () => {
           )}
           {context.loggedIn && (
             <ListItem>
-              <button onClick={onLogoutHandler}>Logout</button>
+              <LogoutButton onClick={onLogoutHandler}>Logout</LogoutButton>
             </ListItem>
           )}
         </List>

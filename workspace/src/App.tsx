@@ -41,11 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: "admin",
-        element: (
-          <AdminOnly>
-            <EmployeeControlPage />,
-          </AdminOnly>
-        ),
+        element: <EmployeeControlPage />,
       },
       {
         path: "user",

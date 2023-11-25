@@ -23,13 +23,13 @@ const ShiftsContainer = styled.div`
     color: #263238;
   }
 
-  @media (max-width: 940px) {
+  @media (max-width: 1050px) {
     margin: 0 auto;
     margin-top: 15px;
     margin-bottom: 15px;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     width: min-content;
     flex-direction: column;
   }
