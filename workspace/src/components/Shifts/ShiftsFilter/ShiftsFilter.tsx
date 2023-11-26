@@ -41,9 +41,6 @@ const ShiftsFilterControl = styled.div`
     margin-right: 25px;
   }
 
-  label {
-  }
-
   @media (max-width: 500px) {
     div {
       margin: 0%;
@@ -92,25 +89,6 @@ const ShiftsFilterControl = styled.div`
   @media (max-width: 360px) {
     div {
       width: 125px;
-    }
-
-    label {
-      font-size: 9px;
-    }
-
-    select {
-      font-size: 9px;
-      width: 100px;
-    }
-  }
-
-  @media (max-width: 320px) {
-    div {
-      width: fit-content;
-
-      select {
-        width: fit-content;
-      }
     }
   }
 `;

@@ -40,7 +40,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const LogoutButton = styled.button`
-  background-color: #ff00008b;
+  background-color: #da1e37;
 
   &:hover {
     background-color: #854242;

@@ -1,13 +1,16 @@
 body {
   margin: 0;
-  font-family: "Andalé Mono", monospace;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-color: #37474f;
 }
 
 p {
   align-self: center;
   white-space: nowrap;
-  /* color: #e3f2fd; */
 }
 
 h1,
