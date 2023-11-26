@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import styled from "styled-components";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
@@ -77,7 +77,6 @@ const EmployeeProfilePage = () => {
         <>
           <div>
             <h2>Company: {context.company.name}</h2>
-            <h2>Role: {context.role}</h2>
             <h2>Hourly wage: {context.amountPerHour}</h2>
           </div>
           <Cards>

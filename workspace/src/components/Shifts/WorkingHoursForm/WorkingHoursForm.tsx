@@ -36,16 +36,6 @@ const HoursForm = styled.div`
     margin-bottom: 10px;
     width: 80%;
     padding: 10px;
-
-    input {
-      width: 90%;
-      margin: 0 auto;
-      padding: 5px;
-    }
-
-    button {
-      width: 90%;
-    }
   }
 `;
 
@@ -54,6 +44,10 @@ const SubmitButton = styled.button`
 
   &:hover {
     background-color: #ffa6006a;
+  }
+
+  @media (max-width: 800px) {
+    width: fit-content;
   }
 `;
 
@@ -156,8 +150,9 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
 
           await handleSubmitAddShift(values.date, values.from, values.to);
 
-          resetForm();
-          setSubmitting(false);
+          setSelectedDate("");
+          setSelectedFrom(null);
+          setSelectedTo(null);
         }}
       >
         <Form>

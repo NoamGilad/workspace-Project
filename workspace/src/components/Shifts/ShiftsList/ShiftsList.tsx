@@ -22,122 +22,25 @@ const ShiftsList = styled.ul`
   margin: -10px;
 `;
 
-const ShiftsListCard = styled.div`
-  width: fit-content;
-  background-color: #37474f;
-  color: black;
-  padding: 10px;
-  margin: 0px;
-  border-radius: 12px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-
-  @media (max-width: 320px) {
-    padding: 5px;
-  }
-`;
-
 const DeleteShiftButton = styled.button`
-  text-align: center;
-  background-color: #ff00008b;
-  color: black;
   margin: auto;
-  padding: 5px;
+  margin-bottom: 15px;
+  padding: 0px;
   padding-top: 8px;
+  background-color: #e3f2fd;
 
   &:hover {
-    background-color: #854242;
+    background-color: #e3f2fd;
   }
 `;
 
-const CardContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const StyledDeleteIcons = styled(DeleteForeverRoundedIcon)`
+  margin-bottom: -5px;
+  margin-right: -5px;
+  color: #da1e37;
 
-  @media (max-width: 500px) {
-    div {
-      label {
-        font-size: 13px;
-      }
-
-      p {
-        font-size: 12px;
-      }
-
-      button {
-        font-size: 13px;
-      }
-    }
-  }
-
-  @media (max-width: 440px) {
-    div {
-      label {
-        font-size: 11px;
-      }
-
-      p {
-        font-size: 10px;
-      }
-
-      button {
-        font-size: 11px;
-      }
-    }
-  }
-
-  @media (max-width: 390px) {
-    div {
-      margin: -6px;
-
-      label {
-        font-size: 10px;
-      }
-
-      p {
-        font-size: 9px;
-      }
-
-      button {
-        font-size: 10px;
-      }
-    }
-  }
-
-  @media (max-width: 360px) {
-    div {
-      margin: -6px;
-
-      label {
-        font-size: 9px;
-      }
-
-      p {
-        font-size: 8px;
-      }
-
-      button {
-        font-size: 9px;
-      }
-    }
-  }
-
-  @media (max-width: 340px) {
-    div {
-      margin: -6px;
-
-      label {
-        font-size: 8px;
-      }
-
-      p {
-        font-size: 7px;
-      }
-
-      button {
-        font-size: 8px;
-      }
-    }
+  &:hover {
+    color: #854242;
   }
 `;
 
@@ -172,6 +75,43 @@ const CardContentDivText = styled.div`
   }
 `;
 
+const ShiftDetails = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  div {
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    border: 2px #37474f solid;
+    border-radius: 12px;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  p {
+    margin: 2px;
+    margin-right: 40px;
+  }
+
+  @media (max-width: 460px) {
+    span,
+    label {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    span,
+    label {
+      font-size: 10px;
+    }
+  }
+`;
+
 const SumDiv = styled.div`
   width: fit-content;
   padding: 5px;
@@ -185,13 +125,13 @@ const SumDiv = styled.div`
     font-weight: bold;
   }
 
-  @media (max-width: 340px) {
+  @media (max-width: 460px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 360px) {
     font-size: 10px;
   }
-`;
-
-const StyledListItemText = styled(ListItemText)`
-  width: 100vw;
 `;
 
 export interface Shift {
@@ -391,8 +331,6 @@ const ShiftList: React.FC<{
     totalMonthlyExtraHours125 * extraPay125 +
     totalMonthlyExtraHours150 * extraPay150;
 
-  ////////////////////////////////////////////////////////////////
-
   return (
     <MainDiv>
       <SumDiv>
@@ -410,7 +348,7 @@ const ShiftList: React.FC<{
           {monthlyHours(totalMonthlyExtraHours150)} hours
         </p>
         {context.amountPerHour ? (
-          <p>Salary this month: {monthlySalary}₪</p>
+          <p>Salary this month: {monthlySalary.toFixed(2)}₪</p>
         ) : (
           <p>No amountPerHour</p>
         )}
@@ -418,28 +356,39 @@ const ShiftList: React.FC<{
       {sortedShifts.length < 1 ? (
         <SumDiv>There are no shifts at this month.</SumDiv>
       ) : (
-        Object.values(filteredShifts).map((shift: Shift, index: number) => (
-          <ShiftsList>
-            <List key={index} sx={{ width: "100%", maxWidth: 360 }}>
+        currentShifts.map((shift: Shift) => (
+          <ShiftsList key={shift.id}>
+            <List key={shift.id} sx={{ width: "100%", maxWidth: 360 }}>
               <ListItem
+                key={shift.id}
                 sx={{
                   border: "2px solid",
                   borderRadius: "12px",
                   backgroundColor: "#e3f2fd",
                 }}
               >
-                <StyledListItemText
-                  primary={shift.date.toString()}
+                <ListItemText
+                  primary={formatDateWithMonthLetters(shift.date)}
                   secondary={
-                    <div>
-                      {`${shift.from} - ${shift.to}`} <br />
-                      {`Shift duration: ${shift.shiftDuration}`}
-                    </div>
+                    <ShiftDetails>
+                      <div>
+                        <label>From: </label>
+                        <span>{shift.from}</span>
+                      </div>
+                      <div>
+                        <label>To: </label>
+                        <span>{shift.to}</span>
+                      </div>
+                      <div>
+                        <label>Duration: </label>
+                        <span>{shift.shiftDuration}</span>
+                      </div>
+                    </ShiftDetails>
                   }
                 />
                 <DeleteShiftButton onClick={() => handleDeleteShift(shift)}>
-                  <Grid item xs={8}>
-                    <DeleteForeverRoundedIcon />
+                  <Grid item>
+                    <StyledDeleteIcons />
                   </Grid>
                 </DeleteShiftButton>
               </ListItem>
@@ -447,54 +396,16 @@ const ShiftList: React.FC<{
           </ShiftsList>
         ))
       )}
-      <Stack spacing={2}>
+      <Stack>
         <Pagination
           count={Math.ceil(sortedShifts.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}
           showFirstButton
           showLastButton
+          color="primary"
         />
       </Stack>
-      {sortedShifts.length < 1 ? (
-        <SumDiv>There are no shifts at this month.</SumDiv>
-      ) : (
-        <ShiftsList>
-          {Object.values(filteredShifts).map((shift: Shift, index: number) => (
-            <li key={index}>
-              <ShiftsListCard>
-                <CardContent>
-                  <CardContentDivText>
-                    <div>
-                      <label>Date:</label>
-                      <p>{formatDateWithMonthLetters(shift.date)}</p>
-                    </div>
-                    <div>
-                      <label>From:</label>
-                      <p>{shift.from}</p>
-                    </div>
-                    <div>
-                      <label>To:</label>
-                      <p>{shift.to}</p>
-                    </div>
-                    <div>
-                      <label>Duration:</label>
-                      <p>{shift.shiftDuration}</p>
-                    </div>
-                  </CardContentDivText>
-                  <div>
-                    <DeleteShiftButton onClick={() => handleDeleteShift(shift)}>
-                      <Grid item xs={8}>
-                        <DeleteForeverRoundedIcon />
-                      </Grid>
-                    </DeleteShiftButton>
-                  </div>
-                </CardContent>
-              </ShiftsListCard>
-            </li>
-          ))}
-        </ShiftsList>
-      )}
     </MainDiv>
   );
 };

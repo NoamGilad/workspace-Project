@@ -2,7 +2,6 @@ import { useContext, useEffect } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import { useNavigate, useNavigation } from "react-router-dom";
 import styled from "styled-components";
-import { DimensionsCtx } from "../../contexts/DimensionsProvider";
 
 const UserInfoContainer = styled.div`
   width: fit-content;
@@ -39,10 +38,6 @@ const UserInfoContainer = styled.div`
 
       div {
         margin: auto;
-      }
-
-      label {
-        font-size: 12px;
       }
     }
 
@@ -82,22 +77,63 @@ const ProfilePhotoContainer = styled.div`
   }
 `;
 
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  div {
+    border-radius: 12px;
+    margin: 5px;
+    background-color: #e3f2fd;
+  }
+
+  @media (max-width: 1050px) {
+    div {
+      margin-right: 5px;
+    }
+  }
+`;
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
 
-  label {
-    background-color: #22759f;
-    color: #e3f2fd !important;
-    border-radius: 20px;
-    padding: 4px 8px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    font-weight: bold;
+  @media (max-width: 1050px) {
+    flex-direction: row;
   }
-  label:hover {
+
+  @media (max-width: 320px) {
+    label {
+      margin: 2px;
+    }
+  }
+`;
+
+export const DeleteButton = styled.button`
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  background-color: #da1e37;
+
+  &:hover {
+    background-color: #854242;
+  }
+`;
+
+const SelectPhotoInput = styled.label`
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 20px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #22759f;
+  color: #e3f2fd !important;
+
+  &:hover {
     background-color: #0056b3;
   }
 
@@ -106,79 +142,12 @@ const InputContainer = styled.div`
   }
 
   @media (max-width: 1050px) {
-    button {
-      margin: 5px;
-      width: fit-content;
-    }
-
-    label {
-      margin: 5px;
-      padding: 2px 15px;
-      width: fit-content;
-    }
-
-    input {
-      margin: 5px;
-    }
-
-    @media (max-width: 570px) {
-      justify-content: center;
-
-      p {
-        font-size: 10px;
-      }
-
-      button {
-        width: fit-content;
-        font-size: 10px;
-      }
-
-      label {
-        align-self: center;
-        font-size: 10px;
-        padding: 5px 10px;
-      }
-    }
-
-    @media (max-width: 320px) {
-      button {
-        margin: 2px;
-      }
-
-      label {
-        margin: 2px;
-      }
-    }
-  }
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  div {
-    border-radius: 12px;
-    margin: 5px;
-    background-color: #e3f2fd;
+    width: fit-content;
+    white-space: nowrap;
   }
 
-  @media (max-width: 1050px) {
-    flex-direction: row;
-    margin-right: 0 auto;
-  }
-`;
-
-export const DeleteButton = styled.button`
-  background-color: red;
-  width: 100%;
-
-  &:hover {
-    background-color: #854242;
-  }
-
-  img {
-    width: 100%;
+  @media (max-width: 570px) {
+    font-size: 16px;
   }
 `;
 
@@ -240,10 +209,10 @@ const UserInfo = () => {
           </div>
         </ProfileInfo>
         <InputContainer>
-          <label>
+          <SelectPhotoInput>
             Select photo
             <input type="file" accept="image/*" onChange={handleFileChange} />
-          </label>
+          </SelectPhotoInput>
           <DeleteButton
             onClick={() => {
               deleteUserHandler();
