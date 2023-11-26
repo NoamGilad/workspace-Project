@@ -1,6 +1,5 @@
-import { useContext, useEffect } from "react";
-import { AuthCtx } from "../contexts/AuthProvider";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   display: flex;
@@ -69,11 +68,11 @@ const HomeCard = styled.div`
 `;
 
 const HomePage = () => {
-  const context = useContext(AuthCtx);
+  const { t } = useTranslation();
 
   return (
     <Container>
-      <h1>WorkEase</h1>
+      <h1>{t("home.header")}</h1>
       <HomeCard>
         <p>
           Welcome to WorkEase, the user-friendly workspace platform designed to

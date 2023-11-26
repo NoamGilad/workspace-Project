@@ -1,0 +1,11 @@
+{
+  "home": {
+    "header": "WorkEase"
+  },
+  "nav": {
+    "logout": "Logout",
+    "home": "Home",
+    "stats": "Stats",
+    "profile": "Profile"
+  }
+}

@@ -1,7 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import styled from "styled-components";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Header = styled.header`
   background-color: #263238;
@@ -47,11 +49,48 @@ const LogoutButton = styled.button`
   }
 `;
 
+const LangDiv = styled.div`
+  margin: 0px;
+  margin-top: 2px;
+`;
+
+const LanguageButton = styled.button`
+  margin: auto;
+  /* margin-top: 4px; */
+  background-color: #263238;
+  color: #b0bec5;
+
+  &:hover {
+    background-color: #263238;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.underline {
+    text-decoration: underline;
+  }
+`;
+
 const MainNavigation = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const [selectedLanguage, setSelectedLanguage] = useState("");
+
+  const handleLanguageChange = (code: string) => {
+    i18n.changeLanguage(code);
+    setSelectedLanguage(code);
+  };
 
   if (!context) return <h2>No context!</h2>;
+
+  const languageButtons = [
+    { code: "he", label: "Hebrew" },
+    { code: "en", label: "English" },
+  ];
 
   const onLogoutHandler = () => {
     if (!context.auth) {
@@ -67,9 +106,21 @@ const MainNavigation = () => {
     <Header>
       <nav>
         <List>
+          <LangDiv>
+            {languageButtons.map((button) => (
+              <LanguageButton
+                key={button.code}
+                type="submit"
+                onClick={() => handleLanguageChange(button.code)}
+                className={selectedLanguage === button.code ? "underline" : ""}
+              >
+                {button.label}
+              </LanguageButton>
+            ))}
+          </LangDiv>
           <ListItem>
             <StyledNavLink to="/" end>
-              Home
+              {t("nav.home")}
             </StyledNavLink>
           </ListItem>
           {!context.loggedIn && (
@@ -86,11 +137,11 @@ const MainNavigation = () => {
             <>
               <ListItem>
                 <StyledNavLink to="/user" end>
-                  Profile
+                  {t("nav.profile")}
                 </StyledNavLink>
               </ListItem>
               <ListItem>
-                <StyledNavLink to="/user/stats">Stats</StyledNavLink>
+                <StyledNavLink to="/user/stats">{t("nav.stats")}</StyledNavLink>
               </ListItem>
             </>
           )}
@@ -101,7 +152,9 @@ const MainNavigation = () => {
           )}
           {context.loggedIn && (
             <ListItem>
-              <LogoutButton onClick={onLogoutHandler}>Logout</LogoutButton>
+              <LogoutButton onClick={onLogoutHandler}>
+                {t("nav.logout")}
+              </LogoutButton>
             </ListItem>
           )}
         </List>
