@@ -8,10 +8,11 @@ import EmployeeProfilePage from "./pages/user/EmployeeProfile";
 import EmployeeControlPage from "./pages/admin/EmployerControl/EmployerControl";
 import SignUpAdminPage from "./pages/SignUp/SignUpAdmin/SignUpAdmin";
 import SignUpUserPage from "./pages/SignUp/SignUpUser/SignUpUser";
-import AdminOnly from "./auth/AdminOnly";
 import UserOnly from "./auth/UserOnly";
-import { Stats } from "fs";
 import StatsPage from "./pages/user/Stats";
+
+import { Suspense } from "react";
+import { useTranslation } from "react-i18next";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,15 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { t, i18n } = useTranslation();
+
   return <RouterProvider router={router} />;
 }
 
-export default App;
+export default function WrappedApp() {
+  return (
+    <Suspense fallback="...loading">
+      <App />
+    </Suspense>
+  );
+}

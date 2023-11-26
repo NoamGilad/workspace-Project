@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { DimensionsProvider } from "./contexts/DimensionsProvider";
+import "./i18n";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
