@@ -4,6 +4,10 @@ import { AuthCtx } from "../../contexts/AuthProvider";
 import styled from "styled-components";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
+import { MenuItem, Select } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
+import FlagIL from "../../assets/il-flag.svg";
+import FlagUS from "../../assets/us-flag.svg";
 
 const Header = styled.header`
   background-color: #263238;
@@ -73,6 +77,12 @@ const LanguageButton = styled.button`
   }
 `;
 
+const Flags = styled.img`
+  width: 20px;
+  margin-bottom: -5px;
+  margin-right: 2px;
+`;
+
 const MainNavigation = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
@@ -104,20 +114,23 @@ const MainNavigation = () => {
     <Header>
       <nav>
         <List>
-          <LangDiv>
-            {languageButtons.map((button) => (
-              <LanguageButton
-                key={button.code}
-                type="submit"
-                onClick={() => handleLanguageChange(button.code)}
-                className={
-                  context.curLanguage === button.code ? "underline" : ""
-                }
-              >
-                {button.label}
-              </LanguageButton>
-            ))}
-          </LangDiv>
+          <Select
+            sx={{ width: "fit-to-content", color: "#b0bec5" }}
+            id="language"
+            value={context.curLanguage}
+            onChange={(e: SelectChangeEvent<string>) =>
+              handleLanguageChange(e.target.value)
+            }
+            placeholder={context.curLanguage}
+          >
+            <MenuItem value="en">
+              <Flags src={FlagUS} /> English
+            </MenuItem>
+            <MenuItem value="he">
+              <Flags src={FlagIL} /> Hebrew
+            </MenuItem>
+          </Select>
+          <LangDiv></LangDiv>
           <ListItem>
             <StyledNavLink to="/" end>
               {t("nav.home")}

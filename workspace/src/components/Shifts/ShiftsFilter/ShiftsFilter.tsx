@@ -3,7 +3,7 @@ import styled from "styled-components";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 
@@ -115,7 +115,7 @@ const ShiftsFilter: React.FC<{
     <ShiftsFilterContainer>
       <ShiftsFilterControl>
         <FormControl
-          variant="standard"
+          variant="outlined"
           sx={{ m: 1, width: 140, color: "#e3f2fd" }}
         >
           <InputLabel id="yearFilter">{t("filterShifts.byYear")}</InputLabel>
@@ -133,7 +133,7 @@ const ShiftsFilter: React.FC<{
             <MenuItem value="2020">2020</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="standard" sx={{ m: 1, width: 140 }}>
+        <FormControl variant="outlined" sx={{ m: 1, width: 140 }}>
           <InputLabel id="monthFilter">{t("filterShifts.byMonth")}</InputLabel>
           <Select
             sx={{ color: "#e3f2fdc0" }}
