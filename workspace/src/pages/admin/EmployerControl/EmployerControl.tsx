@@ -4,6 +4,7 @@ import UsersList from "../../../components/admin/UsersList/UsersList";
 import AddUser from "../../../components/admin/AddUser/AddUser";
 import Container from "../../../UI/StyledContainer";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const H1 = styled.h1`
   margin: 0px;
@@ -15,6 +16,7 @@ const Button = styled.button`
 
 const EmployeeControlPage: React.FC = () => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
 
   if (!context) return <p>No context</p>;
 
@@ -26,9 +28,8 @@ const EmployeeControlPage: React.FC = () => {
     <Container>
       <div>
         <H1>{context.company.name}</H1>
-        <h2>Admin control page</h2>
         <h3>
-          Employer: {context.firstName} {context.lastName}
+          {context.firstName} {context.lastName}
         </h3>
       </div>
       {context?.showAddUserModal && context?.isSubmitting === false ? (
@@ -39,7 +40,7 @@ const EmployeeControlPage: React.FC = () => {
             handleShowAddUser();
           }}
         >
-          Add employee
+          {t("control.addUserBtn")}
         </Button>
       )}
 

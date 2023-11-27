@@ -9,6 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { useTranslation } from "react-i18next";
 
 const MainDiv = styled.div`
   display: flex;
@@ -41,37 +42,6 @@ const StyledDeleteIcons = styled(DeleteForeverRoundedIcon)`
 
   &:hover {
     color: #854242;
-  }
-`;
-
-const CardContentDivText = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0px;
-
-  label {
-    margin: 7px;
-  }
-
-  p {
-    font-weight: bold;
-    margin: 5px;
-    color: #263238;
-  }
-
-  div {
-    border-radius: 12px;
-    margin: 5px;
-    background-color: #e3f2fd;
-    padding: 5px;
-  }
-
-  @media (max-width: 320px) {
-    div {
-      padding: 0px;
-    }
   }
 `;
 
@@ -112,9 +82,15 @@ const ShiftDetails = styled.div`
   }
 `;
 
+const RTLListItemText = styled(ListItemText)`
+  text-align: end;
+`;
+
 const SumDiv = styled.div`
   width: fit-content;
   padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 10px;
   margin-top: 15px;
   background-color: #e3f2fd;
@@ -149,6 +125,7 @@ const ShiftList: React.FC<{
   filteredMonth: string;
 }> = (props) => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
 
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
@@ -167,9 +144,11 @@ const ShiftList: React.FC<{
 
   const formatDateWithMonthLetters = (date: Date) => {
     const dateObject = new Date(date || props.selectedDate);
-    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
-      dateObject
-    );
+
+    const month = new Intl.DateTimeFormat(
+      `${context.curLanguage === "en" ? "en-US" : "he-IL"}`,
+      { month: "short" }
+    ).format(dateObject);
     const day = dateObject.getDate().toString().padStart(2, "0");
     const year = dateObject.getFullYear();
     return `${month} ${day}, ${year}`;
@@ -334,21 +313,22 @@ const ShiftList: React.FC<{
   return (
     <MainDiv>
       <SumDiv>
-        <p>Total Monthly Hours: {totalMonthlyHours} hours</p>
         <p>
-          Total Normal Monthly Hours (100%):{" "}
-          {monthlyHours(totalMonthlyNormalHours)} hours
+          {t("shiftsList.totalHoursMonthly")}: {totalMonthlyHours}
         </p>
         <p>
-          Total Monthly Extra Hours (125%):{" "}
-          {monthlyHours(totalMonthlyExtraHours125)} hours
+          {t("shiftsList.normalHours")}: {monthlyHours(totalMonthlyNormalHours)}{" "}
         </p>
         <p>
-          Total Monthly Extra Hours (150%):{" "}
-          {monthlyHours(totalMonthlyExtraHours150)} hours
+          {t("shiftsList.125Hours")}: {monthlyHours(totalMonthlyExtraHours125)}{" "}
+        </p>
+        <p>
+          {t("shiftsList.150Hours")}: {monthlyHours(totalMonthlyExtraHours150)}{" "}
         </p>
         {context.amountPerHour ? (
-          <p>Salary this month: {monthlySalary.toFixed(2)}₪</p>
+          <p>
+            {t("shiftsList.salary")}: {monthlySalary.toFixed(2)}₪
+          </p>
         ) : (
           <p>No amountPerHour</p>
         )}
@@ -367,25 +347,49 @@ const ShiftList: React.FC<{
                   backgroundColor: "#e3f2fd",
                 }}
               >
-                <ListItemText
-                  primary={formatDateWithMonthLetters(shift.date)}
-                  secondary={
-                    <ShiftDetails>
-                      <div>
-                        <label>From: </label>
-                        <span>{shift.from}</span>
-                      </div>
-                      <div>
-                        <label>To: </label>
-                        <span>{shift.to}</span>
-                      </div>
-                      <div>
-                        <label>Duration: </label>
-                        <span>{shift.shiftDuration}</span>
-                      </div>
-                    </ShiftDetails>
-                  }
-                />
+                {context.curLanguage === "en" ? (
+                  <ListItemText
+                    primary={formatDateWithMonthLetters(shift.date)}
+                    secondary={
+                      <ShiftDetails>
+                        {" "}
+                        <div>
+                          <label>{t("shiftsList.from")}: </label>
+                          <span>{shift.from}</span>
+                        </div>
+                        <div>
+                          <label>{t("shiftsList.to")}: </label>
+                          <span>{shift.to}</span>
+                        </div>
+                        <div>
+                          <label>{t("shiftsList.duration")}: </label>
+                          <span>{shift.shiftDuration}</span>
+                        </div>{" "}
+                      </ShiftDetails>
+                    }
+                  />
+                ) : (
+                  <RTLListItemText
+                    primary={formatDateWithMonthLetters(shift.date)}
+                    secondary={
+                      <ShiftDetails>
+                        <div>
+                          <label>{t("shiftsList.duration")}: </label>
+                          <span>{shift.shiftDuration}</span>
+                        </div>
+                        <div>
+                          <label>{t("shiftsList.to")}: </label>
+                          <span>{shift.to}</span>
+                        </div>
+                        <div>
+                          <label>{t("shiftsList.from")}: </label>
+                          <span>{shift.from}</span>
+                        </div>
+                      </ShiftDetails>
+                    }
+                  />
+                )}
+
                 <DeleteShiftButton onClick={() => handleDeleteShift(shift)}>
                   <Grid item>
                     <StyledDeleteIcons />

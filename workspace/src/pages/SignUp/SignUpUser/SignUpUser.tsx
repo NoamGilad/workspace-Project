@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 import Container from "../../../UI/StyledContainer";
 import { Input, ErrP } from "../../../UI/StyledValidation";
+import { useTranslation } from "react-i18next";
 
 interface Values {
   email: string;
@@ -41,6 +42,7 @@ const SignUpUserPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const getQueryParameters = () => {
     const searchParams = new URLSearchParams(location.search);
@@ -113,7 +115,7 @@ const SignUpUserPage: React.FC = () => {
 
   return (
     <Container>
-      <h5>Sign up</h5>
+      <h5>{t("signup.title")}</h5>
       <Formik
         initialValues={{
           email: "",
@@ -140,73 +142,82 @@ const SignUpUserPage: React.FC = () => {
       >
         {({ errors, touched }) => (
           <Form>
-            <label>First name</label>
+            <label>{t("signup.firstName")}</label>
             <Input
               id="firstName"
               name="firstName"
-              placeholder="place your first name here"
+              placeholder={t("signup.firstNameHolder")}
               type="text"
               $errors={errors.firstName && touched.firstName}
+              $heb={context.curLanguage === "he"}
             />
             {errors.firstName && touched.firstName ? (
               <ErrP>{errors.firstName}</ErrP>
             ) : null}
-            <label>Last name</label>
+            <label>{t("signup.lastName")}</label>
             <Input
               id="lastName"
               name="lastName"
-              placeholder="place your last name here"
+              placeholder={t("signup.lastNameHolder")}
               type="text"
               $errors={errors.lastName && touched.lastName}
+              $heb={context.curLanguage === "he"}
             />
             {errors.lastName && touched.lastName ? (
               <ErrP>{errors.lastName}</ErrP>
             ) : null}
-            <label>Email</label>
+            <label>{t("signup.email")}</label>
             <Input
               id="email"
               name="email"
-              placeholder="place your Email here"
+              placeholder={t("signup.emailHolder")}
               type="email"
               $errors={errors.email && touched.email}
+              $heb={context.curLanguage === "he"}
             />
             {errors.email && touched.email ? <ErrP>{errors.email}</ErrP> : null}
-            <label>Password</label>
+            <label>{t("signup.password")}</label>
             <Input
               id="password"
               name="password"
-              placeholder="place your password here"
+              placeholder={t("signup.passwordHolder")}
               type="password"
               $errors={errors.password && touched.password}
+              $heb={context.curLanguage === "he"}
             />
             {errors.password && touched.password ? (
               <ErrP>{errors.password}</ErrP>
             ) : null}
-            <label>Confirm Password</label>
+            <label>{t("signup.passwordConfirm")}</label>
             <Input
               id="passwordConfirmation"
               name="passwordConfirmation"
-              placeholder="place your password again"
+              placeholder={t("signup.passwordConfirmHolder")}
               type="password"
               $errors={
                 errors.passwordConfirmation && touched.passwordConfirmation
               }
+              $heb={context.curLanguage === "he"}
             />
             {errors.passwordConfirmation && touched.passwordConfirmation ? (
               <ErrP>{errors.passwordConfirmation}</ErrP>
             ) : null}
             <p>
-              Company Name:{" "}
+              {t("signup.company")}:{" "}
               {companyName ? companyName : "Company Name Not Available"}
             </p>
             <button type="submit" disabled={context.isSubmitting}>
-              {context.isSubmitting ? <CircleLoader /> : "Sign up!"}
+              {context.isSubmitting ? (
+                <CircleLoader />
+              ) : (
+                `${t("signup.button")}`
+              )}
             </button>
           </Form>
         )}
       </Formik>
-      <label>Already an account? </label>
-      <Link to={"/signin"}>Sign in</Link>
+      <label>{t("signup.alreadyLabel")} </label>
+      <Link to={"/signin"}>{t("signup.signinLink")}</Link>
     </Container>
   );
 };

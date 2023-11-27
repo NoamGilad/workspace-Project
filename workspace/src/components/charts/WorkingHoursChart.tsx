@@ -9,6 +9,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useTranslation } from "react-i18next";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -33,6 +34,7 @@ const WorkingHoursChart: React.FC<{
 }> = (props) => {
   const context = useContext(AuthCtx);
   const dimension = useContext(DimensionsCtx);
+  const { t } = useTranslation();
 
   if (!context) {
     console.error("No context!");
@@ -62,48 +64,48 @@ const WorkingHoursChart: React.FC<{
     return totalHours.toFixed(2);
   };
 
-  const calculateExtraWorkingHoursByMonth = (monthIndex: number) => {
-    const filteredShifts = context.extra125Hours.filter((shift: Shift) => {
-      const shiftYear = new Date(shift.date).getFullYear().toString();
-      const shiftMonth = new Date(shift.date).getMonth() + 1;
-      return shiftYear === props.year && shiftMonth === monthIndex + 1;
-    });
+  // const calculateExtraWorkingHoursByMonth = (monthIndex: number) => {
+  //   const filteredShifts = context.extra125Hours.filter((shift: Shift) => {
+  //     const shiftYear = new Date(shift.date).getFullYear().toString();
+  //     const shiftMonth = new Date(shift.date).getMonth() + 1;
+  //     return shiftYear === props.year && shiftMonth === monthIndex + 1;
+  //   });
 
-    const totalMinutes = filteredShifts.reduce(
-      (acc: number, shift: Shift) =>
-        acc + timeStringToMinutes(shift.shiftDuration),
-      0
-    );
+  //   const totalMinutes = filteredShifts.reduce(
+  //     (acc: number, shift: Shift) =>
+  //       acc + timeStringToMinutes(shift.shiftDuration),
+  //     0
+  //   );
 
-    const totalExtraHours = totalMinutes / 60;
+  //   const totalExtraHours = totalMinutes / 60;
 
-    return totalExtraHours.toFixed(2);
-  };
+  //   return totalExtraHours.toFixed(2);
+  // };
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     context.setSelectedYearChart(e.target.value);
   };
 
   const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    `${t("workingChart.jan")}`,
+    `${t("workingChart.feb")}`,
+    `${t("workingChart.mar")}`,
+    `${t("workingChart.apr")}`,
+    `${t("workingChart.may")}`,
+    `${t("workingChart.jun")}`,
+    `${t("workingChart.jul")}`,
+    `${t("workingChart.aug")}`,
+    `${t("workingChart.sep")}`,
+    `${t("workingChart.oct")}`,
+    `${t("workingChart.nov")}`,
+    `${t("workingChart.dec")}`,
   ];
 
   const data = {
     labels: labels,
     datasets: [
       {
-        label: "Working hours",
+        label: `${t("workingChart.title")}`,
         data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
         backgroundColor: "#e3f2fd",
         barPercentage: 1,
@@ -115,7 +117,7 @@ const WorkingHoursChart: React.FC<{
     labels: labels,
     datasets: [
       {
-        label: "Working hours",
+        label: `${t("workingChart.title")}`,
         data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
         backgroundColor: "#e3f2fd",
         barPercentage: 0.5,
@@ -137,7 +139,7 @@ const WorkingHoursChart: React.FC<{
       },
       title: {
         display: true,
-        text: `Working hours by month: ${props.title}`,
+        text: `${t("workingChart.text")}: ${props.title}`,
         font: {
           size: 18,
           weight: "bold",
@@ -151,7 +153,7 @@ const WorkingHoursChart: React.FC<{
         labels: labels,
         title: {
           display: true,
-          text: "Months",
+          text: `${t("workingChart.months")}`,
           font: {
             size: 16,
           },
@@ -169,7 +171,7 @@ const WorkingHoursChart: React.FC<{
         beginAtZero: true,
         title: {
           display: true,
-          text: "Hours",
+          text: `${t("workingChart.hours")}`,
           font: {
             size: 16,
           },
@@ -198,7 +200,7 @@ const WorkingHoursChart: React.FC<{
       },
       title: {
         display: true,
-        text: `Working hours by month: ${props.title}`,
+        text: `${t("workingChart.text")}: ${props.title}`,
         font: {
           size: 15,
           weight: "bold",
@@ -212,7 +214,7 @@ const WorkingHoursChart: React.FC<{
         labels: labels,
         title: {
           display: true,
-          text: "Months",
+          text: `${t("workingChart.months")}`,
           font: {
             size: 14,
           },
@@ -230,7 +232,7 @@ const WorkingHoursChart: React.FC<{
         beginAtZero: true,
         title: {
           display: true,
-          text: "Hours",
+          text: `${t("workingChart.hours")}`,
           font: {
             size: 14,
           },
@@ -250,7 +252,7 @@ const WorkingHoursChart: React.FC<{
     <ChartWrapper>
       <FormControl sx={{ m: 1, minWidth: 120, color: "#e3f2fd" }}>
         <InputLabel sx={{ color: "#e3f2fd" }} id="selectYear">
-          Year
+          {t("workingChart.yearFilter")}
         </InputLabel>
         <Select
           sx={{ color: "#e3f2fdc0" }}

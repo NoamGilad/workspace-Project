@@ -65,8 +65,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const { t, i18n } = useTranslation();
-
   return <RouterProvider router={router} />;
 }
 

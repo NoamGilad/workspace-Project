@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { useTranslation } from "react-i18next";
 
 const HoursForm = styled.div`
   padding: 20px;
@@ -60,6 +61,7 @@ interface Values {
 const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
   const context = useContext(AuthCtx);
   const dimensions = useContext(DimensionsCtx);
+  const { t } = useTranslation();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -161,7 +163,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
               <Field name="date">
                 {({ form }: FieldProps<Values>) => (
                   <DatePicker
-                    label="Pick a date"
+                    label={t("workForm.date")}
                     format="YYYY-MM-DD"
                     defaultValue={dayjs(today)}
                     value={selectedDate ? dayjs(selectedDate) : null}
@@ -180,7 +182,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
               <Field name="from">
                 {({ form }: FieldProps<Values>) => (
                   <TimePicker
-                    label="From"
+                    label={t("workForm.from")}
                     value={selectedFrom ? dayjs(selectedFrom) : null}
                     onChange={(e: Dayjs | null) => {
                       setSelectedFrom(e?.format("HH:mm") || "");
@@ -195,10 +197,10 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
           </div>
           <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Field name="from">
+              <Field name="to">
                 {({ form }: FieldProps<Values>) => (
                   <TimePicker
-                    label="To"
+                    label={t("workForm.to")}
                     value={selectedTo ? dayjs(selectedTo) : null}
                     onChange={(e: Dayjs | null) => {
                       setSelectedTo(e?.format("HH:mm") || "");
@@ -211,7 +213,7 @@ const WorkingHoursForm: React.FC<{ addEntryMainForm: Function }> = (props) => {
               </Field>
             </LocalizationProvider>
           </div>
-          <SubmitButton type="submit">Add shift</SubmitButton>
+          <SubmitButton type="submit">{t("workForm.addShift")}</SubmitButton>
         </Form>
       </Formik>
     </HoursForm>

@@ -13,6 +13,7 @@ export const Input = styled(Field)<{ $errors?: boolean }>`
   border-radius: 4px;
   font-size: 16px;
   background-color: ${(props) => (props.$errors ? "pink" : "#e3f2fd")};
+  text-align: ${(props) => (props.$heb ? "end" : "")};
 `;
 
 export const ErrP = styled.p`
