@@ -128,7 +128,7 @@ const MainNavigation = () => {
               <Flags src={FlagUS} /> English
             </MenuItem>
             <MenuItem value="he">
-              <Flags src={FlagIL} /> Hebrew
+              <Flags src={FlagIL} /> עברית
             </MenuItem>
           </Select>
           <LangDiv></LangDiv>
