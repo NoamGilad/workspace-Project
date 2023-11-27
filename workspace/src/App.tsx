@@ -12,7 +12,6 @@ import UserOnly from "./auth/UserOnly";
 import StatsPage from "./pages/user/Stats";
 
 import { Suspense } from "react";
-import { useTranslation } from "react-i18next";
 
 const router = createBrowserRouter([
   {

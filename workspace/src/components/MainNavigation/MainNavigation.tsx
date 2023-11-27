@@ -8,6 +8,7 @@ import { MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import FlagIL from "../../assets/il-flag.svg";
 import FlagUS from "../../assets/us-flag.svg";
+import Divider from "@mui/joy/Divider";
 
 const Header = styled.header`
   background-color: #263238;
@@ -132,9 +133,11 @@ const MainNavigation = () => {
           </Select>
           <LangDiv></LangDiv>
           <ListItem>
-            <StyledNavLink to="/" end>
-              {t("nav.home")}
-            </StyledNavLink>
+            <Divider sx={{ color: "white" }} orientation="vertical">
+              <StyledNavLink to="/" end>
+                {t("nav.home")}
+              </StyledNavLink>
+            </Divider>
           </ListItem>
           {!context.loggedIn && (
             <ListItem>
@@ -167,9 +170,11 @@ const MainNavigation = () => {
           )}
           {context.loggedIn && (
             <ListItem>
-              <LogoutButton onClick={onLogoutHandler}>
-                {t("nav.logout")}
-              </LogoutButton>
+              <Divider sx={{ color: "white" }} orientation="vertical">
+                <LogoutButton onClick={onLogoutHandler}>
+                  {t("nav.logout")}
+                </LogoutButton>
+              </Divider>
             </ListItem>
           )}
         </List>
