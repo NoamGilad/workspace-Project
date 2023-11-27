@@ -23,6 +23,7 @@
     "dayjs": "^1.11.10",
     "firebase": "^10.3.0",
     "firebase-admin": "^11.11.0",
+    "flag-icons": "^7.0.2",
     "formik": "^2.4.5",
     "i18next": "^23.7.6",
     "i18next-browser-languagedetector": "^7.2.0",
