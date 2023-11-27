@@ -5,7 +5,9 @@ import {
   ButtonDiv,
   CloseButton,
   ModalContainer,
+  StyledInput,
 } from "../../admin/AddUser/AddUser";
+import { useTranslation } from "react-i18next";
 
 const EditUser: React.FC<{
   firstName: string;
@@ -14,6 +16,8 @@ const EditUser: React.FC<{
   updateProfileHandler: Function;
 }> = (props) => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
+
   const firstNameRef = useRef<HTMLInputElement | null>(null);
   const lastNameRef = useRef<HTMLInputElement | null>(null);
   const amountPerHourRef = useRef<HTMLInputElement | null>(null);
@@ -50,22 +54,34 @@ const EditUser: React.FC<{
 
   return (
     <Modal onClose={() => context.setShowEditUserModal(false)}>
-      <ModalContainer>
+      <ModalContainer $heb={context.curLanguage === "he"}>
         <form onSubmit={handleFormSubmit}>
-          <label>First Name</label>
-          <input
+          <label>{t("editUserModal.firstName")}</label>
+          <StyledInput
+            $heb={context.curLanguage === "he"}
             type="text"
             ref={firstNameRef}
             defaultValue={props.firstName}
           />
-          <label>Last Name</label>
-          <input type="text" ref={lastNameRef} defaultValue={props.lastName} />
-          <label>Hourly wage</label>
-          <input type="number" min="30" ref={amountPerHourRef} />
+          <label>{t("editUserModal.lastName")}</label>
+          <StyledInput
+            $heb={context.curLanguage === "he"}
+            type="text"
+            ref={lastNameRef}
+            defaultValue={props.lastName}
+          />
+          <label>{t("editUserModal.hourlyWage")}</label>
+          <StyledInput
+            $heb={context.curLanguage === "he"}
+            type="number"
+            min="30"
+            placeholder={t("editUserModal.hourlyWageHolder")}
+            ref={amountPerHourRef}
+          />
           <ButtonDiv>
-            <button type="submit">Update</button>
+            <button type="submit">{t("editUserModal.updateBtn")}</button>
             <CloseButton onClick={() => context.setShowEditUserModal(false)}>
-              Close
+              {t("editUserModal.closeBtn")}
             </CloseButton>
           </ButtonDiv>
         </form>

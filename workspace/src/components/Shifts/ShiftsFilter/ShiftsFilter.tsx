@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useTranslation } from "react-i18next";
+import { AuthCtx } from "../../../contexts/AuthProvider";
 
 const ShiftsFilterContainer = styled.div`
   margin: 5px;
@@ -98,6 +101,11 @@ const ShiftsFilter: React.FC<{
   selectedYear: any;
   selectedMonth: string;
 }> = (props) => {
+  const context = useContext(AuthCtx);
+  const { t } = useTranslation();
+
+  if (!context) return <h2>No context!</h2>;
+
   const dropdownChangeHandler = (e: any, name: string) => {
     const { value } = e.target;
     props.onChangeFilter(name, value);
@@ -110,7 +118,7 @@ const ShiftsFilter: React.FC<{
           variant="standard"
           sx={{ m: 1, width: 140, color: "#e3f2fd" }}
         >
-          <InputLabel id="yearFilter">Filter by year</InputLabel>
+          <InputLabel id="yearFilter">{t("filterShifts.byYear")}</InputLabel>
           <Select
             sx={{ color: "#e3f2fdc0" }}
             labelId="yearFilter"
@@ -126,7 +134,7 @@ const ShiftsFilter: React.FC<{
           </Select>
         </FormControl>
         <FormControl variant="standard" sx={{ m: 1, width: 140 }}>
-          <InputLabel id="monthFilter">Filter by month</InputLabel>
+          <InputLabel id="monthFilter">{t("filterShifts.byMonth")}</InputLabel>
           <Select
             sx={{ color: "#e3f2fdc0" }}
             labelId="monthFilter"
@@ -135,18 +143,18 @@ const ShiftsFilter: React.FC<{
             onChange={(e: any) => dropdownChangeHandler(e, "selectedMonth")}
             label="Filter by month"
           >
-            <MenuItem value="01">January</MenuItem>
-            <MenuItem value="02">February</MenuItem>
-            <MenuItem value="03">March</MenuItem>
-            <MenuItem value="04">April</MenuItem>
-            <MenuItem value="05">May</MenuItem>
-            <MenuItem value="06">June</MenuItem>
-            <MenuItem value="07">July</MenuItem>
-            <MenuItem value="08">August</MenuItem>
-            <MenuItem value="09">September</MenuItem>
-            <MenuItem value="10">October</MenuItem>
-            <MenuItem value="11">November</MenuItem>
-            <MenuItem value="12">December</MenuItem>
+            <MenuItem value="01">{t("filterShifts.jan")}</MenuItem>
+            <MenuItem value="02">{t("filterShifts.feb")}</MenuItem>
+            <MenuItem value="03">{t("filterShifts.mar")}</MenuItem>
+            <MenuItem value="04">{t("filterShifts.apr")}</MenuItem>
+            <MenuItem value="05">{t("filterShifts.may")}</MenuItem>
+            <MenuItem value="06">{t("filterShifts.jun")}</MenuItem>
+            <MenuItem value="07">{t("filterShifts.jul")}</MenuItem>
+            <MenuItem value="08">{t("filterShifts.aug")}</MenuItem>
+            <MenuItem value="09">{t("filterShifts.sep")}</MenuItem>
+            <MenuItem value="10">{t("filterShifts.oct")}</MenuItem>
+            <MenuItem value="11">{t("filterShifts.nov")}</MenuItem>
+            <MenuItem value="12">{t("filterShifts.dec")}</MenuItem>
           </Select>
         </FormControl>
       </ShiftsFilterControl>

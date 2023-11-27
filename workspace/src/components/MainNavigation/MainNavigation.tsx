@@ -78,14 +78,12 @@ const MainNavigation = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  if (!context) return <h2>No context!</h2>;
 
   const handleLanguageChange = (code: string) => {
     i18n.changeLanguage(code);
-    setSelectedLanguage(code);
+    context.setCurLanguage(code);
   };
-
-  if (!context) return <h2>No context!</h2>;
 
   const languageButtons = [
     { code: "he", label: "Hebrew" },
@@ -112,7 +110,9 @@ const MainNavigation = () => {
                 key={button.code}
                 type="submit"
                 onClick={() => handleLanguageChange(button.code)}
-                className={selectedLanguage === button.code ? "underline" : ""}
+                className={
+                  context.curLanguage === button.code ? "underline" : ""
+                }
               >
                 {button.label}
               </LanguageButton>
@@ -125,12 +125,14 @@ const MainNavigation = () => {
           </ListItem>
           {!context.loggedIn && (
             <ListItem>
-              <StyledNavLink to="/signin">Sign In</StyledNavLink>
+              <StyledNavLink to="/signin">{t("nav.signin")}</StyledNavLink>
             </ListItem>
           )}
           {!context.loggedIn && (
             <ListItem>
-              <StyledNavLink to="/signup-admin">Sign Up Admin</StyledNavLink>
+              <StyledNavLink to="/signup-admin">
+                {t("nav.signupAdmin")}
+              </StyledNavLink>
             </ListItem>
           )}
           {context.loggedIn && context.role === "Employee" && (
@@ -147,7 +149,7 @@ const MainNavigation = () => {
           )}
           {context.loggedIn && context.role === "Employer" && (
             <ListItem>
-              <StyledNavLink to="/admin">Control</StyledNavLink>
+              <StyledNavLink to="/admin">{t("nav.control")}</StyledNavLink>
             </ListItem>
           )}
           {context.loggedIn && (

@@ -6,6 +6,133 @@
     "logout": "התנתק",
     "home": "בית",
     "stats": "סטטיסטיקה",
-    "profile": "פרופיל"
+    "profile": "פרופיל",
+    "control": "בקרה",
+    "signin": "התחברות",
+    "signupAdmin": "הרשמת אדמין"
+  },
+  "signin": {
+    "title": "התחברות",
+    "email": "אימייל",
+    "emailHolder": "הכנס את כתובת המייל כאן",
+    "password": "סיסמה",
+    "passwordHolder": "הכנס את הסיסמה כאן",
+    "button": "התחבר",
+    "resetLabel": "?שכחת את הסיסמה",
+    "resetButton": "אפס סיסמה"
+  },
+  "resetModal": {
+    "label": "איפוס סיסמה",
+    "emailHolder": "הכנס את כתובת המייל כאן",
+    "resetBtn": "אפס",
+    "closeBtn": "סגור"
+  },
+  "signup": {
+    "title": "הרשמה",
+    "firstName": "שם פרטי",
+    "firstNameHolder": "הכנס שם פרטי",
+    "lastName": "שם משפחה",
+    "lastNameHolder": "הכנס שם משפחה",
+    "company": "שם חברה",
+    "companyHolder": "הכנס שם חברה",
+    "email": "אימייל",
+    "emailHolder": "הכנס את כתובת המייל כאן",
+    "password": "סיסמה",
+    "passwordHolder": "הכנס את הסיסמה כאן",
+    "passwordConfirm": "אמת סיסמה",
+    "passwordConfirmHolder": "הכנס סיסמה שוב",
+    "button": "!הרשם",
+    "alreadyLabel": "?יש משתמש",
+    "signinLink": "התחבר"
+  },
+  "profile": {
+    "company": "חברה",
+    "hourlyWage": "שכר שעתי"
+  },
+  "userInfo": {
+    "name": "שם",
+    "email": "אימייל",
+    "selectPhoto": "בחירת תמונה",
+    "deleteUser": "מחיקת משתמש"
+  },
+  "workForm": {
+    "date": "בחירת תאריך",
+    "from": "תחילת משמרת",
+    "to": "סיום משמרת",
+    "addShift": "הוסף משמרת"
+  },
+  "filterShifts": {
+    "byYear": "סינון לפי שנה",
+    "byMonth": "סינון לפי חודש",
+    "jan": "ינואר",
+    "feb": "פברואר",
+    "mar": "מרץ",
+    "apr": "אפריל",
+    "may": "מאי",
+    "jun": "יוני",
+    "jul": "יולי",
+    "aug": "אוגוסט",
+    "sep": "ספטמבר",
+    "oct": "אוקטובר",
+    "nov": "נובמבר",
+    "dec": "דצמבר"
+  },
+  "shiftsList": {
+    "totalHoursMonthly": "סך השעות החודשיות",
+    "normalHours": "סך השעות החודשיות הרגילות",
+    "125Hours": "סך השעות הנוספות - 125%",
+    "150Hours": "סך השעות הנוספות - 150%",
+    "salary": "שכר חודשי",
+    "from": "משעה",
+    "to": "עד שעה",
+    "duration": "משך"
+  },
+  "stats": {
+    "title": "סטטיסטיקה"
+  },
+  "workingChart": {
+    "title": "שעות עבודה",
+    "text": "שעות עבודה לפי חודש",
+    "months": "חודש",
+    "hours": "שעות",
+    "yearFilter": "שנה",
+    "jan": "ינואר",
+    "feb": "פברואר",
+    "mar": "מרץ",
+    "apr": "אפריל",
+    "may": "מאי",
+    "jun": "יוני",
+    "jul": "יולי",
+    "aug": "אוגוסט",
+    "sep": "ספטמבר",
+    "oct": "אוקטובר",
+    "nov": "נובמבר",
+    "dec": "דצמבר"
+  },
+  "control": {
+    "addUserBtn": "הוסף עובד"
+  },
+  "userslist": {
+    "name": "שם מלא",
+    "email": "אימייל",
+    "hourlyWage": "שכר שעתי"
+  },
+  "editUserModal": {
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "hourlyWage": "שכר שעתי",
+    "hourlyWageHolder": "?כמה",
+    "updateBtn": "עדכן",
+    "closeBtn": "סגור"
+  },
+  "addUserModal": {
+    "email": "אימייל",
+    "emailHolder": "הכנס את כתובת המייל כאן",
+    "sendBtn": "שלח הזמנה",
+    "closeBtn": "סגור"
+  },
+  "error": {
+    "title": "!שגיאה",
+    "wrongPage": "!דף לא קיים"
   }
 }

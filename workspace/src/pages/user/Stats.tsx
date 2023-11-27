@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import Container from "../../UI/StyledContainer";
 import WorkingHoursChart from "../../components/charts/WorkingHoursChart";
 import { AuthCtx } from "../../contexts/AuthProvider";
+import { useTranslation } from "react-i18next";
 
 const StatsPage = () => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
 
   if (!context) {
     console.error("No context!");
@@ -13,7 +15,7 @@ const StatsPage = () => {
 
   return (
     <Container>
-      <h1>Stats</h1>
+      <h1>{t("stats.title")}</h1>
       <WorkingHoursChart
         year={context?.selectedYearChart}
         title={context?.selectedYearChart}

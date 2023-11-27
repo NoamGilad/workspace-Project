@@ -3,12 +3,12 @@ import { useContext, useState } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import Modal from "../../../UI/Modal/Modal";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
-export const ModalContainer = styled.div`
+export const ModalContainer = styled.div<{ $heb: boolean }>`
   width: fit-content;
   display: flex;
   flex-direction: column;
-  /* margin: 0px; */
   padding: 15px;
   padding-left: 100px;
   padding-right: 100px;
@@ -16,6 +16,7 @@ export const ModalContainer = styled.div`
   border-radius: 12px;
   background-color: #263238;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  text-align: ${(props) => (props.$heb ? "end" : "")};
 
   input {
     width: auto;
@@ -46,21 +47,26 @@ export const ModalContainer = styled.div`
   }
 `;
 
+export const StyledInput = styled.input<{ $heb: boolean }>`
+  text-align: ${(props) => (props.$heb ? "end" : "")};
+`;
+
 export const ButtonDiv = styled.div`
   width: fit-content;
   margin: 0 auto;
 `;
 
 export const CloseButton = styled.button`
-  background-color: red;
+  background-color: #da1e37;
 
   &:hover {
-    background-color: #263238;
+    background-color: #854242;
   }
 `;
 
 const AddUser = () => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
 
   const [toEmail, setToEmail] = useState<string>("");
 
@@ -99,12 +105,13 @@ const AddUser = () => {
 
   return (
     <Modal onClose={closeModal}>
-      <ModalContainer>
+      <ModalContainer $heb={context.curLanguage === "he"}>
         <form>
-          <label>Email</label>
-          <input
+          <label>{t("addUserModal.email")}</label>
+          <StyledInput
+            $heb={context.curLanguage === "he"}
             type="email"
-            placeholder="Enter email"
+            placeholder={t("addUserModal.emailHolder")}
             onChange={(e) => {
               setToEmail(e.target.value);
             }}
@@ -116,14 +123,14 @@ const AddUser = () => {
                 handleAddEmployee(toEmail, e);
               }}
             >
-              Send invitation
+              {t("addUserModal.sendBtn")}
             </button>
             <CloseButton
               onClick={() => {
                 context.setShowAddUserModal(false);
               }}
             >
-              Close
+              {t("addUserModal.closeBtn")}
             </CloseButton>
           </ButtonDiv>
         </form>

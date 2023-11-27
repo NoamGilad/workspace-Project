@@ -5,7 +5,9 @@ import {
   ButtonDiv,
   CloseButton,
   ModalContainer,
+  StyledInput,
 } from "../components/admin/AddUser/AddUser";
+import { useTranslation } from "react-i18next";
 
 interface ResetPasswordProps {
   onResetPassword: () => void;
@@ -13,6 +15,8 @@ interface ResetPasswordProps {
 
 const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
+
   if (!context) {
     console.error("No context!");
     return;
@@ -20,18 +24,21 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
 
   return (
     <Modal onClose={() => context.setShowResetModal(false)}>
-      <ModalContainer>
-        <label>Reset your password</label>
-        <input
+      <ModalContainer $heb={context.curLanguage === "he"}>
+        <label>{t("resetModal.label")}</label>
+        <StyledInput
+          $heb={context.curLanguage === "he"}
           type="email"
           onChange={(e) => context?.setEmail(e.target.value)}
-          placeholder="Enter your Email"
+          placeholder={t("resetModal.emailHolder")}
           required
         />
         <ButtonDiv>
-          <button onClick={props.onResetPassword}>Reset</button>
+          <button onClick={props.onResetPassword}>
+            {t("resetModal.resetBtn")}
+          </button>
           <CloseButton onClick={() => context.setShowResetModal(false)}>
-            Close
+            {t("resetModal.closeBtn")}
           </CloseButton>
         </ButtonDiv>
       </ModalContainer>

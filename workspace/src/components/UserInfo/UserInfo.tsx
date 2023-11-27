@@ -1,7 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const UserInfoContainer = styled.div`
   width: fit-content;
@@ -162,6 +163,7 @@ const InfoAndActions = styled.div`
 const UserInfo = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (!context) return <p>No context</p>;
 
@@ -200,17 +202,17 @@ const UserInfo = () => {
       <InfoAndActions>
         <ProfileInfo>
           <div>
-            <label>Name:</label>
+            <label>{t("userInfo.name")}</label>
             <p>{context.nameToCapital(context.firstName, context.lastName)}</p>
           </div>
           <div>
-            <label>Email:</label>
+            <label>{t("userInfo.email")}</label>
             <p>{context.email}</p>
           </div>
         </ProfileInfo>
         <InputContainer>
           <SelectPhotoInput>
-            Select photo
+            {t("userInfo.selectPhoto")}
             <input type="file" accept="image/*" onChange={handleFileChange} />
           </SelectPhotoInput>
           <DeleteButton
@@ -218,7 +220,7 @@ const UserInfo = () => {
               deleteUserHandler();
             }}
           >
-            Delete user
+            {t("userInfo.deleteUser")}
           </DeleteButton>
         </InputContainer>
       </InfoAndActions>

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import UserInfo from "../../components/UserInfo/UserInfo";
 import Shifts from "../../components/Shifts/Shifts";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   display: flex;
@@ -62,6 +63,7 @@ const Cards = styled.div`
 
 const EmployeeProfilePage = () => {
   const context = useContext(AuthCtx);
+  const { t } = useTranslation();
 
   if (!context) {
     console.error("No context!");
@@ -76,8 +78,10 @@ const EmployeeProfilePage = () => {
       {isRole ? (
         <>
           <div>
-            <h2>Company: {context.company.name}</h2>
-            <h2>Hourly wage: {context.amountPerHour}</h2>
+            <h2>{context.company.name}</h2>
+            <h2>
+              {t("profile.hourlyWage")}: {context.amountPerHour}
+            </h2>
           </div>
           <Cards>
             <UserInfo />

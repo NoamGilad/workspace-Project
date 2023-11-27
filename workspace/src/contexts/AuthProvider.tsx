@@ -109,6 +109,8 @@ type AuthContextType = {
   setExtra125Hours: React.Dispatch<React.SetStateAction<Shift[]>>;
   extra150Hours: Shift[];
   setExtra150Hours: React.Dispatch<React.SetStateAction<Shift[]>>;
+  curLanguage: string;
+  setCurLanguage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type User = {
@@ -188,6 +190,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const currentYear = new Date().getFullYear().toString();
   const [selectedYearChart, setSelectedYearChart] =
     useState<string>(currentYear);
+
+  const [curLanguage, setCurLanguage] = useState<string>("en");
 
   /////////////////////////////////////////////////////////////////////
 
@@ -526,6 +530,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setExtra125Hours,
         extra150Hours,
         setExtra150Hours,
+        curLanguage,
+        setCurLanguage,
       }}
     >
       {children}

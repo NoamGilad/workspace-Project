@@ -6,6 +6,133 @@
     "logout": "Logout",
     "home": "Home",
     "stats": "Stats",
-    "profile": "Profile"
+    "profile": "Profile",
+    "control": "Control",
+    "signin": "Signin",
+    "signupAdmin": "Signup Admin"
+  },
+  "signin": {
+    "title": "Login",
+    "email": "Email",
+    "emailHolder": "Enter your Email here",
+    "password": "Password",
+    "passwordHolder": "Enter your password here",
+    "button": "Login",
+    "resetLabel": "Forgot your password?",
+    "resetButton": "Reset password"
+  },
+  "resetModal": {
+    "label": "Reset your password",
+    "emailHolder": "Enter your Email here",
+    "resetBtn": "Reset",
+    "closeBtn": "Close"
+  },
+  "signup": {
+    "title": "Signup",
+    "firstName": "First Name",
+    "firstNameHolder": "Place your first name here",
+    "lastName": "Last Name",
+    "lastNameHolder": "Place your last name here",
+    "company": "Company Name",
+    "companyHolder": "Place company name here",
+    "email": "Email",
+    "emailHolder": "Enter your Email here",
+    "password": "Password",
+    "passwordHolder": "Enter your password here",
+    "passwordConfirm": "Confirm Password",
+    "passwordConfirmHolder": "Place your password again",
+    "button": "Signup!",
+    "alreadyLabel": "Already an account?",
+    "signinLink": "Signin"
+  },
+  "profile": {
+    "company": "Company",
+    "hourlyWage": "Hourly wage"
+  },
+  "userInfo": {
+    "name": "Name",
+    "email": "Email",
+    "selectPhoto": "Select photo",
+    "deleteUser": "Delete user"
+  },
+  "workForm": {
+    "date": "Pick a date",
+    "from": "From",
+    "to": "To",
+    "addShift": "Add shift"
+  },
+  "filterShifts": {
+    "byYear": "Filter by year",
+    "byMonth": "Filter by month",
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December"
+  },
+  "shiftsList": {
+    "totalHoursMonthly": "Total monthly hours",
+    "normalHours": "Total normal monthly hours",
+    "125Hours": "Total Monthly Extra Hours (125%)",
+    "150Hours": "Total Monthly Extra Hours (150%)",
+    "salary": "Salary this month",
+    "from": "From",
+    "to": "To",
+    "duration": "Duration"
+  },
+  "stats": {
+    "title": "Stats"
+  },
+  "workingChart": {
+    "title": "Working Hours",
+    "text": "Working hours by month",
+    "months": "Months",
+    "hours": "Hours",
+    "yearFilter": "Year",
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December"
+  },
+  "control": {
+    "addUserBtn": "Add Employee"
+  },
+  "userslist": {
+    "name": "Name",
+    "email": "Email",
+    "hourlyWage": "Hourly Wage"
+  },
+  "editUserModal": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "hourlyWage": "Hourly wage",
+    "hourlyWageHolder": "How much?",
+    "updateBtn": "Update",
+    "closeBtn": "Close"
+  },
+  "addUserModal": {
+    "email": "Email",
+    "emailHolder": "Enter your Email here",
+    "sendBtn": "Send invitation",
+    "closeBtn": "Close"
+  },
+  "error": {
+    "title": "An error occurred!",
+    "wrongPage": "Could not find this page!"
   }
 }

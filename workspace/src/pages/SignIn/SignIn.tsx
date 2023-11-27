@@ -9,6 +9,7 @@ import { Input, ErrP } from "../../UI/StyledValidation";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
 import styled from "styled-components";
 import Container from "../../UI/StyledContainer";
+import { useTranslation } from "react-i18next";
 
 const ResetButton = styled.button`
   background-color: rgb(122, 122, 122);
@@ -40,7 +41,7 @@ const SigninSchema = Yup.object().shape({
 
 const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   if (!context) {
@@ -101,7 +102,7 @@ const SignInPage: React.FC = () => {
 
   return (
     <Container>
-      <h5>Sign in</h5>
+      <h5>{t("signin.title")}</h5>
       <Formik
         initialValues={{
           email: "",
@@ -118,38 +119,44 @@ const SignInPage: React.FC = () => {
       >
         {({ errors, touched }) => (
           <Form>
-            <label>Email</label>
+            <label>{t("signin.email")}</label>
             <Input
               id="email"
               name="email"
-              placeholder="Enter your Email here"
+              placeholder={t("signin.emailHolder")}
               type="email"
               $errors={errors.email && touched.email}
+              $heb={context.curLanguage === "he"}
             />
             {errors.email && touched.email ? <ErrP>{errors.email}</ErrP> : null}
-            <label>Password</label>
+            <label>{t("signin.password")}</label>
             <Input
               id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder={t("signin.passwordHolder")}
               type="password"
               $errors={errors.password && touched.password}
+              $heb={context.curLanguage === "he"}
             />
             {errors.password && touched.password ? (
               <ErrP>{errors.password}</ErrP>
             ) : null}
             <button type="submit" disabled={context.isSubmitting}>
-              {context.isSubmitting ? <CircleLoader /> : "Login"}
+              {context.isSubmitting ? (
+                <CircleLoader />
+              ) : (
+                `${t("signin.button")}`
+              )}
             </button>
           </Form>
         )}
       </Formik>
-      <label>Forgot your password?</label>
+      <label>{t("signin.resetLabel")}</label>
       <ResetButton
         disabled={context.isSubmitting}
         onClick={() => context.setShowResetModal(true)}
       >
-        Reset password
+        {t("signin.resetButton")}
       </ResetButton>
       {context.showResetModal && (
         <ResetPassword onResetPassword={handleResetPassword} />

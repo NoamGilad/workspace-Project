@@ -6,6 +6,7 @@ import EditUser from "../EditUser/EditUser";
 import ModifyIcon from "../../../assets/Modify.svg";
 import styled from "styled-components";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
+import { useTranslation } from "react-i18next";
 
 const UsersListCard = styled.div`
   width: fit-content;
@@ -253,6 +254,7 @@ type User = {
 const UsersList = () => {
   const context = useContext(AuthCtx);
   const dimensions = useContext(DimensionsCtx);
+  const { t } = useTranslation();
 
   const [usersList, setUsersList] = useState<any[]>([]);
 
@@ -305,15 +307,15 @@ const UsersList = () => {
                   </ProfilePhotoContainer>
                 )}
                 <div>
-                  <label>Name</label>
+                  <label>{t("userslist.name")}</label>
                   <p>{context.nameToCapital(user.firstName, user.lastName)}</p>
                 </div>
                 <div>
-                  <label>Email</label>
+                  <label>{t("userslist.email")}</label>
                   <p>{user.id}</p>
                 </div>
                 <div>
-                  <label>Amount per hour</label>
+                  <label>{t("userslist.hourlyWage")}</label>
                   <p>{user.amountPerHour}</p>
                 </div>
                 <button onClick={() => handleEditSelectUser(user)}>
@@ -346,19 +348,19 @@ const UsersList = () => {
                     </ProfilePhotoContainer>
                   )}
                   <label>
-                    Amount per hour
+                    {t("userslist.hourlyWage")}
                     <p>{user.amountPerHour}</p>
                   </label>
                 </TopDiv>
                 <MidDiv>
                   <label>
-                    Name
+                    {t("userslist.name")}
                     <p>
                       {user.firstName} {user.lastName}
                     </p>
                   </label>
                   <label>
-                    Email
+                    {t("userslist.email")}
                     <p>{user.id}</p>
                   </label>
                 </MidDiv>
