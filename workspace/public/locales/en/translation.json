@@ -9,8 +9,11 @@
     "profile": "Profile",
     "control": "Control",
     "signin": "Signin",
-    "signupAdmin": "Signup Admin"
+    "signupAdmin": "Signup Admin",
+    "en": "English",
+    "he": "עברית"
   },
+  "drawer": { "menu": "Menu" },
   "signin": {
     "title": "Login",
     "email": "Email",

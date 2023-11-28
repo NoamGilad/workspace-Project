@@ -1,13 +1,14 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useContext, useRef } from "react";
 import Modal from "../../../UI/Modal/Modal";
-import {
-  ButtonDiv,
-  CloseButton,
-  ModalContainer,
-  StyledInput,
-} from "../../admin/AddUser/AddUser";
+
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { ButtonDiv, CloseButton, ModalContainer } from "../AddUser/AddUser";
+
+const StyledInput = styled.input<{ $heb: boolean }>`
+  text-align: ${(props) => (props.$heb ? "end" : "")};
+`;
 
 const EditUser: React.FC<{
   firstName: string;
@@ -27,7 +28,6 @@ const EditUser: React.FC<{
     return <p>No context</p>;
   }
   const handleFormSubmit = (e: React.FormEvent) => {
-    // e.preventDefault();
     const updatedFirstName = firstNameRef.current?.value || "";
     const updatedLastName = lastNameRef.current?.value || "";
     const updatedAmountPerHour = amountPerHourRef.current?.value

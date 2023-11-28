@@ -9,8 +9,11 @@
     "profile": "פרופיל",
     "control": "בקרה",
     "signin": "התחברות",
-    "signupAdmin": "הרשמת אדמין"
+    "signupAdmin": "הרשמת אדמין",
+    "en": "English",
+    "he": "עברית"
   },
+  "drawer": { "menu": "תפריט" },
   "signin": {
     "title": "התחברות",
     "email": "אימייל",
