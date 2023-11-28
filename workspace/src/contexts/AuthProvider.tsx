@@ -211,12 +211,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setRole(role);
 
     if (!email || !password || !role || !firstName || !lastName) {
-      window.alert("Please fill in all required fields.");
+      console.error("Please fill in all required fields.");
       return false;
     }
 
     if (role !== "Employee" && role !== "Employer") {
-      window.alert("Role must be Employee or Employer.");
+      console.error("Role must be Employee or Employer.");
       return false;
     }
 
@@ -254,7 +254,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return true;
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
-        window.alert("Email is already in use!");
+        console.error("Email is already in use!");
       }
 
       setLoggedIn(true);
@@ -298,7 +298,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           error.code === "auth/wrong-password" ||
           error.code === "auth/user-not-found"
         ) {
-          window.alert("Wrong User/password!");
+          console.error("Wrong User/password!");
           setLoggedIn(false);
           return;
         }

@@ -417,7 +417,6 @@ const UsersList = () => {
   return (
     <>
       <UsersListCard>
-        <h5>Users List</h5>
         {content}
         {context?.selectedUser &&
           context?.showEditUserModal &&

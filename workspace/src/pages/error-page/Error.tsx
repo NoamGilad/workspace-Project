@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import Container from "../../UI/StyledContainer";
-import MainNavigation from "../../components/MainNavigation/MainNavigation";
+import MainNavigation from "../../components/Navs/MainNavigation";
 
 const ErrorPage = () => {
   const { t } = useTranslation();

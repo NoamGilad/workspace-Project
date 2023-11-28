@@ -71,33 +71,10 @@ const SignInPage: React.FC = () => {
       }
     } catch (error) {
       console.error(error);
-      window.alert("Login problem");
+      console.error("Login problem");
     } finally {
       context.setIsSubmitting(false);
     }
-  };
-
-  const handleResetPassword = () => {
-    if (!context.auth || context.auth === null) {
-      console.log("No auth");
-      return;
-    }
-    if (!context.email || context.email === null) {
-      console.log("No email");
-      window.alert("Please enter your email.");
-      return;
-    }
-
-    sendPasswordResetEmail(context.auth, context.email)
-      .then(() => {
-        console.log("Password reset email sent!");
-        console.log(context.email);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(`Error code:`, errorCode, "Errror message:", errorMessage);
-      });
   };
 
   return (
@@ -158,9 +135,7 @@ const SignInPage: React.FC = () => {
       >
         {t("signin.resetButton")}
       </ResetButton>
-      {context.showResetModal && (
-        <ResetPassword onResetPassword={handleResetPassword} />
-      )}
+      {context.showResetModal && <ResetPassword />}
     </Container>
   );
 };

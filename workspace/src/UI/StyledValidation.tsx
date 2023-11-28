@@ -19,4 +19,5 @@ export const Input = styled(Field)<{ $errors?: boolean }>`
 export const ErrP = styled.p`
   color: red;
   margin-top: -10px;
+  text-align: center;
 `;

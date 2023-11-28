@@ -4,6 +4,9 @@ import { AuthCtx } from "../../../contexts/AuthProvider";
 import Modal from "../../../UI/Modal/Modal";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { Formik, Form, FormikHelpers } from "formik";
+import * as Yup from "yup";
+import { Input, ErrP } from "../../../UI/StyledValidation";
 
 export const ModalContainer = styled.div<{ $heb: boolean }>`
   width: fit-content;
@@ -47,10 +50,6 @@ export const ModalContainer = styled.div<{ $heb: boolean }>`
   }
 `;
 
-export const StyledInput = styled.input<{ $heb: boolean }>`
-  text-align: ${(props) => (props.$heb ? "end" : "")};
-`;
-
 export const ButtonDiv = styled.div`
   width: fit-content;
   margin: 0 auto;
@@ -64,6 +63,14 @@ export const CloseButton = styled.button`
   }
 `;
 
+interface Values {
+  email: string;
+}
+
+const AddUserSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+});
+
 const AddUser = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
@@ -75,9 +82,7 @@ const AddUser = () => {
     return <p>No context</p>;
   }
 
-  const handleAddEmployee = (email: string, e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleAddEmployee = (email: string) => {
     sendSignInLinkToEmail(context.auth, email, context.actionCodeSettings)
       .then(() => {
         if (email.length < 0) {
@@ -106,34 +111,45 @@ const AddUser = () => {
   return (
     <Modal onClose={closeModal}>
       <ModalContainer $heb={context.curLanguage === "he"}>
-        <form>
-          <label>{t("addUserModal.email")}</label>
-          <StyledInput
-            $heb={context.curLanguage === "he"}
-            type="email"
-            placeholder={t("addUserModal.emailHolder")}
-            onChange={(e) => {
-              setToEmail(e.target.value);
-            }}
-            required
-          />
-          <ButtonDiv>
-            <button
-              onClick={(e) => {
-                handleAddEmployee(toEmail, e);
-              }}
-            >
-              {t("addUserModal.sendBtn")}
-            </button>
-            <CloseButton
-              onClick={() => {
-                context.setShowAddUserModal(false);
-              }}
-            >
-              {t("addUserModal.closeBtn")}
-            </CloseButton>
-          </ButtonDiv>
-        </form>
+        <Formik
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={AddUserSchema}
+          onSubmit={(
+            values: Values,
+            { setSubmitting }: FormikHelpers<Values>
+          ) => {
+            handleAddEmployee(values.email);
+          }}
+        >
+          {({ errors, touched }) => (
+            <Form>
+              <label>{t("addUserModal.email")}</label>
+              <Input
+                $heb={context.curLanguage === "he"}
+                id="email"
+                name="email"
+                type="email"
+                placeholder={t("addUserModal.emailHolder")}
+                $errors={errors.email && touched.email}
+              />
+              {errors.email && touched.email ? (
+                <ErrP>{errors.email}</ErrP>
+              ) : null}
+              <ButtonDiv>
+                <button type="submit">{t("addUserModal.sendBtn")}</button>
+                <CloseButton
+                  onClick={() => {
+                    context.setShowAddUserModal(false);
+                  }}
+                >
+                  {t("addUserModal.closeBtn")}
+                </CloseButton>
+              </ButtonDiv>
+            </Form>
+          )}
+        </Formik>
       </ModalContainer>
     </Modal>
   );

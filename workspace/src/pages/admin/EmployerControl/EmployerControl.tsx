@@ -5,6 +5,7 @@ import AddUser from "../../../components/admin/AddUser/AddUser";
 import Container from "../../../UI/StyledContainer";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import Calender from "../../../components/admin/Calender/Calender";
 
 const H1 = styled.h1`
   margin: 0px;
@@ -43,8 +44,12 @@ const EmployeeControlPage: React.FC = () => {
           {t("control.addUserBtn")}
         </Button>
       )}
-
-      <UsersList />
+      <div>
+        <UsersList />
+      </div>
+      <div>
+        <Calender />
+      </div>
     </Container>
   );
 };
