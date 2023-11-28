@@ -287,6 +287,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return await signInWithEmailAndPassword(auth, email, password)
       .then(async () => {
         const userRole = await gettingExistingUserDocData(email);
+        console.log(userRole);
+        setRole(userRole);
+        console.log(role);
 
         setLoggedIn(true);
         setIsSubmitting(false);
@@ -328,7 +331,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         if (!auth.currentUser?.photoURL) {
           console.log("No photo url");
-          return;
         }
       } else {
         console.log("No account logged in.");
@@ -345,7 +347,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     signOut(auth)
       .then(() => {
         setLoggedIn(false);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         // An error happened.
@@ -363,10 +365,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setFirstName(docSnap.data().firstName);
       setLastName(docSnap.data().lastName);
       setEmail(userData);
-      setRole(docSnap.data().role);
       setCompany(docSnap.data().company);
       setList(docSnap.data().workingHours || []);
       setAmountPerHour(docSnap.data().amountPerHour);
+      setRole(docSnap.data().role);
       return docSnap.data().role;
     } else {
       console.error("No such document!");

@@ -19,7 +19,10 @@ const EmployeeControlPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
 
-  if (!context) return <p>No context</p>;
+  if (!context) {
+    console.error("No context!");
+    return;
+  }
 
   const handleShowAddUser = () => {
     context.setShowAddUserModal(true);
