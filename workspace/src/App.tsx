@@ -4,13 +4,10 @@ import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
 import SignInPage from "./pages/SignIn/SignIn";
 import ErrorPage from "./pages/error-page/Error";
-import EmployeeProfilePage from "./pages/user/EmployeeProfile";
-import EmployeeControlPage from "./pages/admin/EmployerControl/EmployerControl";
 import SignUpAdminPage from "./pages/SignUp/SignUpAdmin/SignUpAdmin";
 import SignUpUserPage from "./pages/SignUp/SignUpUser/SignUpUser";
 import UserOnly from "./auth/UserOnly";
 import AdminOnly from "./auth/AdminOnly";
-import StatsPage from "./pages/user/Stats";
 
 import { lazy, Suspense } from "react";
 import SkeletonLog from "./UI/Skeleton/Skeleton";
@@ -18,7 +15,9 @@ import SkeletonLog from "./UI/Skeleton/Skeleton";
 const Admin = lazy(
   () => import("./pages/admin/EmployerControl/EmployerControl")
 );
+const AdminStats = lazy(() => import("./pages/admin/AdminStats/AdminStats"));
 const User = lazy(() => import("./pages/user/EmployeeProfile"));
+const UserStats = lazy(() => import("./pages/user/Stats"));
 
 const router = createBrowserRouter([
   {
@@ -57,6 +56,16 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "admin/stats",
+        element: (
+          <AdminOnly>
+            <Suspense fallback={<SkeletonLog />}>
+              <AdminStats />,
+            </Suspense>
+          </AdminOnly>
+        ),
+      },
+      {
         path: "user",
         element: (
           <UserOnly>
@@ -70,7 +79,9 @@ const router = createBrowserRouter([
         path: "user/stats",
         element: (
           <UserOnly>
-            <StatsPage />,
+            <Suspense fallback={<SkeletonLog />}>
+              <UserStats />,
+            </Suspense>
           </UserOnly>
         ),
       },
@@ -78,9 +89,9 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
+const App = () => {
   return <RouterProvider router={router} />;
-}
+};
 
 export default function WrappedApp() {
   return (

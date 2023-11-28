@@ -5,11 +5,12 @@
   "nav": {
     "logout": "התנתק",
     "home": "בית",
-    "stats": "סטטיסטיקה",
+    "userStats": "סטטיסטיקה",
     "profile": "פרופיל",
     "control": "בקרה",
     "signin": "התחברות",
     "signupAdmin": "הרשמת אדמין",
+    "adminStats": "סטטיסטיקה",
     "en": "English",
     "he": "עברית"
   },

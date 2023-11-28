@@ -138,14 +138,21 @@ const NavContent: React.FC<{ row: boolean; logoutBtn: boolean }> = (props) => {
             </StyledNavLink>
           </ListItem>
           <ListItem>
-            <StyledNavLink to="/user/stats">{t("nav.stats")}</StyledNavLink>
+            <StyledNavLink to="/user/stats">{t("nav.userStats")}</StyledNavLink>
           </ListItem>
         </>
       )}
       {context.loggedIn && context.role === "Employer" && (
-        <ListItem>
-          <StyledNavLink to="/admin">{t("nav.control")}</StyledNavLink>
-        </ListItem>
+        <>
+          <ListItem>
+            <StyledNavLink to="/admin">{t("nav.control")}</StyledNavLink>
+          </ListItem>
+          <ListItem>
+            <StyledNavLink to="/admin/stats">
+              {t("nav.adminStats")}
+            </StyledNavLink>
+          </ListItem>
+        </>
       )}
       {context.loggedIn && (
         <ListItem>
