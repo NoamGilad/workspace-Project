@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Suspense } from "react";
 
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
@@ -9,9 +10,8 @@ import EmployeeControlPage from "./pages/admin/EmployerControl/EmployerControl";
 import SignUpAdminPage from "./pages/SignUp/SignUpAdmin/SignUpAdmin";
 import SignUpUserPage from "./pages/SignUp/SignUpUser/SignUpUser";
 import UserOnly from "./auth/UserOnly";
+import AdminOnly from "./auth/AdminOnly";
 import StatsPage from "./pages/user/Stats";
-
-import { Suspense } from "react";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: "admin",
-        element: <EmployeeControlPage />,
+        element: (
+          <AdminOnly>
+            <EmployeeControlPage />,
+          </AdminOnly>
+        ),
       },
       {
         path: "user",
