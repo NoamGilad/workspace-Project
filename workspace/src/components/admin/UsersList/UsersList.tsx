@@ -256,8 +256,6 @@ const UsersList = () => {
   const dimensions = useContext(DimensionsCtx);
   const { t } = useTranslation();
 
-  const [usersList, setUsersList] = useState<any[]>([]);
-
   useEffect(() => {
     // context?.setIsSubmitting(true);
     if (!context) {
@@ -276,10 +274,11 @@ const UsersList = () => {
           users.push(userData);
         });
 
-        setUsersList(users);
+        context.setUsersList(users);
         // context.setIsSubmitting(false);
       };
       getUsers();
+      console.log(context.usersList);
     }
   }, [context]);
 
@@ -292,7 +291,7 @@ const UsersList = () => {
   if (context) {
     content = (
       <ul>
-        {usersList
+        {context.usersList
           .filter((user) => {
             return (
               user.role === "Employee" && user.company.id === context.company.id
@@ -331,7 +330,7 @@ const UsersList = () => {
   if (dimensions?.isMobile) {
     content = (
       <ul>
-        {usersList
+        {context?.usersList
           .filter((user) => {
             return (
               user.role === "Employee" &&

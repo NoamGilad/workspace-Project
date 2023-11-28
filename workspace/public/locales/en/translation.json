@@ -5,11 +5,12 @@
   "nav": {
     "logout": "Logout",
     "home": "Home",
-    "stats": "Stats",
+    "userStats": "Stats",
     "profile": "Profile",
     "control": "Control",
     "signin": "Signin",
     "signupAdmin": "Signup Admin",
+    "adminStats": "Stats",
     "en": "English",
     "he": "עברית"
   },
