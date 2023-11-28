@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Suspense } from "react";
 
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
@@ -12,6 +11,14 @@ import SignUpUserPage from "./pages/SignUp/SignUpUser/SignUpUser";
 import UserOnly from "./auth/UserOnly";
 import AdminOnly from "./auth/AdminOnly";
 import StatsPage from "./pages/user/Stats";
+
+import { lazy, Suspense } from "react";
+import SkeletonLog from "./UI/Skeleton/Skeleton";
+
+const Admin = lazy(
+  () => import("./pages/admin/EmployerControl/EmployerControl")
+);
+const User = lazy(() => import("./pages/user/EmployeeProfile"));
 
 const router = createBrowserRouter([
   {
@@ -43,7 +50,9 @@ const router = createBrowserRouter([
         path: "admin",
         element: (
           <AdminOnly>
-            <EmployeeControlPage />,
+            <Suspense fallback={<SkeletonLog />}>
+              <Admin />,
+            </Suspense>
           </AdminOnly>
         ),
       },
@@ -51,7 +60,9 @@ const router = createBrowserRouter([
         path: "user",
         element: (
           <UserOnly>
-            <EmployeeProfilePage />,
+            <Suspense fallback={<SkeletonLog />}>
+              <User />,
+            </Suspense>
           </UserOnly>
         ),
       },

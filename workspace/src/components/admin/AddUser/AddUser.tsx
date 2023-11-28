@@ -90,7 +90,6 @@ const AddUser = () => {
           return;
         }
 
-        window.localStorage.setItem("emailForSignIn", email);
         console.log(email);
         context.setShowAddUserModal(false);
         return;
