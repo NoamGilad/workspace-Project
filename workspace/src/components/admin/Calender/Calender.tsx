@@ -7,7 +7,7 @@ import { Dayjs } from "dayjs";
 import { useState } from "react";
 
 const Calender = () => {
-  const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
+  const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
 
   const ServerDay = (
     props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
