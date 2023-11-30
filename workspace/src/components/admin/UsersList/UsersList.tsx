@@ -278,7 +278,6 @@ const UsersList = () => {
         // context.setIsSubmitting(false);
       };
       getUsers();
-      console.log(context.usersList);
     }
   }, [context]);
 
