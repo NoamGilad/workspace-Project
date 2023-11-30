@@ -15,6 +15,11 @@ const Button = styled.button`
   margin-bottom: 5px;
 `;
 
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const EmployeeControlPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
@@ -47,12 +52,10 @@ const EmployeeControlPage: React.FC = () => {
           {t("control.addUserBtn")}
         </Button>
       )}
-      <div>
-        <UsersList />
-      </div>
-      <div>
+      <StyledDiv>
         <Calender />
-      </div>
+        <UsersList />
+      </StyledDiv>
     </Container>
   );
 };
