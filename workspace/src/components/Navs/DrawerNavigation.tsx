@@ -4,6 +4,8 @@ import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import NavContent from "./NavContent";
 import { useTranslation } from "react-i18next";
+import ListSubheader from "@mui/joy/ListSubheader";
+
 type Anchor = "top";
 
 const DrawerNavigation = () => {
@@ -29,7 +31,7 @@ const DrawerNavigation = () => {
   );
 
   return (
-    <div>
+    <ListSubheader sticky={true}>
       <Button
         onClick={toggleDrawer(true)}
         sx={{ backgroundColor: "#263238", color: "white ", width: "100%" }}
@@ -48,7 +50,7 @@ const DrawerNavigation = () => {
       >
         {list(anchor)}
       </Drawer>
-    </div>
+    </ListSubheader>
   );
 };
 

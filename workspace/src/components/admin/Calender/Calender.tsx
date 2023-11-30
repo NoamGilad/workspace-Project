@@ -5,6 +5,12 @@ import { Badge } from "@mui/material";
 import { PickersDay, PickersDayProps } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+  margin: auto;
+  margin-right: 10px;
+`;
 
 const Calender = () => {
   const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
@@ -34,19 +40,25 @@ const Calender = () => {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar
-        sx={{ backgroundColor: "white" }}
-        slots={{
-          day: ServerDay,
-        }}
-        slotProps={{
-          day: {
-            highlightedDays,
-          } as any,
-        }}
-      />
-    </LocalizationProvider>
+    <StyledDiv>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateCalendar
+          sx={{
+            backgroundColor: "#263238",
+            color: "#e3f2fd",
+            borderRadius: "12px",
+          }}
+          slots={{
+            day: ServerDay,
+          }}
+          slotProps={{
+            day: {
+              highlightedDays,
+            } as any,
+          }}
+        />
+      </LocalizationProvider>
+    </StyledDiv>
   );
 };
 
