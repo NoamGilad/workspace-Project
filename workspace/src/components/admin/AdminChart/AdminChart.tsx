@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Chart, CategoryScale, LinearScale, Legend } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import styled from "styled-components";
@@ -36,6 +37,9 @@ const AdminChart: React.FC<{
   const dimension = useContext(DimensionsCtx);
   const { t } = useTranslation();
 
+  const currentMonth = new Date().getMonth().toString();
+  const [selectedMonth, setSelectedMonth] = useState<string>(currentMonth);
+
   if (!context) {
     console.error("No context!");
     return <p>No context!</p>;
@@ -45,12 +49,14 @@ const AdminChart: React.FC<{
     const [hours, minutes] = timeString.split(":").map(Number);
     return hours * 60 + minutes;
   };
-
-  const calculateWorkingHoursByMonth = (monthIndex: number) => {
+  const calculateWorkingHoursByMonth = (
+    monthIndex: number,
+    selectedYear: string
+  ) => {
     const filteredShifts = context.list.filter((shift: Shift) => {
       const shiftYear = new Date(shift.date).getFullYear().toString();
       const shiftMonth = new Date(shift.date).getMonth() + 1;
-      return shiftYear === props.year && shiftMonth === monthIndex + 1;
+      return shiftYear === selectedYear && shiftMonth === monthIndex;
     });
 
     const totalMinutes = filteredShifts.reduce(
@@ -68,33 +74,33 @@ const AdminChart: React.FC<{
     context.setSelectedYearChart(e.target.value);
   };
 
-  const labels = [
-    `${t("workingChart.jan")}`,
-    `${t("workingChart.feb")}`,
-    `${t("workingChart.mar")}`,
-    `${t("workingChart.apr")}`,
-    `${t("workingChart.may")}`,
-    `${t("workingChart.jun")}`,
-    `${t("workingChart.jul")}`,
-    `${t("workingChart.aug")}`,
-    `${t("workingChart.sep")}`,
-    `${t("workingChart.oct")}`,
-    `${t("workingChart.nov")}`,
-    `${t("workingChart.dec")}`,
-  ];
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(e.target.value);
+  };
+
+  const labels = context.usersList
+    .filter(
+      (user) =>
+        user.role === "Employee" && user.company.id === context.company.id
+    )
+    .map((user) => context.nameToCapital(user.firstName, user.lastName));
 
   const data = {
     labels: labels,
     datasets: [
       {
         label: `${t("workingChart.title")}`,
-        data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
+        data: labels.map((userName) =>
+          calculateWorkingHoursByMonth(
+            parseInt(selectedMonth, 10),
+            props.selectedYear
+          )
+        ),
         backgroundColor: "#e3f2fd",
         barPercentage: 1,
       },
     ],
   };
-
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -175,6 +181,34 @@ const AdminChart: React.FC<{
           <MenuItem value="2022">2022</MenuItem>
           <MenuItem value="2021">2021</MenuItem>
           <MenuItem value="2020">2020</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl sx={{ m: 1, minWidth: 120, color: "#e3f2fd" }}>
+        <InputLabel sx={{ color: "#e3f2fd" }} id="selectMonth">
+          Month
+        </InputLabel>
+        <Select
+          sx={{ color: "#e3f2fdc0" }}
+          labelId="selectMonth"
+          id="selectMonth"
+          value={selectedMonth}
+          label="Month"
+          onChange={(e: any) => handleMonthChange(e)}
+        >
+          {/* Add your month options here */}
+          <MenuItem value="January">January</MenuItem>
+          <MenuItem value="2">February</MenuItem>
+          <MenuItem value="2">March</MenuItem>
+          <MenuItem value="2">April</MenuItem>
+          <MenuItem value="2">May</MenuItem>
+          <MenuItem value="2">June</MenuItem>
+          <MenuItem value="2">July</MenuItem>
+          <MenuItem value="2">August</MenuItem>
+          <MenuItem value="2">September</MenuItem>
+          <MenuItem value="2">October</MenuItem>
+          <MenuItem value="2">November</MenuItem>
+          <MenuItem value="December">December</MenuItem>
+          {/* Add the rest of the months */}
         </Select>
       </FormControl>
       <Bar data={data} options={options} />
