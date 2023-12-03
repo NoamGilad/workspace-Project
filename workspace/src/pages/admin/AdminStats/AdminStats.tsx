@@ -15,7 +15,7 @@ const AdminStatsPage = () => {
   return (
     <AdminChart
       year={context?.selectedYearChart}
-      title={context?.selectedYearChart}
+      title="Working Hours Chart"
       selectedYear={context?.selectedYearChart}
     />
   );
