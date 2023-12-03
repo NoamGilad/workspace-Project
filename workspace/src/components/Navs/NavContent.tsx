@@ -149,11 +149,11 @@ const NavContent: React.FC<{ row: boolean; logoutBtn: boolean }> = (props) => {
               {t("nav.control")}
             </StyledNavLink>
           </ListItem>
-          <ListItem>
+          {/* <ListItem>
             <StyledNavLink to="/admin/stats">
               {t("nav.adminStats")}
             </StyledNavLink>
-          </ListItem>
+          </ListItem> */}
         </>
       )}
       {context.loggedIn && (
