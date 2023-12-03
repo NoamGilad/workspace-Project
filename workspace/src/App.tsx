@@ -55,16 +55,16 @@ const router = createBrowserRouter([
           </AdminOnly>
         ),
       },
-      {
-        path: "admin/stats",
-        element: (
-          <AdminOnly>
-            <Suspense fallback={<SkeletonLog />}>
-              <AdminStats />,
-            </Suspense>
-          </AdminOnly>
-        ),
-      },
+      // {
+      //   path: "admin/stats",
+      //   element: (
+      //     <AdminOnly>
+      //       <Suspense fallback={<SkeletonLog />}>
+      //         <AdminStats />,
+      //       </Suspense>
+      //     </AdminOnly>
+      //   ),
+      // },
       {
         path: "user",
         element: (

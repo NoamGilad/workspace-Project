@@ -53,7 +53,7 @@ const EmployeeControlPage: React.FC = () => {
         </Button>
       )}
       <StyledDiv>
-        <Calender />
+        {/* <Calender /> */}
         <UsersList />
       </StyledDiv>
     </Container>
