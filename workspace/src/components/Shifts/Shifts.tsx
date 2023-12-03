@@ -46,6 +46,7 @@ const Shifts = () => {
   const [filteredMonth, setFilteredMonth] = useState<string>(currentMonth);
 
   if (!context) {
+    console.error("No context!");
     return <p>No context!</p>;
   }
 

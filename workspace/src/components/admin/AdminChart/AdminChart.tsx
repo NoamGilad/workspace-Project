@@ -6,11 +6,8 @@ import { useContext } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { Shift } from "../../Shifts/ShiftsList/ShiftsList";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
+import ShiftsFilter from "../../Shifts/ShiftsFilter/ShiftsFilter";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -37,22 +34,31 @@ const AdminChart: React.FC<{
   const dimension = useContext(DimensionsCtx);
   const { t } = useTranslation();
 
-  const currentMonth = new Date().getMonth().toString();
+  const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
   const [selectedMonth, setSelectedMonth] = useState<string>(currentMonth);
+  const [selectedYear, setSelectedYear] = useState<string>(props.selectedYear);
 
   if (!context) {
     console.error("No context!");
     return <p>No context!</p>;
   }
 
+  const filterChangeHandler = (filterName: string, selectedValue: string) => {
+    if (filterName === "selectedYear") {
+      setSelectedYear(selectedValue);
+    } else if (filterName === "selectedMonth") {
+      setSelectedMonth(selectedValue);
+    }
+  };
+
   const timeStringToMinutes = (timeString: string): number => {
     const [hours, minutes] = timeString.split(":").map(Number);
     return hours * 60 + minutes;
   };
-  const calculateWorkingHoursByMonth = (
-    monthIndex: number,
-    selectedYear: string
-  ) => {
+
+  const calculateWorkingHoursByMonth = () => {
+    const monthIndex = parseInt(selectedMonth, 10);
+
     const filteredShifts = context.list.filter((shift: Shift) => {
       const shiftYear = new Date(shift.date).getFullYear().toString();
       const shiftMonth = new Date(shift.date).getMonth() + 1;
@@ -70,14 +76,6 @@ const AdminChart: React.FC<{
     return totalHours.toFixed(2);
   };
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    context.setSelectedYearChart(e.target.value);
-  };
-
-  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMonth(e.target.value);
-  };
-
   const labels = context.usersList
     .filter(
       (user) =>
@@ -90,17 +88,13 @@ const AdminChart: React.FC<{
     datasets: [
       {
         label: `${t("workingChart.title")}`,
-        data: labels.map((userName) =>
-          calculateWorkingHoursByMonth(
-            parseInt(selectedMonth, 10),
-            props.selectedYear
-          )
-        ),
+        data: labels.map((userName) => calculateWorkingHoursByMonth()),
         backgroundColor: "#e3f2fd",
         barPercentage: 1,
       },
     ],
   };
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -165,52 +159,11 @@ const AdminChart: React.FC<{
 
   return (
     <ChartWrapper>
-      <FormControl sx={{ m: 1, minWidth: 120, color: "#e3f2fd" }}>
-        <InputLabel sx={{ color: "#e3f2fd" }} id="selectYear">
-          {t("workingChart.yearFilter")}
-        </InputLabel>
-        <Select
-          sx={{ color: "#e3f2fdc0" }}
-          labelId="selectYear"
-          id="selectYear"
-          value={context.selectedYearChart}
-          label="Year"
-          onChange={(e: any) => handleYearChange(e)}
-        >
-          <MenuItem value="2023">2023</MenuItem>
-          <MenuItem value="2022">2022</MenuItem>
-          <MenuItem value="2021">2021</MenuItem>
-          <MenuItem value="2020">2020</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 120, color: "#e3f2fd" }}>
-        <InputLabel sx={{ color: "#e3f2fd" }} id="selectMonth">
-          Month
-        </InputLabel>
-        <Select
-          sx={{ color: "#e3f2fdc0" }}
-          labelId="selectMonth"
-          id="selectMonth"
-          value={selectedMonth}
-          label="Month"
-          onChange={(e: any) => handleMonthChange(e)}
-        >
-          {/* Add your month options here */}
-          <MenuItem value="January">January</MenuItem>
-          <MenuItem value="2">February</MenuItem>
-          <MenuItem value="2">March</MenuItem>
-          <MenuItem value="2">April</MenuItem>
-          <MenuItem value="2">May</MenuItem>
-          <MenuItem value="2">June</MenuItem>
-          <MenuItem value="2">July</MenuItem>
-          <MenuItem value="2">August</MenuItem>
-          <MenuItem value="2">September</MenuItem>
-          <MenuItem value="2">October</MenuItem>
-          <MenuItem value="2">November</MenuItem>
-          <MenuItem value="December">December</MenuItem>
-          {/* Add the rest of the months */}
-        </Select>
-      </FormControl>
+      <ShiftsFilter
+        onChangeFilter={filterChangeHandler}
+        selectedYear={selectedYear}
+        selectedMonth={selectedMonth}
+      />
       <Bar data={data} options={options} />
     </ChartWrapper>
   );
