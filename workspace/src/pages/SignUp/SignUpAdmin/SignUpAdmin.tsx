@@ -57,7 +57,7 @@ const SignUpAdminPage: React.FC = () => {
     company: { id: string; name: string }
   ) => {
     if (!context) {
-      window.alert("No context!");
+      console.error("No context!");
       return;
     }
 
@@ -74,11 +74,11 @@ const SignUpAdminPage: React.FC = () => {
       if (registrationSuccess) {
         navigate("/admin");
       } else {
-        window.alert("Registration problem");
+        console.error("Registration problem");
       }
     } catch (error) {
       console.error(error);
-      window.alert("Registration problem");
+      console.error("Registration problem");
     } finally {
       context.setIsSubmitting(false);
     }
