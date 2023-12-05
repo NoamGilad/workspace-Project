@@ -118,6 +118,9 @@ const SignInPage: React.FC = () => {
             {errors.password && touched.password ? (
               <ErrP>{errors.password}</ErrP>
             ) : null}
+            {context.errorMsg === "Wrong User/password!" && (
+              <ErrP>{context.errorMsg}</ErrP>
+            )}
             <button type="submit" disabled={context.isSubmitting}>
               {context.isSubmitting ? (
                 <CircleLoader />

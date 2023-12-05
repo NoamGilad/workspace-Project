@@ -78,7 +78,7 @@ const SignUpUserPage: React.FC = () => {
     company: { id: string; name: string }
   ) => {
     if (!context) {
-      window.alert("No context!");
+      console.error("No context!");
       return;
     }
 
@@ -103,11 +103,11 @@ const SignUpUserPage: React.FC = () => {
 
         navigate("/user");
       } else {
-        window.alert("Registration problem");
+        console.error("Registration problem");
       }
     } catch (error) {
       console.error(error);
-      window.alert("Registration problem");
+      console.error("Registration problem");
     } finally {
       context.setIsSubmitting(false);
     }

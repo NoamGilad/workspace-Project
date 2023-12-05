@@ -114,6 +114,7 @@ type AuthContextType = {
   setCurLanguage: React.Dispatch<React.SetStateAction<string>>;
   usersList: any[];
   setUsersList: React.Dispatch<React.SetStateAction<any[]>>;
+  errorMsg: string;
 };
 
 type User = {
@@ -131,12 +132,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const firebaseConfig = {
-    apiKey: "AIzaSyBe1wv4MJC_mdTvA2WVoJhDgkFOUDic8TE",
-    authDomain: "workspace-f24ed.firebaseapp.com",
-    projectId: "workspace-f24ed",
-    storageBucket: "workspace-f24ed.appspot.com",
-    messagingSenderId: "679400397923",
-    appId: "1:679400397923:web:08dc2dae777d167dceac56",
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGEING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
   };
 
   const app = initializeApp(firebaseConfig);
@@ -198,7 +199,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [curLanguage, setCurLanguage] = useState<string>("en");
 
-  /////////////////////////////////////////////////////////////////////
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   /////////////////////////////////////////////////////////////////////
   // Signup
@@ -288,13 +289,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async (email: string, password: string) => {
     setIsSubmitting(true);
+    setErrorMsg("");
 
     return await signInWithEmailAndPassword(auth, email, password)
       .then(async () => {
         const userRole = await gettingExistingUserDocData(email);
-        console.log(userRole);
         setRole(userRole);
-        console.log(role);
 
         setLoggedIn(true);
         setIsSubmitting(false);
@@ -308,7 +308,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         ) {
           console.error("Wrong User/password!");
           setLoggedIn(false);
-          return;
+          setErrorMsg("Wrong User/password!");
         }
         console.error("Login error:", error.code);
         setIsSubmitting(false);
@@ -541,6 +541,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setCurLanguage,
         usersList,
         setUsersList,
+        errorMsg,
       }}
     >
       {children}
