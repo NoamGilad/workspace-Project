@@ -112,18 +112,19 @@ type AuthContextType = {
   setExtra150Hours: React.Dispatch<React.SetStateAction<Shift[]>>;
   curLanguage: string;
   setCurLanguage: React.Dispatch<React.SetStateAction<string>>;
-  usersList: any[];
-  setUsersList: React.Dispatch<React.SetStateAction<any[]>>;
+  usersList: User[];
+  setUsersList: React.Dispatch<React.SetStateAction<User[]>>;
   errorMsg: string;
 };
 
-type User = {
+export type User = {
   firstName: string;
   lastName: string;
   role: string;
   id: string;
   amountPerHour: number;
   photoUrl: string;
+  company: { name: string; id: string };
 };
 
 export const AuthCtx = createContext<AuthContextType | null>(null);
@@ -181,7 +182,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
 
-  const [usersList, setUsersList] = useState<any[]>([]);
+  const [usersList, setUsersList] = useState<User[]>([]);
 
   const [selectedUser, setSelectedUser] = useState<{
     firstName: string;
