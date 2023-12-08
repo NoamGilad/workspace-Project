@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chart, CategoryScale, LinearScale, Legend } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import styled from "styled-components";
 import { useContext } from "react";
-import { AuthCtx } from "../../../contexts/AuthProvider";
+import { AuthCtx, User } from "../../../contexts/AuthProvider";
 import { Shift } from "../../Shifts/ShiftsList/ShiftsList";
 import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 import { useTranslation } from "react-i18next";
 import ShiftsFilter from "../../Shifts/ShiftsFilter/ShiftsFilter";
+import { doc, getDoc } from "firebase/firestore";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -34,9 +35,30 @@ const AdminChart: React.FC<{
   const dimension = useContext(DimensionsCtx);
   const { t } = useTranslation();
 
+  const [curUserHours, setCurUserHours] = useState<Shift[] | null[]>([]);
+
   const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
   const [selectedMonth, setSelectedMonth] = useState<string>(currentMonth);
   const [selectedYear, setSelectedYear] = useState<string>(props.selectedYear);
+
+  const [chartData, setChartData] = useState<number[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await Promise.all(
+          usersEmails.map(
+            async (email) => await calculateWorkingHoursByMonth(email)
+          )
+        );
+        setChartData(result.map(Number));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [selectedMonth, selectedYear]);
 
   if (!context) {
     console.error("No context!");
@@ -51,29 +73,54 @@ const AdminChart: React.FC<{
     }
   };
 
-  const timeStringToMinutes = (timeString: string): number => {
-    const [hours, minutes] = timeString.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
+  const calculateWorkingHoursByMonth = async (userEmail: string) => {
+    try {
+      const docRef = doc(context.storeDatabase, "users", userEmail);
+      const docSnap = await getDoc(docRef);
 
-  const calculateWorkingHoursByMonth = () => {
-    const monthIndex = parseInt(selectedMonth, 10);
+      if (docSnap.exists()) {
+        const userHours = docSnap.data().workingHours || [];
+        setCurUserHours(userHours);
 
-    const filteredShifts = context.list.filter((shift: Shift) => {
-      const shiftYear = new Date(shift.date).getFullYear().toString();
-      const shiftMonth = new Date(shift.date).getMonth() + 1;
-      return shiftYear === selectedYear && shiftMonth === monthIndex;
-    });
+        const monthIndex = parseInt(selectedMonth, 10);
 
-    const totalMinutes = filteredShifts.reduce(
-      (acc: number, shift: Shift) =>
-        acc + timeStringToMinutes(shift.shiftDuration),
-      0
-    );
+        const filteredShifts = userHours.filter((shift: Shift | null) => {
+          if (shift === null) return;
 
-    const totalHours = totalMinutes / 60;
+          const shiftYear = new Date(shift.date).getFullYear().toString();
+          const shiftMonth = new Date(shift.date).getMonth() + 1;
+          return shiftYear === selectedYear && shiftMonth === monthIndex;
+        });
 
-    return totalHours.toFixed(2);
+        const totalMonthlyMinutes = filteredShifts
+          .map((shift: Shift | null) => {
+            if (shift === null) return;
+
+            const [hours, minutes] = shift.shiftDuration.split(":").map(Number);
+
+            return hours * 60 + minutes;
+          })
+          .reduce((acc: number | undefined, cur: number | null | undefined) => {
+            if (acc === null || cur === null) return acc;
+            if (acc === undefined) return cur;
+            if (cur === undefined) return acc;
+
+            return acc + cur;
+          }, 0);
+
+        if (!totalMonthlyMinutes) {
+          console.error("No shifts!");
+          return;
+        }
+        const totalHours = totalMonthlyMinutes / 60;
+
+        return totalHours.toFixed(2);
+      } else {
+        console.error("No such document!");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   };
 
   const labels = context.usersList
@@ -83,14 +130,23 @@ const AdminChart: React.FC<{
     )
     .map((user) => context.nameToCapital(user.firstName, user.lastName));
 
+  const usersEmails = context.usersList
+    .filter(
+      (user: User) =>
+        user.role === "Employee" && user.company.id === context.company.id
+    )
+    .map((user: User) => {
+      return user.id;
+    });
+
   const data = {
     labels: labels,
     datasets: [
       {
         label: `${t("workingChart.title")}`,
-        data: labels.map((userName) => calculateWorkingHoursByMonth()),
+        data: chartData,
         backgroundColor: "#e3f2fd",
-        barPercentage: 1,
+        barPercentage: 0.2,
       },
     ],
   };
