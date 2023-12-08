@@ -114,6 +114,7 @@ type AuthContextType = {
   setCurLanguage: React.Dispatch<React.SetStateAction<string>>;
   usersList: User[];
   setUsersList: React.Dispatch<React.SetStateAction<User[]>>;
+=======
   errorMsg: string;
 };
 
