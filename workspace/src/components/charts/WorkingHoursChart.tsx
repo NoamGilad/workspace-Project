@@ -113,17 +113,17 @@ const WorkingHoursChart: React.FC<{
     ],
   };
 
-  const dataMobile = {
-    labels: labels,
-    datasets: [
-      {
-        label: `${t("workingChart.title")}`,
-        data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
-        backgroundColor: "#e3f2fd",
-        barPercentage: 0.5,
-      },
-    ],
-  };
+  // const dataMobile = {
+  //   labels: labels,
+  //   datasets: [
+  //     {
+  //       label: `${t("workingChart.title")}`,
+  //       data: labels.map((_, index) => calculateWorkingHoursByMonth(index)),
+  //       backgroundColor: "#e3f2fd",
+  //       barPercentage: 0.5,
+  //     },
+  //   ],
+  // };
 
   const options = {
     responsive: true,
@@ -187,66 +187,66 @@ const WorkingHoursChart: React.FC<{
     },
   };
 
-  const optionsMobile = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-        labels: {
-          font: {
-            size: 12,
-          },
-        },
-      },
-      title: {
-        display: true,
-        text: `${t("workingChart.text")}: ${props.title}`,
-        font: {
-          size: 15,
-          weight: "bold",
-        },
-        color: "#e3f2fd",
-      },
-    },
-    scales: {
-      x: {
-        type: "category" as const,
-        labels: labels,
-        title: {
-          display: true,
-          text: `${t("workingChart.months")}`,
-          font: {
-            size: 14,
-          },
-          color: "#e3f2fd",
-        },
-        ticks: {
-          color: "#e3f2fd",
-        },
-        grid: {
-          display: false,
-        },
-        barPercentage: 0.8,
-      },
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: `${t("workingChart.hours")}`,
-          font: {
-            size: 14,
-          },
-          color: "#e3f2fd",
-        },
-        ticks: {
-          color: "#e3f2fd",
-        },
-        grid: {
-          color: "#e3f2fd",
-        },
-      },
-    },
-  };
+  // const optionsMobile = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: "top" as const,
+  //       labels: {
+  //         font: {
+  //           size: 12,
+  //         },
+  //       },
+  //     },
+  //     title: {
+  //       display: true,
+  //       text: `${t("workingChart.text")}: ${props.title}`,
+  //       font: {
+  //         size: 15,
+  //         weight: "bold",
+  //       },
+  //       color: "#e3f2fd",
+  //     },
+  //   },
+  //   scales: {
+  //     x: {
+  //       type: "category" as const,
+  //       labels: labels,
+  //       title: {
+  //         display: true,
+  //         text: `${t("workingChart.months")}`,
+  //         font: {
+  //           size: 14,
+  //         },
+  //         color: "#e3f2fd",
+  //       },
+  //       ticks: {
+  //         color: "#e3f2fd",
+  //       },
+  //       grid: {
+  //         display: false,
+  //       },
+  //       barPercentage: 0.8,
+  //     },
+  //     y: {
+  //       beginAtZero: true,
+  //       title: {
+  //         display: true,
+  //         text: `${t("workingChart.hours")}`,
+  //         font: {
+  //           size: 14,
+  //         },
+  //         color: "#e3f2fd",
+  //       },
+  //       ticks: {
+  //         color: "#e3f2fd",
+  //       },
+  //       grid: {
+  //         color: "#e3f2fd",
+  //       },
+  //     },
+  //   },
+  // };
 
   return (
     <ChartWrapper>
@@ -268,10 +268,7 @@ const WorkingHoursChart: React.FC<{
           <MenuItem value="2020">2020</MenuItem>
         </Select>
       </FormControl>
-      <Bar
-        data={!dimension?.isMobile ? data : dataMobile}
-        options={!dimension?.isMobile ? options : optionsMobile}
-      />
+      <Bar data={data} options={options} />
     </ChartWrapper>
   );
 };
