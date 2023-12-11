@@ -103,7 +103,6 @@ type AuthContextType = {
   loading: boolean;
   selectedYearChart: string;
   setSelectedYearChart: React.Dispatch<React.SetStateAction<string>>;
-
   normalHours: Shift[];
   setNormalHours: React.Dispatch<React.SetStateAction<Shift[]>>;
   extra125Hours: Shift[];
