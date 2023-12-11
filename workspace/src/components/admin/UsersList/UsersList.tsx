@@ -257,7 +257,6 @@ const UsersList = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // context?.setIsSubmitting(true);
     if (!context) {
       return;
     } else {
@@ -275,7 +274,6 @@ const UsersList = () => {
         });
 
         context.setUsersList(users);
-        // context.setIsSubmitting(false);
       };
       getUsers();
     }

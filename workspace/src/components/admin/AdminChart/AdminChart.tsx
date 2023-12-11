@@ -9,6 +9,7 @@ import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 import { useTranslation } from "react-i18next";
 import ShiftsFilter from "../../Shifts/ShiftsFilter/ShiftsFilter";
 import { doc, getDoc } from "firebase/firestore";
+import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -19,8 +20,8 @@ const ChartWrapper = styled.div`
   width: 80%;
   height: 450px;
   padding: 15px;
-  padding-bottom: 75px;
-  margin: 15px;
+  padding-bottom: 100px;
+  margin: 30px auto;
   background-color: #263238;
   border-radius: 12px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
@@ -41,7 +42,7 @@ const AdminChart: React.FC<{
   const [selectedMonth, setSelectedMonth] = useState<string>(currentMonth);
   const [selectedYear, setSelectedYear] = useState<string>(props.selectedYear);
 
-  const [chartData, setChartData] = useState<number[]>([]);
+  const [chartData, setChartData] = useState<number[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -215,12 +216,18 @@ const AdminChart: React.FC<{
 
   return (
     <ChartWrapper>
-      <ShiftsFilter
-        onChangeFilter={filterChangeHandler}
-        selectedYear={selectedYear}
-        selectedMonth={selectedMonth}
-      />
-      <Bar data={data} options={options} />
+      {chartData === null || chartData.length < 1 ? (
+        <CircleLoader />
+      ) : (
+        <>
+          <ShiftsFilter
+            onChangeFilter={filterChangeHandler}
+            selectedYear={selectedYear}
+            selectedMonth={selectedMonth}
+          />
+          <Bar data={data} options={options} />
+        </>
+      )}
     </ChartWrapper>
   );
 };
