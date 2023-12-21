@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
-import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../../components/ResetPassword";
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -24,6 +23,22 @@ const ResetButton = styled.button`
   &:hover {
     background-color: rgb(81, 81, 81);
   }
+`;
+
+const DemoDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 10px;
+  border: 2px solid #263238;
+  border-radius: 12px;
+`;
+
+const QuickLoginLabel = styled.label`
+  font-size: 25px;
+  margin: 0px;
+  color: #e3f2fd;
+  text-decoration: underline;
 `;
 
 interface Values {
@@ -74,6 +89,23 @@ const SignInPage: React.FC = () => {
       console.error("Login problem");
     } finally {
       context.setIsSubmitting(false);
+    }
+  };
+
+  const handleDummyDemoLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonText = e.currentTarget.innerText;
+
+    if (buttonText === "As an EMPLOYER") {
+      context.login("nmgilad@gmail.com", 123123);
+      navigate("/admin");
+      return;
+    } else if (buttonText === "As an EMPLOYEE") {
+      context.login("noabd94@gmail.com", 123123);
+      navigate("/user");
+      return;
+    } else {
+      console.error("quick login error");
+      return;
     }
   };
 
@@ -139,6 +171,15 @@ const SignInPage: React.FC = () => {
         {t("signin.resetButton")}
       </ResetButton>
       {context.showResetModal && <ResetPassword />}
+      <DemoDiv>
+        <QuickLoginLabel>Quick login</QuickLoginLabel>
+        <button type="button" onClick={(e) => handleDummyDemoLogin(e)}>
+          As an EMPLOYER
+        </button>
+        <button type="button" onClick={(e) => handleDummyDemoLogin(e)}>
+          As an EMPLOYEE
+        </button>
+      </DemoDiv>
     </Container>
   );
 };
