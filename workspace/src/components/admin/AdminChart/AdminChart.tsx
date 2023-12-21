@@ -5,11 +5,11 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { AuthCtx, User } from "../../../contexts/AuthProvider";
 import { Shift } from "../../Shifts/ShiftsList/ShiftsList";
-import { DimensionsCtx } from "../../../contexts/DimensionsProvider";
 import { useTranslation } from "react-i18next";
 import ShiftsFilter from "../../Shifts/ShiftsFilter/ShiftsFilter";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import CircleLoader from "../../../UI/CircleLoader/CircleLoader";
+import { useNavigation } from "react-router-dom";
 
 Chart.register(CategoryScale, LinearScale, Legend);
 
@@ -33,10 +33,8 @@ const AdminChart: React.FC<{
   selectedYear: string;
 }> = (props) => {
   const context = useContext(AuthCtx);
-  const dimension = useContext(DimensionsCtx);
   const { t } = useTranslation();
-
-  const [curUserHours, setCurUserHours] = useState<Shift[] | null[]>([]);
+  const navigation = useNavigation();
 
   const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
   const [selectedMonth, setSelectedMonth] = useState<string>(currentMonth);
@@ -45,6 +43,27 @@ const AdminChart: React.FC<{
   const [chartData, setChartData] = useState<number[] | null>(null);
 
   useEffect(() => {
+    if (!context) {
+      return;
+    } else {
+      const getUsers = async () => {
+        const querySnapshot = await getDocs(
+          collection(context.storeDatabase, "users")
+        );
+        const users: any[] = [];
+        querySnapshot.forEach((doc) => {
+          const userData = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          users.push(userData);
+        });
+
+        context.setUsersList(users);
+      };
+      getUsers();
+    }
+
     const fetchData = async () => {
       try {
         const result = await Promise.all(
@@ -59,7 +78,7 @@ const AdminChart: React.FC<{
     };
 
     fetchData();
-  }, [selectedMonth, selectedYear]);
+  }, [context, selectedMonth, selectedYear]);
 
   if (!context) {
     console.error("No context!");
@@ -81,7 +100,6 @@ const AdminChart: React.FC<{
 
       if (docSnap.exists()) {
         const userHours = docSnap.data().workingHours || [];
-        setCurUserHours(userHours);
 
         const monthIndex = parseInt(selectedMonth, 10);
 
@@ -216,7 +234,7 @@ const AdminChart: React.FC<{
 
   return (
     <ChartWrapper>
-      {chartData === null || chartData.length < 1 ? (
+      {chartData === null ? (
         <CircleLoader />
       ) : (
         <>

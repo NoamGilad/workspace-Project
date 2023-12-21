@@ -23,7 +23,10 @@
     "passwordHolder": "Enter your password here",
     "button": "Login",
     "resetLabel": "Forgot your password?",
-    "resetButton": "Reset password"
+    "resetButton": "Reset password",
+    "quickLogin": "Quick login",
+    "dummyEmployer": "As an EMPLOYER",
+    "dummyEmployee": "As an EMPLOYEE"
   },
   "resetModal": {
     "label": "Reset your password",

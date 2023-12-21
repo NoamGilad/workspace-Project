@@ -23,7 +23,10 @@
     "passwordHolder": "הכנס את הסיסמה כאן",
     "button": "התחבר",
     "resetLabel": "?שכחת את הסיסמה",
-    "resetButton": "אפס סיסמה"
+    "resetButton": "אפס סיסמה",
+    "quickLogin": "כניסה מהירה",
+    "dummyEmployer": "כמעסיק",
+    "dummyEmployee": "כעובד"
   },
   "resetModal": {
     "label": "איפוס סיסמה",

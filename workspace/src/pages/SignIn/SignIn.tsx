@@ -36,7 +36,7 @@ const DemoDiv = styled.div`
 
 const QuickLoginLabel = styled.label`
   font-size: 25px;
-  margin: 0px;
+  margin-top: -5px;
   color: #e3f2fd;
   text-decoration: underline;
 `;
@@ -95,11 +95,11 @@ const SignInPage: React.FC = () => {
   const handleDummyDemoLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     const buttonText = e.currentTarget.innerText;
 
-    if (buttonText === "As an EMPLOYER") {
+    if (buttonText === `${t("signin.dummyEmployer")}`) {
       context.login("nmgilad@gmail.com", 123123);
       navigate("/admin");
       return;
-    } else if (buttonText === "As an EMPLOYEE") {
+    } else if (buttonText === `${t("signin.dummyEmployee")}`) {
       context.login("noabd94@gmail.com", 123123);
       navigate("/user");
       return;
@@ -172,12 +172,12 @@ const SignInPage: React.FC = () => {
       </ResetButton>
       {context.showResetModal && <ResetPassword />}
       <DemoDiv>
-        <QuickLoginLabel>Quick login</QuickLoginLabel>
+        <QuickLoginLabel>{t("signin.quickLogin")}</QuickLoginLabel>
         <button type="button" onClick={(e) => handleDummyDemoLogin(e)}>
-          As an EMPLOYER
+          {t("signin.dummyEmployer")}
         </button>
         <button type="button" onClick={(e) => handleDummyDemoLogin(e)}>
-          As an EMPLOYEE
+          {t("signin.dummyEmployee")}
         </button>
       </DemoDiv>
     </Container>
