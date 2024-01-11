@@ -1,5 +1,5 @@
 import { AuthCtx } from "../../../contexts/AuthProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -44,6 +44,10 @@ const SignupSchema = Yup.object().shape({
 const SignUpAdminPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Signup Admin";
+  }, []);
 
   if (!context) {
     return <p>No context</p>;

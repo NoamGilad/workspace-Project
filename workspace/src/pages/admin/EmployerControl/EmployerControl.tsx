@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import UsersList from "../../../components/admin/UsersList/UsersList";
 import AddUser from "../../../components/admin/AddUser/AddUser";
@@ -9,6 +9,12 @@ import Calender from "../../../components/admin/Calender/Calender";
 
 const H1 = styled.h1`
   margin: 0px;
+`;
+
+const StyledPara = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  color: #e3f2fd;
 `;
 
 const Button = styled.button`
@@ -23,6 +29,9 @@ const StyledDiv = styled.div`
 const EmployeeControlPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
+  useEffect(() => {
+    document.title = "Users List";
+  }, []);
 
   if (!context) {
     console.error("No context!");
@@ -53,8 +62,11 @@ const EmployeeControlPage: React.FC = () => {
         </Button>
       )}
       <StyledDiv>
-        {/* <Calender /> */}
-        <UsersList />
+        {context?.usersList && context.usersList.length > 0 ? (
+          <UsersList />
+        ) : (
+          <StyledPara>No employee yet, add one now!</StyledPara>
+        )}
       </StyledDiv>
     </Container>
   );

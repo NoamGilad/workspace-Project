@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import styled from "styled-components";
 import CircleLoader from "../../UI/CircleLoader/CircleLoader";
@@ -64,6 +64,10 @@ const Cards = styled.div`
 const EmployeeProfilePage = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = "My Profile";
+  }, []);
 
   if (!context) {
     console.error("No context!");

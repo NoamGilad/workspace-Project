@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthCtx } from "../../contexts/AuthProvider";
 import ResetPassword from "../../components/ResetPassword";
@@ -58,6 +58,10 @@ const SignInPage: React.FC = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   if (!context) {
     console.error("No context!");

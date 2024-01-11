@@ -1,9 +1,14 @@
 import { useTranslation } from "react-i18next";
 import Container from "../../UI/StyledContainer";
 import MainNavigation from "../../components/Navs/MainNavigation";
+import { useEffect } from "react";
 
 const ErrorPage = () => {
   const { t } = useTranslation();
+  useEffect(() => {
+    document.title = "Error Page";
+  }, []);
+
   return (
     <>
       <MainNavigation />
