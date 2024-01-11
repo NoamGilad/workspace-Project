@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Container from "../../UI/StyledContainer";
 import WorkingHoursChart from "../../components/charts/WorkingHoursChart";
 import { AuthCtx } from "../../contexts/AuthProvider";
@@ -7,6 +7,10 @@ import { useTranslation } from "react-i18next";
 const StatsPage = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = "My Stats";
+  }, []);
 
   if (!context) {
     console.error("No context!");

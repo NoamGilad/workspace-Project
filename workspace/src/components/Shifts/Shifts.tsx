@@ -38,8 +38,11 @@ const ShiftsContainer = styled.div`
 const Shifts = () => {
   const context = useContext(AuthCtx);
 
+  const currentYear: number = new Date().getFullYear();
+  const formattedYear: string = `${currentYear}`;
+
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [filteredYear, setFilteredYear] = useState<string>("2023");
+  const [filteredYear, setFilteredYear] = useState<string>(formattedYear);
 
   const currentMonth = new Date().toLocaleString("en-US", { month: "2-digit" });
 

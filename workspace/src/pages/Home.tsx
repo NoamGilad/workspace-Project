@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -69,6 +70,10 @@ const HomeCard = styled.div`
 
 const HomePage = () => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = "WorkEase";
+  }, []);
 
   return (
     <Container>

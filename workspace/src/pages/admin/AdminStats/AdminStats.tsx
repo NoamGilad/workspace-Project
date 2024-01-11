@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AdminChart from "../../../components/admin/AdminChart/AdminChart";
 import { AuthCtx } from "../../../contexts/AuthProvider";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,10 @@ import { useTranslation } from "react-i18next";
 const AdminStatsPage = () => {
   const context = useContext(AuthCtx);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = "Users Stats";
+  }, []);
 
   if (!context) {
     console.error("No context!");

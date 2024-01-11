@@ -44,6 +44,10 @@ const SignUpUserPage: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    document.title = "Signup User";
+  }, []);
+
   const getQueryParameters = () => {
     const searchParams = new URLSearchParams(location.search);
     const companyName = searchParams.get("company");
